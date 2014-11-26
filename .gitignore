@@ -1,0 +1,36 @@
+# Installed Node.js modules
+node_modules/
+
+# Target build directory for processed, compiled web app
+dist/
+
+test/temp
+.tmp
+
+# SASS intermediate compile files
+*.scssc
+
+# SASS cache directory
+.sass-cache
+
+# bower package installation dir
+app/bower_components
+test/bower_components
+
+# compiled JST templates
+app/templates/templates.js
+
+# temporary editor save files
+*~
+
+# OSX thumnail caches
+.DS_Store
+
+# log files
+*.log
+
+# JetBrains editor dir
+.idea/
+
+# Compiled React JS templates
+app/scripts/components/*.js
