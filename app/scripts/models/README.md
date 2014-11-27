@@ -1,0 +1,1 @@
+This directory contains Ampersand.js Models and Collections.
