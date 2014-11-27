@@ -1,6 +1,6 @@
 var React = require('react');
 
-var AlbumPage = React.createFactory(require('./components/album.jsx'));
+var AlbumPage = React.createFactory(require('../components/album.jsx'));
 
 var mountNode = document.getElementById("app");
 
@@ -8,7 +8,7 @@ var mountNode = document.getElementById("app");
  * A collection of photo albums.
  * Is an Ampersand.js Model Collection.
  */
-var AlbumCollection = require('./models/albums.js');
+var AlbumCollection = require('../models/albums.js');
 var albums = new AlbumCollection();
 
 /**
