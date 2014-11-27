@@ -1,7 +1,14 @@
 {
-  "name": "react-bacon-test",
+  "name": "tacocat-gallery-react-ampersand",
   "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/deanmoses/tacocat-gallery-react-ampersand.git"
+  },
   "dependencies": {
+    "ampersand-model": "^4.0.3",
+    "ampersand-rest-collection": "^2.0.4",
+    "ampersand-router": "^1.0.6",
     "underscore": "^1.7.0"
   },
   "devDependencies": {
