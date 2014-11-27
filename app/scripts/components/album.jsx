@@ -140,7 +140,8 @@ var Thumbnails = React.createClass({
 var Thumbnail = React.createClass({
 	render: function() {
 		var item = this.props.item;
-		var url = '#' + item.url;
+		debugger;
+		var url = '#album/' + item.path;
 		var width = 200;
 		var height = 200;
 		var title = item.title;

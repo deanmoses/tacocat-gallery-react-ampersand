@@ -14,6 +14,14 @@ module.exports = Model.extend({
 		albums: 'array',
 		images: 'array'
     },
+	derived: {
+		urlr: {
+            deps: ['path'],
+            fn: function () {
+                return '#album/' + this.path;
+            }
+        }
+	},
 	// the URL of the JSON REST API from which to retrieve the album
 	url: function() {
 		return 'http://tacocat.com/zenphoto/'+this.path+'?api';

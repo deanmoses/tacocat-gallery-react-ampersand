@@ -28,12 +28,20 @@ module.exports = Router.extend({
 	 * into the browser.location.
 	 */
 	routes: {
-		// #album/year/month/subalbum
+		// #2014/12-31/felix.jpg
+		"image/*path": "photo",
+		
+		// #
+		"": "album",
+		
+		// #2014
+		// #2014/12-31
+		// #2014/12-31/someSubAlbum
 		"album/*path": "album" 
 	},
 
 	album: function(path) {
-		console.log("album/"+path);
+		console.log("album '" + path + "'");
 
 		// either get an existing album Model in the Collection,
 		// or retrieve it from the server.
