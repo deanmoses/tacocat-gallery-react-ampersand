@@ -23,7 +23,7 @@ Site.HeaderTitle = React.createClass({
 	}
 });
 
-var HeaderButtons = React.createClass({
+Site.HeaderButtons = React.createClass({
 	render: function() {
 		return (
 			<ul className="nav navbar-nav navbar-right">{this.props.children}</ul>
@@ -31,7 +31,7 @@ var HeaderButtons = React.createClass({
 	}
 });
 
-var HeaderButton = React.createClass({
+Site.HeaderButton = React.createClass({
 	render: function() {
 		return(
 			<li><a href={this.props.href} className="button">{this.props.children}</a></li>
@@ -40,27 +40,27 @@ var HeaderButton = React.createClass({
 });
 
 
-var UpButton = React.createClass({
+Site.UpButton = React.createClass({
 	render: function() {
 		return(
-			<HeaderButton href={this.props.href}>
-				<UpIcon/> {this.props.title}
-			</HeaderButton>
+			<Site.HeaderButton href={this.props.href}>
+				<Site.UpIcon/> {this.props.title}
+			</Site.HeaderButton>
 		);
 	}
 });
 
 
-var UpIcon = React.createClass({
+Site.UpIcon = React.createClass({
 	render: function() {
 		return(
-			<GlyphIcon glyph="home"/>
+			<Site.GlyphIcon glyph="home"/>
 		);
 	}
 });
 
 
-var GlyphIcon = React.createClass({
+Site.GlyphIcon = React.createClass({
 	render: function() {
 		return(
 			<span className={'glyphicon glyphicon-' + this.props.glyph}/>
@@ -69,23 +69,23 @@ var GlyphIcon = React.createClass({
 });
 
 
-var PrevButton = React.createClass({
+Site.PrevButton = React.createClass({
 	render: function() {
 		return(
-			<Button href={this.props.href}><GlyphIcon glyph="chevron-left"/> Prev</Button>
+			<Site.Button href={this.props.href}><Site.GlyphIcon glyph="chevron-left"/> Prev</Site.Button>
 		);
 	}
 });
 
-var NextButton = React.createClass({
+Site.NextButton = React.createClass({
 	render: function() {
 		return(
-			<Button href={this.props.href}>Next <GlyphIcon glyph="chevron-right"/></Button>
+			<Site.Button href={this.props.href}>Next <Site.GlyphIcon glyph="chevron-right"/></Site.Button>
 		);
 	}
 });
 
-var Button = React.createClass({
+Site.Button = React.createClass({
 	render: function() {
 		return(
 			<a className="btn btn-default" href={this.props.href}>{this.props.children}</a>

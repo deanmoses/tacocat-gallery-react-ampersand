@@ -11,9 +11,22 @@ var React = window.React = require('react');
 // The component called by the router when rendering any album
 var AlbumPage = React.createClass({
 	render: function() {
-		return (
-			<RootAlbumPage album={this.props.album}/>
-		);
+		switch (this.props.album.type) {
+			case 'root':
+				return (
+					<RootAlbumPage album={this.props.album}/>
+				);
+			case 'year':
+				return (
+					<YearAlbumPage album={this.props.album}/>
+				);
+			case 'week':
+				return (
+					<WeekAlbumPage album={this.props.album}/>
+				);
+			default:
+				throw 'no such type: ' + this.props.album.type;
+		 }
 	}
 });
 
@@ -37,10 +50,10 @@ var YearAlbumPage = React.createClass({
 		var a = this.props.album.attributes;
 		return (
 			<div>
-				<HeaderTitle href={a.parentAlbumPath} title={a.fulltitle} />
-				<HeaderButtons>
-					<UpButton href={a.parentAlbumPath} title={a.parentAlbumPath} />
-				</HeaderButtons>
+				<Site.HeaderTitle href={a.parentAlbumPath} title={a.fulltitle} />
+				<Site.HeaderButtons>
+					<Site.UpButton href={a.parentAlbumPath} title={a.parentAlbumPath} />
+				</Site.HeaderButtons>
 				<FirstsAndThumbs album={this.props.album}/>
 			</div>
 		);
@@ -53,10 +66,10 @@ var WeekAlbumPage = React.createClass({
 		var a = this.props.album.attributes;
 		return (
 			<div>
-				<HeaderTitle href={a.parentAlbumPath} title={a.fulltitle} />
-				<HeaderButtons>
-					<UpButton href={a.parentAlbumPath} title={a.parentAlbumPath} />
-				</HeaderButtons>
+				<Site.HeaderTitle href={a.parentAlbumPath} title={a.fulltitle} />
+				<Site.HeaderButtons>
+					<Site.UpButton href={a.parentAlbumPath} title={a.parentAlbumPath} />
+				</Site.HeaderButtons>
 				<AlbumDescription description={a.description}/>
 				<Thumbnails album={this.props.album}/>
 			</div>
@@ -91,9 +104,8 @@ var FirstsAndThumbs = React.createClass({
 
 var MonthThumbs = React.createClass({
     render: function () {
-    	var a = this.props.album.attributes;
-    	
-        var months = a.childAlbumsByMonth.map(function (child) {
+
+        var months = this.props.album.childAlbumsByMonth.map(function (child) {
             return <MonthThumb month={child} />;
         });
 

@@ -41,6 +41,9 @@ module.exports = Router.extend({
 	},
 
 	album: function(path) {
+		if (!path) {
+			path = '';
+		}
 		console.log("album '" + path + "'");
 
 		// either get an existing album Model in the Collection,
