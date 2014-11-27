@@ -16,14 +16,16 @@ Retrieves album data from a prototype JSON REST backend built on [ZenPhoto](http
 2. [Node.js](http://nodejs.org/) - *Node.js server.  Needed to manage development tools & run dev webserver.  Not used at runtime*
 3. [Compass](http://compass-style.org/) - *SASS CSS processor* 
  * This will require installing Ruby.  I highly recommend using [RVM](https://rvm.io/) instead installing Ruby directly.
-4. [Bower](http://bower.io/) - a javascript package manager.  To install:  `npm install -g bower`
+4. [Bower](http://bower.io/) - a javascript package manager.  
+ * To install:  `npm install -g bower`
 
 
 ### Install project
 1. Open terminal / shell
 2. `cd` to directory under which you want to create project
 3. Get this project via `git clone [url to this project]`
-4. Install npm dependencies: `npm install`
-5. Install bower dependencies: `bower install`
-6. Run project: `gulp  watch`.  In the output, it'll tell you what port to open your browser to.
-7. The browser will make ajax requests to tacocat.com and it won't be able to.  My preferred solution is the *Allow-Control-Allow-Origin* Google Chrome plugin.
+4. `cd` into project
+5. Install the project's npm dependencies: `npm install` *(must be in project root dir)*
+6. Install the project's bower dependencies: `bower install` *(must be in project root dir)*
+7. Run project: `gulp  watch`.  In the output, it'll tell you what port to open your browser to.
+8. The browser will make ajax requests to tacocat.com and it won't be able to.  My preferred solution is the *Allow-Control-Allow-Origin* Google Chrome plugin.
