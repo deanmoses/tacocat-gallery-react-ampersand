@@ -3,6 +3,7 @@
 var gulp = require('gulp');
 var del = require('del');
 var path = require('path');
+var react = require('gulp-react');
 
 // Load plugins
 var $ = require('gulp-load-plugins')();
@@ -36,6 +37,12 @@ gulp.task('coffee', function () {
         .pipe(gulp.dest('app/scripts'));
 });
 
+// Compile React.js JSX templates
+gulp.task('jsx', function () {
+    return gulp.src('app/scripts/components/**/*.js')
+        .pipe(react())
+        .pipe(gulp.dest('dist'));
+});
 
 // Scripts
 gulp.task('scripts', function () {
@@ -87,7 +94,7 @@ gulp.task('clean', function (cb) {
 
 
 // Bundle
-gulp.task('bundle', ['styles', 'scripts', 'bower'], function(){
+gulp.task('bundle', ['styles', 'scripts', /*'jsx',*/ 'bower'], function(){
     return gulp.src('./app/*.html')
                .pipe($.useref.assets())
                .pipe($.useref.restore())
@@ -142,6 +149,9 @@ gulp.task('watch', ['html', 'bundle', 'serve'], function () {
 
     // Watch .js files
     gulp.watch('app/scripts/**/*.js', ['scripts', 'jest' ]);
+	
+	// Watch .jsx files
+	//gulp.watch('app/scripts/components/**/*.jsx', ['jsx']);
 
     // Watch image files
     gulp.watch('app/images/**/*', ['images']);

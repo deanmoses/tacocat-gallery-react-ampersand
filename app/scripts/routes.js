@@ -1,46 +1,56 @@
 var React = require('react');
 
-var RootComponent = React.createFactory(require('./components.js'));
-//var components = require('./components.js'); // need to specify the jsx extension
+var AlbumPage = React.createFactory(require('./components/album.jsx'));
 
 var mountNode = document.getElementById("app");
 
+/**
+ * A collection of photo albums.
+ * Is an Ampersand.js Model Collection.
+ */
 var AlbumCollection = require('./models/albums.js');
 var albums = new AlbumCollection();
 
-var Router = require('ampersand-router'); 
+/**
+ * Ampersand.js router.
+ *
+ * Decides what happens when the app's various URLs are hit.
+ */
+var Router = require('ampersand-router');
 module.exports = Router.extend({ 
 
-  routes: {
-    "album/:type":          "album",    // #album/year
-    "search/:query":        "search",  // #search/kiwis
-    "search/:query/p:page": "search",   // #search/kiwis/p7
-	  "": "help" 
-  },
+	/**
+	 * Define the application's routes.
+	 *
+	 * This maps a URL 'route' expression to a 
+	 * javascript function to call when Ampersand.js
+	 * detects a matching URL has been entered
+	 * into the browser.location.
+	 */
+	routes: {
+		// #album/year/month/subalbum
+		"album/*path": "album" 
+	},
 
-  album: function(albumType) {
-	  console.log("album");
-	  
-	  albums.getOrFetch('2014', function (err, model) {
-	      if (err) {
-	          console.log('error getting album', err);
-	      } else {
-			  console.log('success getting album', model);
-	          // `model` here is a fully inflated model
-	          // It gets added to the collection automatically.
-	          // If the collection was empty before, it's got 1
-	          // now.
-	      }
-	  });
-	  
-	  
-	  //debugger;
-    React.render(RootComponent({albumType : albumType}), mountNode);
-  },
+	album: function(path) {
+		console.log("album/"+path);
 
-  search: function(query, page) {
-	  console.log("search");
-    React.render(RootComponent({albumType : 'week'}), mountNode);
-  }
+		// either get an existing album Model in the Collection,
+		// or retrieve it from the server.
+		// This is Ampersand Collection.getOrFetch()
+		albums.getOrFetch(path, function (err, album) {
+			if (err) {
+				console.log('error getting album', err);
+			} 
+			else {
+				console.log('success getting album', album);
+				// `album` here is a fully inflated Ampersand model
+				// It gets added to the collection automatically.
+				// If the collection was empty before, it's got 1
+				// now.
+				React.render(AlbumPage({album : album}), mountNode);
+			}
+		});
+	}
 
 });
