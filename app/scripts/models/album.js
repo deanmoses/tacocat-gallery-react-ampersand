@@ -4,12 +4,11 @@ var Model = require('ampersand-model');
 
 module.exports = Model.extend({
 	idAttribute: 'path',
-	// ampersand-state defines several built-in datatypes: string, number, boolean, array, object, date, or any
     props: {
         path: 'string',
         title: 'string',
 		description: 'string',
-		published: 'any', //'boolean', TODO: change to boolean on server
+		published: 'boolean', // true: album is available to the public
 		title: 'string',
 		date: 'date',
 		thumb: 'object',
@@ -17,7 +16,7 @@ module.exports = Model.extend({
 		images: 'array'
     },
 	derived: {
-		
+
 		// Type of album:  root, year or week
 		type: {
             deps: ['path'],
@@ -40,9 +39,7 @@ module.exports = Model.extend({
 		childAlbumsByMonth: {
 			deps: ['albums'],
 			fn: function() {
-				
-				debugger;
-				
+								
 				// Group the child week albums of the year album by month
 				var childAlbumsByMonth = _.groupBy(this.albums, function(childAlbum) {
 					// create Date object based on album's timestamp
