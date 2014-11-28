@@ -2,7 +2,7 @@ var React = require('react');
 var _ = require('underscore');
 
 var AlbumPage = React.createFactory(require('../components/album.jsx'));
-var ImagePage = React.createFactory(require('../components/photo.jsx'));
+var ImagePage = React.createFactory(require('../components/image.jsx'));
 
 var mountNode = document.getElementById("app");
 
