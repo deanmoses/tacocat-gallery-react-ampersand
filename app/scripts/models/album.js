@@ -1,3 +1,6 @@
+//
+// An Ampersand.js Model representing a photo album.
+//
 
 var _ = require('underscore');
 var Model = require('ampersand-model');
