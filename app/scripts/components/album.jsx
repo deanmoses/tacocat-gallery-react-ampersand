@@ -35,10 +35,11 @@ module.exports = AlbumPage;
 // Displays the root album (i.e., displays each year as a thumbnail)
 var RootAlbumPage = React.createClass({
 	render: function() {
+		var a = this.props.album;
 		return (
 			<div>
-				<Site.HeaderTitle title={this.props.album.title} />
-				<Thumbnails album={this.props.album}/>
+				<Site.HeaderTitle title={a.title} />
+				<Thumbnails items={a.albums} isAlbum={true} />
 			</div>
 		);
 	}
@@ -47,7 +48,7 @@ var RootAlbumPage = React.createClass({
 // Displays a year album (like 2014)
 var YearAlbumPage = React.createClass({
 	render: function() {
-		var a = this.props.album.attributes;
+		var a = this.props.album;
 		return (
 			<div>
 				<Site.HeaderTitle href={a.parentAlbumPath} title={a.fulltitle} />
@@ -63,7 +64,7 @@ var YearAlbumPage = React.createClass({
 // Displays a week album (like 2014/12-31/)
 var WeekAlbumPage = React.createClass({
 	render: function() {
-		var a = this.props.album.attributes;
+		var a = this.props.album;
 		return (
 			<div>
 				<Site.HeaderTitle href={a.parentAlbumPath} title={a.fulltitle} />
@@ -71,7 +72,7 @@ var WeekAlbumPage = React.createClass({
 					<Site.UpButton href={a.parentAlbumPath} title={a.parentAlbumPath} />
 				</Site.HeaderButtons>
 				<AlbumDescription description={a.description}/>
-				<Thumbnails album={this.props.album}/>
+				<Thumbnails items={a.images} isAlbum={false} />
 			</div>
 		);
 	}
@@ -90,13 +91,13 @@ var AlbumDescription = React.createClass({
 
 var FirstsAndThumbs = React.createClass({
 	render: function() {
-		var a = this.props.album.attributes;
+		var a = this.props.album;
 		return (
 			<div className="container">
 				<section className="firsts">
 					FIRSTS GO HERE
 				</section>
-				<MonthThumbs album={this.props.album}/>
+				<MonthThumbs album={a}/>
 			</div>
 		);
 	}
@@ -121,7 +122,7 @@ var MonthThumb = React.createClass({
     render: function () {
     	var month = this.props.month;
         var thumbs = month.albums.map(function (child) {
-            return <Thumbnail item={child} />;
+            return <Thumbnail item={child} isAlbum={true}/>;
         });
 
         return (
@@ -135,9 +136,9 @@ var MonthThumb = React.createClass({
 
 var Thumbnails = React.createClass({
     render: function () {
-
-        var thumbs = this.props.album.albums.map(function (child) {
-            return <Thumbnail item={child} />;
+		var isAlbum = this.props.isAlbum;
+        var thumbs = this.props.items.map(function (child) {
+            return <Thumbnail item={child} isAlbum={isAlbum}/>;
         });
 
         return (
@@ -152,7 +153,7 @@ var Thumbnails = React.createClass({
 var Thumbnail = React.createClass({
 	render: function() {
 		var item = this.props.item;
-		var url = '#album/' + item.path;
+		var url = (this.props.isAlbum ? '#album/' : '#image/') + item.path;
 		var width = 200;
 		var height = 200;
 		var title = item.title;
@@ -162,6 +163,7 @@ var Thumbnail = React.createClass({
 		var style = {
 			width: width,
 		}
+
 		var thumbUrl = 'http://tacocat.com/' + item.thumb.url;
 		return(
 			<span className="thumbnail">
