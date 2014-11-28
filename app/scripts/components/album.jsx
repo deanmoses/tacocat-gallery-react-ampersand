@@ -11,21 +11,22 @@ var React = window.React = require('react');
 // The component called by the router when rendering any album
 var AlbumPage = React.createClass({
 	render: function() {
-		switch (this.props.album.type) {
+		var album = this.props.album;
+		switch (album.type) {
 			case 'root':
 				return (
-					<RootAlbumPage album={this.props.album}/>
+					<RootAlbumPage album={album}/>
 				);
 			case 'year':
 				return (
-					<YearAlbumPage album={this.props.album}/>
+					<YearAlbumPage album={album}/>
 				);
 			case 'week':
 				return (
-					<WeekAlbumPage album={this.props.album}/>
+					<WeekAlbumPage album={album}/>
 				);
 			default:
-				throw 'no such type: ' + this.props.album.type;
+				throw 'no such type: ' + album.type;
 		 }
 	}
 });
@@ -51,7 +52,7 @@ var YearAlbumPage = React.createClass({
 		var a = this.props.album;
 		return (
 			<div>
-				<Site.HeaderTitle href={a.parentAlbumPath} title={a.fulltitle} />
+				<Site.HeaderTitle href={a.parentAlbumPath} title={a.title} />
 				<Site.HeaderButtons>
 					<Site.UpButton href={a.parentAlbumPath} title={a.parentAlbumPath} />
 				</Site.HeaderButtons>
@@ -67,7 +68,7 @@ var WeekAlbumPage = React.createClass({
 		var a = this.props.album;
 		return (
 			<div>
-				<Site.HeaderTitle href={a.parentAlbumPath} title={a.fulltitle} />
+				<Site.HeaderTitle href={a.parentAlbumPath} title={a.title} />
 				<Site.HeaderButtons>
 					<Site.UpButton href={a.parentAlbumPath} title={a.parentAlbumPath} />
 				</Site.HeaderButtons>
@@ -164,7 +165,7 @@ var Thumbnail = React.createClass({
 			width: width,
 		}
 
-		var thumbUrl = 'http://tacocat.com/' + item.thumb.url;
+		var thumbUrl = 'http://tacocat.com/' + item.urlThumb;
 		return(
 			<span className="thumbnail">
 				<a href={url}>

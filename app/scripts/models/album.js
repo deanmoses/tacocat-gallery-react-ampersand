@@ -12,6 +12,8 @@ module.exports = Model.extend({
         title: 'string',
 		description: 'string',
 		published: 'boolean', // true: album is available to the public
+		image_size: 'string', // a number like 1024 denoting the largest edge of this album's images
+		thumb_size: 'string', // a number like 200 denoting both edges of this album's thumbnails
 		title: 'string',
 		date: 'date',
 		thumb: 'object',
