@@ -25,7 +25,7 @@ module.exports = AmpersandState.extend({
 			}
 		},
 		
-		// the next image
+		// next image
 		next: {
             deps: ['path', 'collection'],
             fn: function () {
@@ -34,16 +34,36 @@ module.exports = AmpersandState.extend({
 				// collection = the parent collection of images I'm in.
 				var myPath = this.path;
 				var foundMyself = false;
-				return _.find(this.collection.models, function(child) {
+				return _.find(this.collection.models, function(img) {
 					if (foundMyself) {
 						return true; // returning true on the image AFTER me
 					} 
-					else if (child.path === myPath) {
+					else if (img.path === myPath) {
 						foundMyself = true;
 					}
 				});
 			}
-		}
+		},
+		
+		// previous image
+		prev: {
+            deps: ['path', 'collection'],
+            fn: function () {
+				// I don't know my own index in my parent collection.
+				// But I do know that once I find myself, I will have
+				// already found my prev in the previous iteration.
+				// collection = the parent collection of images I'm in.
+				var myPath = this.path;
+				var prev;
+				_.find(this.collection.models, function(img) {
+					if (img.path === myPath) {
+						return true;
+					}
+					prev = img;
+				});
+				return prev;
+			}
+		},
 	}
 });
 

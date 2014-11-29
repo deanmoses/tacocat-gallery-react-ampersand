@@ -13,8 +13,10 @@ var ImagePage = React.createClass({
 	render: function() {
 		var image = this.props.image;
 		var parentAlbumPath = "/path/to/album";
-		var prevImageUrl = "";
-		var nextImage = image.next
+		
+		var prevImage = image.prev;
+		var prevImageUrl = prevImage ? prevImage.urlLink : '';
+		var nextImage = image.next;
 		var nextImageUrl = nextImage ? nextImage.urlLink : '';
 		return (
 			<div>
