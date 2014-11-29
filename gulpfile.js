@@ -3,7 +3,6 @@
 var gulp = require('gulp');
 var del = require('del');
 var path = require('path');
-var react = require('gulp-react');
 
 // Load plugins
 var $ = require('gulp-load-plugins')();
@@ -11,7 +10,7 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 
 
-// Styles
+// Compile SASS stylesheets
 gulp.task('styles', function () {
     return gulp.src('app/styles/main.scss')
         .pipe($.rubySass({
@@ -24,25 +23,6 @@ gulp.task('styles', function () {
         .pipe($.size());
 });
 
-
-// CoffeeScript
-gulp.task('coffee', function () {
-    return gulp.src(
-            ['app/scripts/**/*.coffee', '!app/scripts/**/*.js'],
-            {base: 'app/scripts'}
-        )
-        .pipe(
-            $.coffee({ bare: true }).on('error', $.util.log)
-        )
-        .pipe(gulp.dest('app/scripts'));
-});
-
-// Compile React.js JSX templates
-gulp.task('jsx', function () {
-    return gulp.src('app/scripts/components/**/*.js')
-        .pipe(react())
-        .pipe(gulp.dest('dist'));
-});
 
 // Scripts
 gulp.task('scripts', function () {
@@ -94,7 +74,7 @@ gulp.task('clean', function (cb) {
 
 
 // Bundle
-gulp.task('bundle', ['styles', 'scripts', /*'jsx',*/ 'bower'], function(){
+gulp.task('bundle', ['styles', 'scripts', 'bower'], function(){
     return gulp.src('./app/*.html')
                .pipe($.useref.assets())
                .pipe($.useref.restore())
@@ -126,17 +106,9 @@ gulp.task('bower', function() {
 
 });
 
-gulp.task('json', function() {
-    gulp.src('app/scripts/json/**/*.json', {base: 'app/scripts'})
-        .pipe(gulp.dest('dist/scripts/'));
-});
-
 
 // Watch
 gulp.task('watch', ['html', 'bundle', 'serve'], function () {
-
-    // Watch .json files
-    gulp.watch('app/scripts/**/*.json', ['json']);
 
     // Watch .html files
     gulp.watch('app/*.html', ['html']);
@@ -144,14 +116,11 @@ gulp.task('watch', ['html', 'bundle', 'serve'], function () {
     // Watch .scss files
     gulp.watch('app/styles/**/*.scss', ['styles']);
   
-    // Watch .coffeescript files
-    gulp.watch('app/scripts/**/*.coffee', ['coffee', 'scripts', 'jest' ]);
-
     // Watch .js files
     gulp.watch('app/scripts/**/*.js', ['scripts', 'jest' ]);
 	
 	// Watch .jsx files
-	//gulp.watch('app/scripts/components/**/*.jsx', ['jsx']);
+	gulp.watch('app/scripts/components/**/*.jsx', ['scripts']);
 
     // Watch image files
     gulp.watch('app/images/**/*', ['images']);
