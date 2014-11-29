@@ -19,7 +19,7 @@ var ImagePage = React.createClass({
 		var nextImageUrl = nextImage ? nextImage.urlPage : '';
 		return (
 			<div>
-				<Site.HeaderTitle title={image.title} />
+				<Site.HeaderTitle href={album.urlPage} title={image.title} />
 				<Site.HeaderButtons>
 					<li><a className="btn">caption</a></li>
 					<li><a className="btn" target="edit" href="">edit</a></li>

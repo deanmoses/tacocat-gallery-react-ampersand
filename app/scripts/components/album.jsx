@@ -52,11 +52,11 @@ var YearAlbumPage = React.createClass({
 		var a = this.props.album;
 		return (
 			<div>
-				<Site.HeaderTitle href={a.parentAlbumPath} title={a.title} />
+				<Site.HeaderTitle href='#' title={a.title} />
 				<Site.HeaderButtons>
-					<Site.UpButton href={a.parentAlbumPath} title={a.parentAlbumPath} />
+					<Site.UpButton href='#' title='Home' />
 				</Site.HeaderButtons>
-				<FirstsAndThumbs album={this.props.album}/>
+				<FirstsAndThumbs album={a}/>
 			</div>
 		);
 	}
@@ -68,9 +68,9 @@ var WeekAlbumPage = React.createClass({
 		var a = this.props.album;
 		return (
 			<div>
-				<Site.HeaderTitle href={a.parentAlbumPath} title={a.title} />
+				<Site.HeaderTitle href={'#album/'+a.parent.path} title={a.title} />
 				<Site.HeaderButtons>
-					<Site.UpButton href={a.parentAlbumPath} title={a.parentAlbumPath} />
+					<Site.UpButton href={'#album/'+a.parent.path} title={a.parent.title} />
 				</Site.HeaderButtons>
 				<AlbumDescription description={a.description}/>
 				<Thumbnails items={a.images} isAlbum={false} />

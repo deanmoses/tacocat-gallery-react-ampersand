@@ -17,6 +17,7 @@ module.exports = Model.extend({
 		thumb_size: 'string', // a number like 200 denoting both edges of this album's thumbnails
 		date: 'date', // in seconds.  Needs to be * 1000 to convert to a Date object
 		thumb: 'object',
+		parent: 'object',
 		albums: 'array'//, images: 'array'
     },
 	collections: {
