@@ -4,6 +4,7 @@
 
 var _ = require('underscore');
 var Model = require('ampersand-model');
+var Images = require('./images.js');
 
 module.exports = Model.extend({
 	idAttribute: 'path',
@@ -14,14 +15,14 @@ module.exports = Model.extend({
 		published: 'boolean', // true: album is available to the public
 		image_size: 'string', // a number like 1024 denoting the largest edge of this album's images
 		thumb_size: 'string', // a number like 200 denoting both edges of this album's thumbnails
-		title: 'string',
-		date: 'date',
+		date: 'date', // in seconds.  Needs to be * 1000 to convert to a Date object
 		thumb: 'object',
-		albums: 'array',
-		images: 'array'
+		albums: 'array'//, images: 'array'
     },
+	collections: {
+		images: Images // tells Ampersand to treat the images node in the JSON as a collection of Img objects
+	},
 	derived: {
-
 		// Type of album:  root, year or week
 		type: {
             deps: ['path'],
@@ -40,7 +41,6 @@ module.exports = Model.extend({
 				}
             }
         },
-		
 		childAlbumsByMonth: {
 			deps: ['albums'],
 			fn: function() {

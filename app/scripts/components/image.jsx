@@ -13,9 +13,9 @@ var ImagePage = React.createClass({
 	render: function() {
 		var image = this.props.image;
 		var parentAlbumPath = "/path/to/album";
-		var fullTitle = "Some Photo Title";
 		var prevImageUrl = "";
-		var nextImageUrl = "";
+		var nextImage = image.next
+		var nextImageUrl = nextImage ? nextImage.urlLink : '';
 		return (
 			<div>
 				<Site.HeaderTitle title={image.title} />

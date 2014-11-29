@@ -39,7 +39,7 @@ var RootAlbumPage = React.createClass({
 		var a = this.props.album;
 		return (
 			<div>
-				<Site.HeaderTitle title={a.title} />
+				<Site.HeaderTitle title="Dean, Lucie, Felix and Milo Moses" />
 				<Thumbnails items={a.albums} isAlbum={true} />
 			</div>
 		);

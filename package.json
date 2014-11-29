@@ -6,9 +6,11 @@
     "url": "http://github.com/deanmoses/tacocat-gallery-react-ampersand.git"
   },
   "dependencies": {
+    "ampersand-collection": "^1.3.17",
     "ampersand-model": "^4.0.3",
     "ampersand-rest-collection": "^2.0.4",
     "ampersand-router": "^1.0.6",
+    "ampersand-state": "^4.4.1",
     "underscore": "^1.7.0"
   },
   "devDependencies": {

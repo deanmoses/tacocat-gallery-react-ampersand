@@ -1,10 +1,10 @@
 var React = require('react');
-var _ = require('underscore');
 
 var AlbumPage = React.createFactory(require('../components/album.jsx'));
 var ImagePage = React.createFactory(require('../components/image.jsx'));
 
-var mountNode = document.getElementById("app");
+// the DOM element into which the entire UI gets written
+var mountNode = document.getElementById("main");
 
 /**
  * A collection of photo albums.
@@ -90,19 +90,10 @@ module.exports = Router.extend({
 				// If the collection was empty before, it's got 1
 				// now.
 				
-				var image = _this.getImage(album, path);
+				var image = album.images.get(path);
 				React.render(ImagePage({image : image}), mountNode);
 			}
 		});
-	},
-	
-		/**
-		 * Find an image by its path, like '2014/12-31/flowers.jpg'
-		 */
-		getImage: function(album, imagePath) {
-			return _.find(album.images, function(child) {
-				return child.path === imagePath;
-			});
-		}
+	}
 
 });
