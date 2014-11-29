@@ -61,7 +61,7 @@ module.exports = Router.extend({
 				// It gets added to the collection automatically.
 				// If the collection was empty before, it's got 1
 				// now.
-				React.render(AlbumPage({album : album}), mountNode);
+				React.render(AlbumPage({album: album}), mountNode);
 			}
 		});
 	},
@@ -89,9 +89,7 @@ module.exports = Router.extend({
 				// It gets added to the collection automatically.
 				// If the collection was empty before, it's got 1
 				// now.
-				
-				var image = album.images.get(path);
-				React.render(ImagePage({image : image}), mountNode);
+				React.render(ImagePage({album: album, imagePath: path}), mountNode);
 			}
 		});
 	}

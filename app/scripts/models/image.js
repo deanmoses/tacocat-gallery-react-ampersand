@@ -17,8 +17,8 @@ module.exports = AmpersandState.extend({
 		urlThumb: 'string' // like "/zenphoto/cache/2014/11-16/alex1b_200_cw200_ch200_thumb.jpg"
     },
 	derived: {
-		// URL linking to the image
-		urlLink: {
+		// URL linking to this image's page
+		urlPage: {
             deps: ['path'],
             fn: function () {
 				return '#image/'+this.path;

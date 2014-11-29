@@ -23,6 +23,13 @@ module.exports = Model.extend({
 		images: Images // tells Ampersand to treat the images node in the JSON as a collection of Img objects
 	},
 	derived: {
+		// URL linking to this album's page
+		urlPage: {
+            deps: ['path'],
+            fn: function () {
+				return '#album/'+this.path;
+			}
+		},
 		// Type of album:  root, year or week
 		type: {
             deps: ['path'],

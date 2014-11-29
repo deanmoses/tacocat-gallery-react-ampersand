@@ -11,13 +11,12 @@ var React = window.React = require('react');
 // The component called by the router when rendering the photo detail screen
 var ImagePage = React.createClass({
 	render: function() {
-		var image = this.props.image;
-		var parentAlbumPath = "/path/to/album";
-		
+		var album = this.props.album;
+		var image = album.images.get(this.props.imagePath);
 		var prevImage = image.prev;
-		var prevImageUrl = prevImage ? prevImage.urlLink : '';
+		var prevImageUrl = prevImage ? prevImage.urlPage : '';
 		var nextImage = image.next;
-		var nextImageUrl = nextImage ? nextImage.urlLink : '';
+		var nextImageUrl = nextImage ? nextImage.urlPage : '';
 		return (
 			<div>
 				<Site.HeaderTitle title={image.title} />
@@ -26,7 +25,7 @@ var ImagePage = React.createClass({
 					<li><a className="btn" target="edit" href="">edit</a></li>
 					<div className="btn-group">
 						<Site.PrevButton href={prevImageUrl} />
-						<Site.UpButton href={parentAlbumPath} title={parentAlbumPath} />
+						<Site.UpButton href={album.urlPage} title={album.title} />
 						<Site.NextButton href={nextImageUrl} />
 					</div>
 				</Site.HeaderButtons>
