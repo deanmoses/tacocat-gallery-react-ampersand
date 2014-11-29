@@ -13,20 +13,16 @@ var ImagePage = React.createClass({
 	render: function() {
 		var album = this.props.album;
 		var image = album.images.get(this.props.imagePath);
-		var prevImage = image.prev;
-		var prevImageUrl = prevImage ? prevImage.urlPage : '';
-		var nextImage = image.next;
-		var nextImageUrl = nextImage ? nextImage.urlPage : '';
 		return (
 			<div>
-				<Site.HeaderTitle href={album.urlPage} title={image.title} />
+				<Site.HeaderTitle href={album.href} title={image.title} />
 				<Site.HeaderButtons>
 					<li><a className="btn">caption</a></li>
 					<li><a className="btn" target="edit" href="">edit</a></li>
 					<div className="btn-group">
-						<Site.PrevButton href={prevImageUrl} />
-						<Site.UpButton href={album.urlPage} title={album.title} />
-						<Site.NextButton href={nextImageUrl} />
+						<Site.PrevButton href={image.prevImageHref} />
+						<Site.UpButton href={album.href} title={album.title} />
+						<Site.NextButton href={image.nextImageHref} />
 					</div>
 				</Site.HeaderButtons>
 				<ImagePageBody image={image} />

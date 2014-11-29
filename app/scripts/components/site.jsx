@@ -87,9 +87,17 @@ Site.NextButton = React.createClass({
 
 Site.Button = React.createClass({
 	render: function() {
-		return(
-			<a className="btn btn-default" href={this.props.href}>{this.props.children}</a>
-		);
+		if (this.props.href) {
+			return(
+				<a className="btn btn-default" href={this.props.href}>{this.props.children}</a>
+			);
+		}
+		// else render with no href
+		else {
+			return(
+				<a className="btn btn-default">{this.props.children}</a>
+			);
+		}
 	}
 });
 

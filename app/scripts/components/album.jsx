@@ -68,9 +68,9 @@ var WeekAlbumPage = React.createClass({
 		var a = this.props.album;
 		return (
 			<div>
-				<Site.HeaderTitle href={'#album/'+a.parent.path} title={a.title} />
+				<Site.HeaderTitle href={'#'+a.parent_album.path} title={a.title} />
 				<Site.HeaderButtons>
-					<Site.UpButton href={'#album/'+a.parent.path} title={a.parent.title} />
+					<Site.UpButton href={'#'+a.parent_album.path} title={a.parent_album.title} />
 				</Site.HeaderButtons>
 				<AlbumDescription description={a.description}/>
 				<Thumbnails items={a.images} isAlbum={false} />
@@ -154,7 +154,6 @@ var Thumbnails = React.createClass({
 var Thumbnail = React.createClass({
 	render: function() {
 		var item = this.props.item;
-		var url = (this.props.isAlbum ? '#album/' : '#image/') + item.path;
 		var width = 200;
 		var height = 200;
 		var title = item.title;
@@ -168,10 +167,10 @@ var Thumbnail = React.createClass({
 		var thumbUrl = 'http://tacocat.com/' + item.urlThumb;
 		return(
 			<span className="thumbnail">
-				<a href={url}>
+				<a href={'#'+item.path}>
 					<img src={thumbUrl} width={width} height={height} alt={title}/>
 				</a>
-				<a href={url}>
+				<a href={'#'+item.path}>
 					<span className="thumb-caption" style={style}>{title}</span>
 				</a>
 				{summary ? <p style={style}>{summary}</p> : ''}

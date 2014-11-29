@@ -17,14 +17,13 @@ module.exports = AmpersandState.extend({
 		urlThumb: 'string' // like "/zenphoto/cache/2014/11-16/alex1b_200_cw200_ch200_thumb.jpg"
     },
 	derived: {
-		// URL linking to this image's page
-		urlPage: {
+		// URL (including hashtag) to screen displaying album, like #2014/12-31/felix.jpg
+		href: {
             deps: ['path'],
             fn: function () {
-				return '#image/'+this.path;
+				return '#'+this.path;
 			}
 		},
-		
 		// next image
 		next: {
             deps: ['path', 'collection'],
@@ -64,6 +63,24 @@ module.exports = AmpersandState.extend({
 				return prev;
 			}
 		},
+		
+		// URL to next image, including hash
+		// Blank if no previous image
+		nextImageHref: {
+            deps: ['next'],
+            fn: function () {
+				return this.next ? this.next.href : '';
+			}
+		},
+		
+		// URL to previous image, including hash
+		// Blank if no previous image
+		prevImageHref: {
+            deps: ['prev'],
+            fn: function () {
+				return this.prev ? this.prev.href : '';
+			}
+		}
 	}
 });
 

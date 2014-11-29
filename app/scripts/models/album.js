@@ -17,24 +17,28 @@ module.exports = Model.extend({
 		thumb_size: 'string', // a number like 200 denoting both edges of this album's thumbnails
 		date: 'date', // in seconds.  Needs to be * 1000 to convert to a Date object
 		thumb: 'object',
-		parent: 'object',
-		albums: 'array'//, images: 'array'
+		parent_album: 'object',
+		prev: 'object',
+		next: 'object',
+		albums: 'array'
     },
 	collections: {
-		images: Images // tells Ampersand to treat the images node in the JSON as a collection of Img objects
+		// tells Ampersand to treat the images node in the JSON 
+		// response that populates as a collection of Img objects
+		images: Images
 	},
 	derived: {
-		// URL linking to this album's page
-		urlPage: {
+		// URL (including hashtag) to screen displaying album, like #2014/12-31
+		href: {
             deps: ['path'],
             fn: function () {
-				return '#album/'+this.path;
+					return '#'+this.path
 			}
 		},
 		// Type of album:  root, year or week
 		type: {
             deps: ['path'],
-            fn: function () {	
+            fn: function () {
 				// no path: it's the root album
 				if (!this.path || this.path.length <= 0) {
 					return 'root';
