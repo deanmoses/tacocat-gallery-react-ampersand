@@ -5,6 +5,7 @@
 var _ = require('underscore');
 var Model = require('ampersand-model');
 var Images = require('./images.js');
+var Config = require('../config.js');
 
 module.exports = Model.extend({
 	idAttribute: 'path',
@@ -53,6 +54,30 @@ module.exports = Model.extend({
 				}
             }
         },
+		pageTitle: {
+            deps: ['type', 'title', 'date'],
+            fn: function () {
+				switch (this.type) {
+					case 'root':
+						return Config.site_title;
+					case 'year':
+						return this.title + ' - ' + Config.site_title;
+					case 'week':
+						var month_names = new Array("January", "February", "March", 
+						"April", "May", "June", "July", "August", "September", 
+						"October", "November", "December");
+
+						var d = new Date(this.date*1000);
+						var curr_day = d.getDate();
+						var curr_month = d.getMonth();
+						var curr_year = d.getFullYear();
+						return month_names[curr_month] + " " + curr_day + ", " + curr_year;
+						//return this.title;
+					default:
+						throw 'no such type: ' + album.type;
+				 }
+			 }
+		},
 		childAlbumsByMonth: {
 			deps: ['albums'],
 			fn: function() {

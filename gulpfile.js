@@ -54,6 +54,12 @@ gulp.task('images', function () {
         .pipe($.size());
 });
 
+// Copy fonts 
+gulp.task('copyfonts', function() {
+   gulp.src('app/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/**/*.{ttf,woff,eof,svg}')
+   .pipe(gulp.dest('dist/fonts/bootstrap'));
+});
+
 
 // Jest tests
 gulp.task('jest', function () {
@@ -66,15 +72,14 @@ gulp.task('jest', function () {
 });
 
 
-
 // Clean
 gulp.task('clean', function (cb) {
-    del(['dist/styles', 'dist/scripts', 'dist/images'], cb);
+    del(['dist/styles', 'dist/fonts', 'dist/scripts', 'dist/images'], cb);
 });
 
 
 // Bundle
-gulp.task('bundle', ['styles', 'scripts', 'bower'], function(){
+gulp.task('bundle', ['styles', 'copyfonts', 'scripts', 'bower'], function(){
     return gulp.src('./app/*.html')
                .pipe($.useref.assets())
                .pipe($.useref.restore())

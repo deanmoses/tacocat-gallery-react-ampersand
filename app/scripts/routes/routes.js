@@ -48,6 +48,7 @@ module.exports = Router.extend({
 		var isPhoto = path.indexOf('.') !== -1;
 		if (isPhoto) {
 			var pathParts = path.split('/');
+			pathParts.pop(); // get rid of filename
 			albumPath = pathParts.join('/');
 		}
 	

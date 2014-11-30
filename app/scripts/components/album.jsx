@@ -12,6 +12,7 @@ var React = window.React = require('react');
 var AlbumPage = React.createClass({
 	render: function() {
 		var album = this.props.album;
+		document.title = album.pageTitle;
 		switch (album.type) {
 			case 'root':
 				return (
@@ -39,7 +40,7 @@ var RootAlbumPage = React.createClass({
 		var a = this.props.album;
 		return (
 			<div>
-				<Site.HeaderTitle title="Dean, Lucie, Felix and Milo Moses" />
+				<Site.HeaderTitle title={a.pageTitle} />
 				<Thumbnails items={a.albums} isAlbum={true} />
 			</div>
 		);
@@ -52,7 +53,7 @@ var YearAlbumPage = React.createClass({
 		var a = this.props.album;
 		return (
 			<div>
-				<Site.HeaderTitle href='#' title={a.title} />
+				<Site.HeaderTitle href='#' title={a.pageTitle} />
 				<Site.HeaderButtons>
 					<Site.UpButton href='#' title='Home' />
 				</Site.HeaderButtons>
@@ -68,7 +69,7 @@ var WeekAlbumPage = React.createClass({
 		var a = this.props.album;
 		return (
 			<div>
-				<Site.HeaderTitle href={'#'+a.parent_album.path} title={a.title} />
+				<Site.HeaderTitle href={'#'+a.parent_album.path} title={a.pageTitle} />
 				<Site.HeaderButtons>
 					<Site.UpButton href={'#'+a.parent_album.path} title={a.parent_album.title} />
 				</Site.HeaderButtons>
@@ -108,7 +109,7 @@ var MonthThumbs = React.createClass({
     render: function () {
 
         var months = this.props.album.childAlbumsByMonth.map(function (child) {
-            return <MonthThumb month={child} />;
+            return <MonthThumb month={child} key={child.monthName}/>;
         });
 
         return (
@@ -123,7 +124,7 @@ var MonthThumb = React.createClass({
     render: function () {
     	var month = this.props.month;
         var thumbs = month.albums.map(function (child) {
-            return <Thumbnail item={child} isAlbum={true}/>;
+            return <Thumbnail item={child} isAlbum={true} key={child.path}/>;
         });
 
         return (
@@ -139,7 +140,7 @@ var Thumbnails = React.createClass({
     render: function () {
 		var isAlbum = this.props.isAlbum;
         var thumbs = this.props.items.map(function (child) {
-            return <Thumbnail item={child} isAlbum={isAlbum}/>;
+            return <Thumbnail item={child} isAlbum={isAlbum} key={child.path}/>;
         });
 
         return (
