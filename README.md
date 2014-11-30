@@ -29,5 +29,7 @@ Retrieves album data from a prototype JSON REST backend built on [ZenPhoto](http
 6. Install the project's bower dependencies: `bower install` *(must be in project root dir)*
 
 ### Run project
-1. Run project: `gulp  watch`.  In the output, it'll tell you what port to open your browser to.
-
+1. `cd` into project
+2. Run project: `gulp  watch`.  This will compile the code and start a development web server.
+3. Open browser to localhost.  In the output of `gulp  watch`, it'll tell you what port the web server's on.
+4. In the browser you should the root gallery of tacocat.com.  If you don't, look in your browser's javascript console for what's going on.
