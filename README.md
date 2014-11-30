@@ -1,5 +1,7 @@
 A prototype HTML5/javascript front end for tacocat.com's photo site.  
 
+## Technologies
+
 Uses the following technologies: 
 * [React.js](http://facebook.github.io/react/):  A component-based Javascript View layer that I'm madly in love with.  *So* much easier than Backbone views.  And so fast.
 * [Ampersand.js](http://ampersandjs.com/):  Very similiar to Backbone.js but fully embraces tiny modules, npm, and browserify.  I use it for its Models and Routing, not its Views.
