@@ -36,6 +36,38 @@ module.exports = Model.extend({
 					return '#'+this.path
 			}
 		},
+		// URL to next album, including hash
+		// Blank if no next album
+		nextAlbumHref: {
+            deps: ['next'],
+            fn: function () {
+				return this.next ? '#'+this.next.path : '';
+			}
+		},
+		// URL to previous album, including hash
+		// Blank if no previous album
+		prevAlbumHref: {
+            deps: ['prev'],
+            fn: function () {
+				return this.prev ? '#'+this.prev.path : '';
+			}
+		},
+		// URL to parent album, including hash
+		// Blank if no parent album
+		parentAlbumHref: {
+            deps: ['parent_album'],
+            fn: function () {
+				return this.parent_album ? '#'+this.parent_album.path : '';
+			}
+		},
+		// Title of parent album
+		// Blank if no parent album
+		parentAlbumTitle: {
+            deps: ['parent_album'],
+            fn: function () {
+				return this.parent_album ? this.parent_album.title : '';
+			}
+		},
 		// Type of album:  root, year or week
 		type: {
             deps: ['path'],
@@ -54,6 +86,7 @@ module.exports = Model.extend({
 				}
             }
         },
+		// Title of album
 		pageTitle: {
             deps: ['type', 'title', 'date'],
             fn: function () {

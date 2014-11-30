@@ -65,7 +65,7 @@ module.exports = AmpersandState.extend({
 		},
 		
 		// URL to next image, including hash
-		// Blank if no previous image
+		// Blank if no next image
 		nextImageHref: {
             deps: ['next'],
             fn: function () {

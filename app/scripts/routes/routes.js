@@ -47,11 +47,15 @@ module.exports = Router.extend({
 			// The key is so that React knows that this is a new component.
 			// Otherwise, it'll treat it as an existing component and won't
 			// call the component's getInitialState() and componentDidMount(), 
-			// and thus the new album won't be set.
+			// and thus the new album won't be set and retrieved.
 			React.render(AlbumPage({albumPath: path, key: path}), mountNode);
 		}
 		// else render photo page
 		else {
+			// The key is so that React knows that this is a new component.
+			// Otherwise, it'll treat it as an existing component and won't
+			// call the component's getInitialState() and componentDidMount(), 
+			// and thus the new album won't be set and retrieved.
 			React.render(ImagePage({imagePath: path, key: path}), mountNode);
 		}
 	}

@@ -167,7 +167,9 @@ var WeekAlbumPage = React.createClass({
 			<div>
 				<Site.HeaderTitle href={'#'+a.parent_album.path} title={a.pageTitle} />
 				<Site.HeaderButtons>
-					<Site.UpButton href={'#'+a.parent_album.path} title={a.parent_album.title} />
+					<Site.PrevButton href={a.prevAlbumHref} />						
+					<Site.UpButton href={a.parentAlbumHref} title={a.parentAlbumTitle} />
+					<Site.NextButton href={a.nextAlbumHref} />
 				</Site.HeaderButtons>
 				<AlbumDescription description={a.description}/>
 				<Thumbnails items={a.images} isAlbum={false} />

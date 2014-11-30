@@ -101,6 +101,10 @@ var ImagePage = React.createClass({
 
 module.exports = ImagePage;
 
+/**
+ * Component that displays an empty image, for use while the album is
+ * being loaded from the server.
+ */
 var ImagePageWaiting = React.createClass({
 	render: function() {
 		return (
@@ -119,6 +123,10 @@ var ImagePageWaiting = React.createClass({
 	}
 });
 
+/**
+ * Component that displays an empty image body, for use while the album is
+ * being loaded from the server.
+ */
 var ImagePageBodyWaiting = React.createClass({
 	render: function() {
 		return (
@@ -135,6 +143,9 @@ var ImagePageBodyWaiting = React.createClass({
 	}
 });
 
+/**
+ * Component that displays the real image.
+ */
 var ImagePageNotWaiting = React.createClass({
 
 	propTypes: {
@@ -164,7 +175,9 @@ var ImagePageNotWaiting = React.createClass({
 	}
 });
 
-
+/**
+ * Component that displays the body of the image page.
+ */
 var ImagePageBody = React.createClass({
 	propTypes: {
 	    image: React.PropTypes.object.isRequired
