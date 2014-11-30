@@ -8,7 +8,7 @@ Uses the following technologies:
 * [Browserify](http://browserify.org/):  The first javascript dependency management system that I can actually get working.  I *hate* Require.js, AMD and their ilk.  Browserify does its business using NPM and Node.js and I love it.
 * [Gulp.js](http://gulpjs.com/):  A javascript build system that replaces Grunt.js.  Newer, faster, easier to use.
 
-Retrieves album data from a prototype JSON REST backend built on [ZenPhoto](http://www.zenphoto.org/).
+Retrieves album data from tacocat's [ZenPhoto](http://www.zenphoto.org/) installation.  Depends on this prototype JSON REST backend ([github](https://github.com/deanmoses/tacocat-gallery-zenphoto-rest-api)).
 
 
 ## How To Work With Project
