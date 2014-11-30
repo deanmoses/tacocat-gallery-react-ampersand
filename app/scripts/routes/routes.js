@@ -3,15 +3,8 @@ var React = require('react');
 var AlbumPage = React.createFactory(require('../components/album.jsx'));
 var ImagePage = React.createFactory(require('../components/image.jsx'));
 
-// the DOM element into which the entire UI gets written
+// the DOM element into which the React.js components are mounted
 var mountNode = document.getElementById("main");
-
-/**
- * A collection of photo albums.
- * Is an Ampersand.js Model Collection.
- */
-var AlbumCollection = require('../models/albums.js');
-var albums = new AlbumCollection();
 
 /**
  * Ampersand.js router.
@@ -38,44 +31,29 @@ module.exports = Router.extend({
 	},
 	
 	albumOrImage: function(path) {
-		var _this = this;
 		if (!path) {
 			path = '';
 		}
 		console.log("router path: '" + path + "'");
 		
-		var albumPath = path;
-		var isPhoto = path.indexOf('.') !== -1;
-		if (isPhoto) {
-			var pathParts = path.split('/');
-			pathParts.pop(); // get rid of filename
-			albumPath = pathParts.join('/');
+		// It's an album path if there's no '.' in the path.
+		// This is not robust, but it's safe enough because
+		// I know i've never created an album with a '.' in 
+		// the name.
+		var isAlbum = path.indexOf('.') === -1;
+		
+		// render album page
+		if (isAlbum) {
+			// The key is so that React knows that this is a new component.
+			// Otherwise, it'll treat it as an existing component and won't
+			// call the component's getInitialState() and componentDidMount(), 
+			// and thus the new album won't be set.
+			React.render(AlbumPage({albumPath: path, key: path}), mountNode);
 		}
-	
-		// either get an existing album Model in the Collection,
-		// or retrieve it from the server.
-		// This is Ampersand Collection.getOrFetch()
-		albums.getOrFetch(albumPath, function (err, album) {
-			if (err) {
-				console.log('error getting album', err);
-			} 
-			else {
-				//console.log('success getting album', album);
-								
-				// `album` is a fully inflated Ampersand model
-				// It gets added to the collection automatically.
-				// If the collection was empty before, it's got 1
-				// now.
-				
-				if (isPhoto) {
-					React.render(ImagePage({album: album, imagePath: path}), mountNode);
-				}
-				// else it's an album
-				else {
-					React.render(AlbumPage({album: album}), mountNode);
-				}
-			}
-		});
+		// else render photo page
+		else {
+			React.render(ImagePage({imagePath: path, key: path}), mountNode);
+		}
 	}
 
 });
