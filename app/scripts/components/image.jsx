@@ -159,16 +159,11 @@ var ImagePageNotWaiting = React.createClass({
 
 		return (
 			<div>
-				<Site.HeaderTitle href={album.href} title={image.title} />
-				<Site.HeaderButtons>
-					<li><a className="btn">caption</a></li>
-					<li><a className="btn" target="edit" href="">edit</a></li>
-					<div className="btn-group">
-						<Site.PrevButton href={image.prevImageHref} />
-						<Site.UpButton href={album.href} title={album.title} />
-						<Site.NextButton href={image.nextImageHref} />
-					</div>
-				</Site.HeaderButtons>
+				<Site.HeaderTitle href={album.href} title={image.title}>
+					<Site.PrevButton href={image.prevImageHref} />
+					<Site.UpButton href={album.href} title={album.title} />
+					<Site.NextButton href={image.nextImageHref} />
+				</Site.HeaderTitle>
 				<ImagePageBody image={image} />
 			</div>
 		);

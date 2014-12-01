@@ -11,27 +11,13 @@ $line-height-base: 1.5;
 	on small screens, rather than the Bootstrap default of sliding
 	them under the branding/logo/title area.
 */
-.navbar-fixed-top {
-	.navbar-header {
-		float: left;
-	}
-	
-	.navbar-right {
-		float: right !important;
-		margin: 0;
-		
-		&:last-child {
-			margin-right: 0;
-		}
-		
-		.btn-group {
-			margin: 8px 8px;
-		}
-		
-		> li {
-			float: left;
-		}
 
+.navbar-header {	
+	.site-title {
+		/* Responsive: portrait phones and below */
+		@media all and (max-width: 768px) {
+			display: none;
+		}
 	}
 }
 
@@ -48,7 +34,7 @@ $line-height-base: 1.5;
 }
 
 .thumbnails {
-	display: inline-block;
+	/*display: inline-block;*/
 }
 
 .thumbnail {
@@ -80,11 +66,18 @@ $line-height-base: 1.5;
 	margin-top: .7em;
 }
 
-/*
+/* Space out content a bit */
+/*body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}*/
+
+/*******************************************
 	Below is stuff created by Yeoman.
 	I haven't touched it.
-*/
+********************************************/
 
+/* For browsers that don't meet the requirements */
 .browsehappy {
     margin: 0.2em 0;
     background: #ccc;
@@ -92,15 +85,8 @@ $line-height-base: 1.5;
     padding: 0.2em 0;
 }
 
-/* Space out content a bit */
-body {
-    padding-top: 20px;
-    padding-bottom: 20px;
-}
-
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
-.marketing,
 .footer {
     padding-left: 15px;
     padding-right: 15px;
@@ -130,24 +116,6 @@ body {
     margin: 30px 0;
 }
 
-/* Main marketing message and sign up button */
-.jumbotron {
-    text-align: center;
-    border-bottom: 1px solid #e5e5e5;
-    .btn {
-        font-size: 21px;
-        padding: 14px 24px;
-    }
-}
-
-/* Supporting marketing content */
-.marketing {
-    margin: 40px 0;
-    p + h4 {
-        margin-top: 28px;
-    }
-}
-
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
     .container {
@@ -156,7 +124,6 @@ body {
 
     /* Remove the padding we set earlier */
     .header,
-    .marketing,
     .footer {
         padding-left: 0;
         padding-right: 0;
@@ -165,10 +132,5 @@ body {
     /* Space out the masthead */
     .header {
         margin-bottom: 30px;
-    }
-
-    /* Remove the bottom border on the jumbotron for visual effect */
-    .jumbotron {
-        border-bottom: 0;
     }
 }

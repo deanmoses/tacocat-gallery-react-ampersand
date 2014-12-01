@@ -5,20 +5,34 @@
 // These just wrap stuff in Bootstrap HTML and classes
 //
 
+var Config = require('../config.js');
 var React = window.React = require('react');
 
+// all the components in this file will be added to Site, 
+// which will then be made available as a module
 var Site = {};
 
 Site.HeaderTitle = React.createClass({
 	render: function() {
+		var siteTitle = Config.site_title;
 		return (
-			<nav className="navbar navbar-inverse navbar-fixed-top" role="navigation">
-				<div className="navbar-header">
-					<a href={this.props.href} className="navbar-brand">
-						{this.props.title}
-					</a>
+			<div>
+				<nav className="navbar" role="navigation">
+					<div className="container">
+						<div className="navbar-header">
+							<a className="navbar-brand" href={this.props.href} >
+								{this.props.title}
+							</a>
+						</div>
+						<div className="nav navbar-nav navbar-right">
+								<span className="navbar-text site-title">{siteTitle}</span>
+						</div>
+					</div>
+				</nav>
+				<div className="container">
+					<Site.HeaderButtons>{this.props.children}</Site.HeaderButtons>
 				</div>
-			</nav>
+			</div>
 		);
 	}
 });
@@ -26,53 +40,17 @@ Site.HeaderTitle = React.createClass({
 Site.HeaderButtons = React.createClass({
 	render: function() {
 		return (
-			<ul className="nav navbar-nav navbar-right">{this.props.children}</ul>
+			<div className="btn-group btn-group-justified" role="group">{this.props.children}</div>
 		);
 	}
 });
-
-Site.HeaderButton = React.createClass({
-	render: function() {
-		return(
-			<li><a href={this.props.href} className="button">{this.props.children}</a></li>
-		);
-	}
-});
-
-
-Site.UpButton = React.createClass({
-	render: function() {
-		return(
-			<Site.HeaderButton href={this.props.href}>
-				<Site.UpIcon/> {this.props.title}
-			</Site.HeaderButton>
-		);
-	}
-});
-
-
-Site.UpIcon = React.createClass({
-	render: function() {
-		return(
-			<Site.GlyphIcon glyph="home"/>
-		);
-	}
-});
-
-
-Site.GlyphIcon = React.createClass({
-	render: function() {
-		return(
-			<span className={'glyphicon glyphicon-' + this.props.glyph}/>
-		);
-	}
-});
-
 
 Site.PrevButton = React.createClass({
 	render: function() {
 		return(
-			<Site.Button href={this.props.href}><Site.GlyphIcon glyph="chevron-left"/> Prev</Site.Button>
+			<Site.HeaderButton href={this.props.href}>
+				<Site.GlyphIcon glyph="chevron-left"/> {this.props.title}
+			</Site.HeaderButton>
 		);
 	}
 });
@@ -80,12 +58,24 @@ Site.PrevButton = React.createClass({
 Site.NextButton = React.createClass({
 	render: function() {
 		return(
-			<Site.Button href={this.props.href}>Next <Site.GlyphIcon glyph="chevron-right"/></Site.Button>
+			<Site.HeaderButton href={this.props.href}>
+				{this.props.title} <Site.GlyphIcon glyph="chevron-right"/>
+			</Site.HeaderButton>
 		);
 	}
 });
 
-Site.Button = React.createClass({
+Site.UpButton = React.createClass({
+	render: function() {
+		return(
+			<Site.HeaderButton href={this.props.href}>
+			<Site.GlyphIcon glyph="home"/> {this.props.title}
+			</Site.HeaderButton>
+		);
+	}
+});
+
+Site.HeaderButton = React.createClass({
 	render: function() {
 		if (this.props.href) {
 			return(
@@ -95,9 +85,17 @@ Site.Button = React.createClass({
 		// else render with no href
 		else {
 			return(
-				<a className="btn btn-default">{this.props.children}</a>
+				<a className="btn btn-default disabled">{this.props.children}</a>
 			);
 		}
+	}
+});
+
+Site.GlyphIcon = React.createClass({
+	render: function() {
+		return(
+			<span className={'glyphicon glyphicon-' + this.props.glyph}/>
+		);
 	}
 });
 

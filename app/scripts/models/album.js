@@ -5,7 +5,6 @@
 var _ = require('underscore');
 var Model = require('ampersand-model');
 var Images = require('./images.js');
-var Config = require('../config.js');
 
 module.exports = Model.extend({
 	idAttribute: 'path',
@@ -60,6 +59,22 @@ module.exports = Model.extend({
 				return this.parent_album ? '#'+this.parent_album.path : '';
 			}
 		},
+		// Title of next album
+		// Blank if no next album
+		nextAlbumTitle: {
+            deps: ['next'],
+            fn: function () {
+				return this.next ? this.shortDate(this.next.date) : '';
+			}
+		},
+		// Title of previous album
+		// Blank if no previous album
+		prevAlbumTitle: {
+            deps: ['prev'],
+            fn: function () {
+				return this.prev ? this.shortDate(this.prev.date) : '';
+			}
+		},
 		// Title of parent album
 		// Blank if no parent album
 		parentAlbumTitle: {
@@ -92,9 +107,9 @@ module.exports = Model.extend({
             fn: function () {
 				switch (this.type) {
 					case 'root':
-						return Config.site_title;
+						return '';
 					case 'year':
-						return this.title + ' - ' + Config.site_title;
+						return this.title;
 					case 'week':
 						var month_names = new Array("January", "February", "March", 
 						"April", "May", "June", "July", "August", "September", 
@@ -105,7 +120,6 @@ module.exports = Model.extend({
 						var curr_month = d.getMonth();
 						var curr_year = d.getFullYear();
 						return month_names[curr_month] + " " + curr_day + ", " + curr_year;
-						//return this.title;
 					default:
 						throw 'no such type: ' + album.type;
 				 }
@@ -137,6 +151,17 @@ module.exports = Model.extend({
 				return byMonthReverse;
 			}
 		}
+	},
+	shortDate: function(seconds) {
+		var month_names = new Array("Jan", "Feb", "Mar", 
+		"Apr", "May", "Jun", "Jul", "Aug", "Sept", 
+		"Oct", "Nov", "Dec");
+
+		var d = new Date(seconds*1000);
+		var curr_day = d.getDate();
+		var curr_month = d.getMonth();
+		var curr_year = d.getFullYear();
+		return month_names[curr_month] + " " + curr_day;
 	},
 	// the URL of the JSON REST API from which to retrieve the album
 	url: function() {

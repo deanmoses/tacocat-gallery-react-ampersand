@@ -117,7 +117,11 @@ var LoadingAlbumPage = React.createClass({
 		var emptyThumbArray = [];
 		return (
 			<div>
-				<Site.HeaderTitle title='Album' />
+				<Site.HeaderTitle title=''>
+					<Site.PrevButton />						
+					<Site.UpButton />
+					<Site.NextButton />
+				</Site.HeaderTitle>
 				<Thumbnails items={emptyThumbArray} isAlbum={true} />
 			</div>
 		);
@@ -147,10 +151,7 @@ var YearAlbumPage = React.createClass({
 		var a = this.props.album;
 		return (
 			<div>
-				<Site.HeaderTitle href='#' title={a.pageTitle} />
-				<Site.HeaderButtons>
-					<Site.UpButton href='#' title='Home' />
-				</Site.HeaderButtons>
+				<Site.HeaderTitle href='#' title={a.pageTitle}/>
 				<FirstsAndThumbs album={a}/>
 			</div>
 		);
@@ -165,12 +166,11 @@ var WeekAlbumPage = React.createClass({
 		var a = this.props.album;
 		return (
 			<div>
-				<Site.HeaderTitle href={'#'+a.parent_album.path} title={a.pageTitle} />
-				<Site.HeaderButtons>
-					<Site.PrevButton href={a.prevAlbumHref} />						
+				<Site.HeaderTitle href={'#'+a.parent_album.path} title={a.pageTitle}>
+					<Site.PrevButton href={a.prevAlbumHref} title={a.prevAlbumTitle} />						
 					<Site.UpButton href={a.parentAlbumHref} title={a.parentAlbumTitle} />
-					<Site.NextButton href={a.nextAlbumHref} />
-				</Site.HeaderButtons>
+					<Site.NextButton href={a.nextAlbumHref} title={a.nextAlbumTitle}/>
+				</Site.HeaderTitle>
 				<AlbumDescription description={a.description}/>
 				<Thumbnails items={a.images} isAlbum={false} />
 			</div>
@@ -261,7 +261,7 @@ var Thumbnails = React.createClass({
         });
 
         return (
-        	<section className="thumbnails">
+        	<section className="container thumbnails">
 				<h1 className="hidden">Pictures</h1>
 				{thumbs}
 			</section>
