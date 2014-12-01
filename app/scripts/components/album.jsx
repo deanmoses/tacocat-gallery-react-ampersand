@@ -116,7 +116,7 @@ var LoadingAlbumPage = React.createClass({
 	render: function() {
 		var emptyThumbArray = [];
 		return (
-			<div>
+			<div className="albumpage loading container">
 				<Site.HeaderTitle title=''>
 					<Site.PrevButton />						
 					<Site.UpButton />
@@ -135,7 +135,7 @@ var RootAlbumPage = React.createClass({
 	render: function() {
 		var a = this.props.album;
 		return (
-			<div>
+			<div className="albumpage rootalbumtype container">
 				<Site.HeaderTitle title={a.pageTitle} />
 				<Thumbnails items={a.albums} isAlbum={true} />
 			</div>
@@ -150,10 +150,36 @@ var YearAlbumPage = React.createClass({
 	render: function() {
 		var a = this.props.album;
 		return (
-			<div>
+			<div className={'albumpage yearalbumtype container-fluid y'+this.props.album.title}>
 				<Site.HeaderTitle href='#' title={a.pageTitle}/>
+				<Years/>
 				<FirstsAndThumbs album={a}/>
 			</div>
+		);
+	}
+});
+
+var Years = React.createClass({
+	render: function() {
+		return (
+			<nav className="years">
+				<h1 className="hidden">Years</h1>
+				<a href="#v/2014">2014</a>
+			   	<a href="#v/2013">2013</a>
+			    <a href="#v/2012">2012</a>
+			    <a href="#v/2011">2011</a>
+			    <a href="#v/2010">2010</a>
+			    <a href="#v/2009">2009</a>
+			    <a href="#v/2008">2008</a>
+			    <a href="#v/2007">2007</a>
+			    <a href="#v/2006">2006</a>
+			    <a href="#v/2005">2005</a>
+			    <a href="#v/2004">2004</a>
+			    <a href="#v/2003">2003</a>
+			    <a href="#v/2002">2002</a>
+			    <a href="#v/2001">2001</a>
+			    <a href="/pix/1973/dean/index.php">1973</a>
+			</nav>
 		);
 	}
 });
@@ -165,7 +191,7 @@ var WeekAlbumPage = React.createClass({
 	render: function() {
 		var a = this.props.album;
 		return (
-			<div>
+			<div className="albumpage weekalbumtype container">
 				<Site.HeaderTitle href={'#'+a.parent_album.path} title={a.pageTitle}>
 					<Site.PrevButton href={a.prevAlbumHref} title={a.prevAlbumTitle} />						
 					<Site.UpButton href={a.parentAlbumHref} title={a.parentAlbumTitle} />
@@ -184,7 +210,7 @@ var WeekAlbumPage = React.createClass({
 var AlbumDescription = React.createClass({
 	render: function() {
 		return (
-			<section className="caption container">
+			<section className="caption">
 				<h1 className="hidden">Overview</h1>
 				<span className="caption" dangerouslySetInnerHTML={{__html: this.props.description}}/>
 			</section>
@@ -200,15 +226,20 @@ var FirstsAndThumbs = React.createClass({
 	render: function() {
 		var a = this.props.album;
 		return (
-			<div className="container">
-				<section className="firsts">
-					FIRSTS GO HERE
+			<div>
+				<section className="col-md-3 firsts">
+					<h2 className="hidden">Firsts</h2>
+				    FIRSTS GO HERE
 				</section>
-				<MonthThumbs album={a}/>
+				<section className="col-md-9">
+					<MonthThumbs album={a}/>
+				</section>
 			</div>
 		);
 	}
 });
+
+				
 
 /**
  * Component for year pages.  
@@ -261,7 +292,7 @@ var Thumbnails = React.createClass({
         });
 
         return (
-        	<section className="container thumbnails">
+        	<section className="thumbnails">
 				<h1 className="hidden">Pictures</h1>
 				{thumbs}
 			</section>

@@ -3,21 +3,32 @@ $icon-font-path: "/fonts/bootstrap/";
 $font-size-base: 16px;
 $font-family-sans-serif:  "Trebuchet MS",Verdana,Arial,Helvetica,sans-serif;
 $line-height-base: 1.5;
+$titleColor: #fff;
 
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap";
 
-/*
-	Header.  Mostly this is keeping the prev/next buttons to the right
-	on small screens, rather than the Bootstrap default of sliding
-	them under the branding/logo/title area.
-*/
 
-.navbar-header {	
-	.site-title {
-		/* Responsive: portrait phones and below */
-		@media all and (max-width: 768px) {
-			display: none;
-		}
+.navbar {
+	margin-bottom: 14px;
+}
+
+.navbar-brand {
+	font-size: 28px;
+	line-height: 32px;
+}
+
+.header.navbar, .navbar-right, .nav-button-label {
+	/* portrait phones and below */
+	@media all and (max-width: 768px) {
+		display: none;
+	}
+}
+
+.container, .container-fluid, .col-md-3, .col-md-9 {
+	/* portrait phones and below */
+	@media all and (max-width: 768px) {
+		padding-left: 0;
+		padding-right: 0;
 	}
 }
 
@@ -31,10 +42,57 @@ $line-height-base: 1.5;
 	margin-right: 1em;
 	padding: 1em;
 	background: #EEE;
+	@media (max-width: 992px) {
+		display: none;
+	}
 }
 
 .thumbnails {
 	/*display: inline-block;*/
+}
+
+.imagepage {
+	.btn-group > .btn:first-child {
+		border-bottom-left-radius: 0;
+	}
+	.btn-group > .btn:last-child:not(:first-child) {
+		border-bottom-right-radius: 0;
+	}
+}
+
+.albumpage.yearalbumtype {
+	
+	.years {
+		color: $titleColor;
+
+		:not(:last-child):after {
+   			content: " | ";
+   			color: #666;
+   		}
+   		
+   		a:hover {
+	   		cursor: pointer;
+   		}
+		
+		padding: 0.75em 1em;
+		background-color: #383c41;
+		border-bottom: 1px solid #1b1e21;
+		border-top: 1px solid black;
+	}
+
+	.month {
+		display: block;
+		margin: 1em;
+		
+		& > h1 {
+			font-weight: bold;
+			font-size: 1.3em;
+			background: #EEE;
+			border-radius: 1em;
+			padding: 0.3em 1em;
+			width: 100%;
+		}
+	}
 }
 
 .thumbnail {
@@ -56,8 +114,7 @@ $line-height-base: 1.5;
 .thumbnail a {
 	text-decoration: none;
 }
-	
-	
+
 .photo-body {
 	margin-top: 20px;
 }
@@ -66,71 +123,10 @@ $line-height-base: 1.5;
 	margin-top: .7em;
 }
 
-/* Space out content a bit */
-/*body {
-    padding-top: 50px;
-    padding-bottom: 20px;
-}*/
-
-/*******************************************
-	Below is stuff created by Yeoman.
-	I haven't touched it.
-********************************************/
-
 /* For browsers that don't meet the requirements */
 .browsehappy {
     margin: 0.2em 0;
     background: #ccc;
     color: #000;
     padding: 0.2em 0;
-}
-
-/* Everything but the jumbotron gets side spacing for mobile first views */
-.header,
-.footer {
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-/* Custom page header */
-.header {
-    border-bottom: 1px solid #e5e5e5;
-
-    /* Make the masthead heading the same height as the navigation */
-    h3 {
-        margin-top: 0;
-        margin-bottom: 0;
-        line-height: 40px;
-        padding-bottom: 19px;
-    }
-}
-
-/* Custom page footer */
-.footer {
-    padding-top: 19px;
-    color: #777;
-    border-top: 1px solid #e5e5e5;
-}
-
-.container-narrow > hr {
-    margin: 30px 0;
-}
-
-/* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
-    .container {
-        max-width: 730px;
-    }
-
-    /* Remove the padding we set earlier */
-    .header,
-    .footer {
-        padding-left: 0;
-        padding-right: 0;
-    }
-
-    /* Space out the masthead */
-    .header {
-        margin-bottom: 30px;
-    }
 }

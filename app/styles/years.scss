@@ -1,0 +1,60 @@
+// colors for each year
+
+.album.year {
+
+	// 2013
+	&.y2013 {
+		
+		// top banner
+		.header {
+		    background-color: #b7c8a4;
+		}
+		
+		// years
+		.years {
+			background-color: #8a9e75;
+		}
+		
+		// thumbnail area
+		#body {
+			background-color: #b1ceb3;
+		}
+
+		// firsts column
+		.firsts {
+		    background-color: #8a9e75;
+		}
+
+		// links 
+		a {
+			//color: #7e684a;
+		}
+	
+		.years a {
+			//color: #685233;
+		}
+	}
+	
+	// 2012
+	&.y2012 {
+		// top banner
+		.header {
+		    background-color: #edb79c;
+		}
+		
+		// thumbnail area
+		#body {
+			background-color: #973450;
+		}
+		
+		// firsts column
+		.firsts {
+			background-color: #e77f4b;
+		}
+
+		// links
+		a {
+			//color: #973450;
+		}
+	}
+}

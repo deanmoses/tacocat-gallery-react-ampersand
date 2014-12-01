@@ -17,8 +17,7 @@ Site.HeaderTitle = React.createClass({
 		var siteTitle = Config.site_title;
 		return (
 			<div>
-				<nav className="navbar" role="navigation">
-					<div className="container">
+				<nav className="header navbar" role="navigation">
 						<div className="navbar-header">
 							<a className="navbar-brand" href={this.props.href} >
 								{this.props.title}
@@ -27,11 +26,8 @@ Site.HeaderTitle = React.createClass({
 						<div className="nav navbar-nav navbar-right">
 								<span className="navbar-text site-title">{siteTitle}</span>
 						</div>
-					</div>
 				</nav>
-				<div className="container">
-					<Site.HeaderButtons>{this.props.children}</Site.HeaderButtons>
-				</div>
+				<Site.HeaderButtons>{this.props.children}</Site.HeaderButtons>
 			</div>
 		);
 	}
@@ -39,8 +35,14 @@ Site.HeaderTitle = React.createClass({
 
 Site.HeaderButtons = React.createClass({
 	render: function() {
+		if (!this.props.children) {
+			return false;
+		}
+		
 		return (
-			<div className="btn-group btn-group-justified" role="group">{this.props.children}</div>
+			<div>
+				<div className="btn-group btn-group-justified" role="group">{this.props.children}</div>
+			</div>
 		);
 	}
 });
@@ -49,7 +51,7 @@ Site.PrevButton = React.createClass({
 	render: function() {
 		return(
 			<Site.HeaderButton href={this.props.href}>
-				<Site.GlyphIcon glyph="chevron-left"/> {this.props.title}
+				<Site.GlyphIcon glyph="chevron-left"/> <span className="nav-button-label">{this.props.title}</span>
 			</Site.HeaderButton>
 		);
 	}
@@ -59,7 +61,7 @@ Site.NextButton = React.createClass({
 	render: function() {
 		return(
 			<Site.HeaderButton href={this.props.href}>
-				{this.props.title} <Site.GlyphIcon glyph="chevron-right"/>
+				<span className="nav-button-label">{this.props.title}</span> <Site.GlyphIcon glyph="chevron-right"/>
 			</Site.HeaderButton>
 		);
 	}
@@ -69,7 +71,7 @@ Site.UpButton = React.createClass({
 	render: function() {
 		return(
 			<Site.HeaderButton href={this.props.href}>
-			<Site.GlyphIcon glyph="home"/> {this.props.title}
+			<Site.GlyphIcon glyph="home"/> <span className="nav-button-label">{this.props.title}</span>
 			</Site.HeaderButton>
 		);
 	}

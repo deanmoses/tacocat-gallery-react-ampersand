@@ -12,11 +12,19 @@ module.exports = AmpersandState.extend({
         title: 'string', // like "Alex Jumps"
 		description: 'string',
 		date: 'date', // in seconds.  Needs to be * 1000 to convert to a Date object
+		width: 'string', // width of full size image
+		height: 'string', // height of full size image
 		urlFull: 'string', // like "/zenphoto/albums/2014/11-16/alex1b.jpg"
 		urlSized: 'string', // like "/zenphoto/cache/2014/11-16/alex1b_1024.jpg"
 		urlThumb: 'string' // like "/zenphoto/cache/2014/11-16/alex1b_200_cw200_ch200_thumb.jpg"
     },
 	derived: {
+		isPortrait: {
+            deps: ['width', 'height'],
+            fn: function () {
+				return parseInt(this.height) > parseInt(this.width);
+			}
+		},
 		// URL (including hashtag) to screen displaying album, like #2014/12-31/felix.jpg
 		href: {
             deps: ['path'],
