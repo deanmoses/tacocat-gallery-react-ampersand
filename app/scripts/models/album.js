@@ -12,7 +12,7 @@ module.exports = Model.extend({
         path: 'string',
         title: 'string',
 		description: 'string',
-		published: 'boolean', // true: album is available to the public
+		unpublished: 'boolean', // true: album is NOT available to the public
 		image_size: 'string', // a number like 1024 denoting the largest edge of this album's images
 		thumb_size: 'string', // a number like 200 denoting both edges of this album's thumbnails
 		date: 'date', // in seconds.  Needs to be * 1000 to convert to a Date object
@@ -28,6 +28,13 @@ module.exports = Model.extend({
 		images: Images
 	},
 	derived: {
+		published: {
+            deps: ['unpublished'],
+            fn: function () {
+				// unpublished may be undefined, we test for that OR false
+				return !this.unpublished;
+			}
+		},
 		// URL (including hashtag) to screen displaying album, like #2014/12-31
 		href: {
             deps: ['path'],
