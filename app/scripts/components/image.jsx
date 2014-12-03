@@ -1,6 +1,5 @@
 /** @jsx React.DOM */
 'use strict';
-/*global document window*/
 
 //
 // React.js components that render the photo detail screen

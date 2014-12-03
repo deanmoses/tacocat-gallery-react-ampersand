@@ -1,6 +1,5 @@
 /** @jsx React.DOM */
 'use strict';
-/*global window*/
 
 //
 // React.js components that render the photo gallery site shell

@@ -15,7 +15,9 @@ var mountNode = document.getElementById('main');
  * Decides what happens when the app's various URLs are hit.
  */
 var Router = require('ampersand-router');
-module.exports = Router.extend({ 
+module.exports = Router.extend({
+	
+	/*global console*/
 
 	/**
 	 * Define the application's routes.

@@ -1,6 +1,5 @@
 /** @jsx React.DOM */
 'use strict';
-/*global window*/
 
 //
 // React.js components that render photo album screens
@@ -314,7 +313,7 @@ var Thumbnail = React.createClass({
 		height = height + 'px';
 		var style = {
 			width: width
-		}
+		};
 
 		var thumbUrl = 'http://tacocat.com/' + item.urlThumb;
 		return(

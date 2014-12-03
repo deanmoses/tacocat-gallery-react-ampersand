@@ -39,7 +39,7 @@ gulp.task('jshint', function() {
 gulp.task('jsxhint', function() {
   return gulp.src('./app/scripts/**/*.jsx')
 	.pipe(react())
-    .pipe(jshint({"quotmark": false}))
+    .pipe(jshint({"quotmark": false, "latedef": true})) // jshint options to ignore in JSX files
 	.pipe(jshint.reporter(stylish))
 	.pipe(jshint.reporter('fail'))
 });
