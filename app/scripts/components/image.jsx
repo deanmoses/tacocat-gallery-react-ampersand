@@ -1,4 +1,6 @@
 /** @jsx React.DOM */
+'use strict';
+/*global document window*/
 
 //
 // React.js components that render the photo detail screen
@@ -7,6 +9,7 @@
 var AlbumStore = require('../album_store.js');
 var Site = require('./site.jsx'); // other React.js components these components depend on
 var React = window.React = require('react');
+var $ = require('jquery');
 
 /**
  * The React.js component that renders the photo detail screen.
@@ -108,9 +111,9 @@ module.exports = ImagePage;
 var ImagePageWaiting = React.createClass({
 	render: function() {
 		return (
-			<div className="imagepage waiting container-fluid">
+			<div className='imagepage waiting container-fluid'>
 				<Site.HeaderTitle title='' />
-				<ImagePageBodyWaiting />				
+				<ImagePageBodyWaiting />
 			</div>
 		);
 	}
@@ -123,13 +126,13 @@ var ImagePageWaiting = React.createClass({
 var ImagePageBodyWaiting = React.createClass({
 	render: function() {
 		return (
-			<div className="photo-body">
-				<section className="col-md-3">
-					<h2 className="hidden">Caption</h2>
-				    <span className="caption"></span>
+			<div className='photo-body'>
+				<section className='col-md-3'>
+					<h2 className='hidden'>Caption</h2>
+				    <span className='caption'></span>
 				</section>
-				<section className="col-md-9">
-					<h2 className="hidden">Photo</h2>
+				<section className='col-md-9'>
+					<h2 className='hidden'>Photo</h2>
 					<Site.HeaderButtons>
 						<Site.PrevButton />
 						<Site.UpButton />
@@ -156,7 +159,7 @@ var ImagePageNotWaiting = React.createClass({
 		var image = this.props.image;
 
 		return (
-			<div className="imagepage container-fluid">
+			<div className='imagepage container-fluid'>
 				<Site.HeaderTitle href={album.href} title={image.title} />
 				<ImagePageBody album={album} image={image} />
 			</div>
@@ -188,13 +191,13 @@ var ImagePageBody = React.createClass({
 			style.width = '100%';
 		}
 		return (
-			<div className="photo-body">
-				<section className="col-md-3">
-					<h2 className="hidden">Caption</h2>
-				    <span className="caption" dangerouslySetInnerHTML={{__html: image.description}}/>
+			<div className='photo-body'>
+				<section className='col-md-3'>
+					<h2 className='hidden'>Caption</h2>
+				    <span className='caption' dangerouslySetInnerHTML={{__html: image.description}}/>
 				</section>
-				<section className="col-md-9">
-					<h2 className="hidden">Photo</h2>
+				<section className='col-md-9'>
+					<h2 className='hidden'>Photo</h2>
 					<Site.HeaderButtons>
 						<Site.PrevButton href={image.prevImageHref} />
 						<Site.UpButton href={album.href} title={album.title} />

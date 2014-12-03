@@ -5,6 +5,7 @@ var del = require('del');
 var path = require('path');
 var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
+var react = require('gulp-react');
 
 // Load plugins
 var $ = require('gulp-load-plugins')();
@@ -34,6 +35,14 @@ gulp.task('jshint', function() {
 	.pipe(jshint.reporter('fail'))
 });
 
+// Check jsx for code style
+gulp.task('jsxhint', function() {
+  return gulp.src('./app/scripts/**/*.jsx')
+	.pipe(react())
+    .pipe(jshint({"quotmark": false}))
+	.pipe(jshint.reporter(stylish))
+	.pipe(jshint.reporter('fail'))
+});
 
 // Scripts
 gulp.task('scripts', function () {
@@ -136,7 +145,7 @@ gulp.task('watch', ['html', 'bundle', 'serve'], function () {
     gulp.watch('app/scripts/**/*.js', ['jshint', 'scripts', 'jest' ]);
 	
 	// Watch .jsx files
-	gulp.watch('app/scripts/components/**/*.jsx', ['scripts']);
+	gulp.watch('app/scripts/components/**/*.jsx', ['jsxhint', 'scripts']);
 
     // Watch image files
     gulp.watch('app/images/**/*', ['images']);

@@ -25,7 +25,7 @@
     "gulp-jest": "~0.2.2",
     "gulp-jshint": "^1.9.0",
     "gulp-load-plugins": "~0.7.0",
-    "gulp-react": "~1.0.2",
+    "gulp-react": "^2.0.0",
     "gulp-ruby-sass": "~0.7.1",
     "gulp-size": "~1.1.0",
     "gulp-useref": "~0.4.4",

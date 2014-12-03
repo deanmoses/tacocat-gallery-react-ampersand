@@ -1,4 +1,6 @@
 /** @jsx React.DOM */
+'use strict';
+/*global window*/
 
 //
 // React.js components that render photo album screens
@@ -116,7 +118,7 @@ var LoadingAlbumPage = React.createClass({
 	render: function() {
 		var emptyThumbArray = [];
 		return (
-			<div className="albumpage loading container">
+			<div className='albumpage loading container'>
 				<Site.HeaderTitle title=''>
 					<Site.PrevButton />						
 					<Site.UpButton />
@@ -135,7 +137,7 @@ var RootAlbumPage = React.createClass({
 	render: function() {
 		var a = this.props.album;
 		return (
-			<div className="albumpage rootalbumtype container">
+			<div className='albumpage rootalbumtype container'>
 				<Site.HeaderTitle title={a.pageTitle} />
 				<Thumbnails items={a.albums} isAlbum={true} />
 			</div>
@@ -162,23 +164,23 @@ var YearAlbumPage = React.createClass({
 var Years = React.createClass({
 	render: function() {
 		return (
-			<nav className="years">
-				<h1 className="hidden">Years</h1>
-				<a href="#v/2014">2014</a>
-			   	<a href="#v/2013">2013</a>
-			    <a href="#v/2012">2012</a>
-			    <a href="#v/2011">2011</a>
-			    <a href="#v/2010">2010</a>
-			    <a href="#v/2009">2009</a>
-			    <a href="#v/2008">2008</a>
-			    <a href="#v/2007">2007</a>
-			    <a href="#v/2006">2006</a>
-			    <a href="#v/2005">2005</a>
-			    <a href="#v/2004">2004</a>
-			    <a href="#v/2003">2003</a>
-			    <a href="#v/2002">2002</a>
-			    <a href="#v/2001">2001</a>
-			    <a href="/pix/1973/dean/index.php">1973</a>
+			<nav className='years'>
+				<h1 className='hidden'>Years</h1>
+				<a href='#v/2014'>2014</a>
+			   	<a href='#v/2013'>2013</a>
+			    <a href='#v/2012'>2012</a>
+			    <a href='#v/2011'>2011</a>
+			    <a href='#v/2010'>2010</a>
+			    <a href='#v/2009'>2009</a>
+			    <a href='#v/2008'>2008</a>
+			    <a href='#v/2007'>2007</a>
+			    <a href='#v/2006'>2006</a>
+			    <a href='#v/2005'>2005</a>
+			    <a href='#v/2004'>2004</a>
+			    <a href='#v/2003'>2003</a>
+			    <a href='#v/2002'>2002</a>
+			    <a href='#v/2001'>2001</a>
+			    <a href='/pix/1973/dean/index.php'>1973</a>
 			</nav>
 		);
 	}
@@ -191,7 +193,7 @@ var WeekAlbumPage = React.createClass({
 	render: function() {
 		var a = this.props.album;
 		return (
-			<div className="albumpage weekalbumtype container">
+			<div className='albumpage weekalbumtype container'>
 				<Site.HeaderTitle href={'#'+a.parent_album.path} title={a.pageTitle}>
 					<Site.PrevButton href={a.prevAlbumHref} title={a.prevAlbumTitle} />						
 					<Site.UpButton href={a.parentAlbumHref} title={a.parentAlbumTitle} />
@@ -210,9 +212,9 @@ var WeekAlbumPage = React.createClass({
 var AlbumDescription = React.createClass({
 	render: function() {
 		return (
-			<section className="caption">
-				<h1 className="hidden">Overview</h1>
-				<span className="caption" dangerouslySetInnerHTML={{__html: this.props.description}}/>
+			<section className='caption'>
+				<h1 className='hidden'>Overview</h1>
+				<span className='caption' dangerouslySetInnerHTML={{__html: this.props.description}}/>
 			</section>
 		);
 	}
@@ -227,19 +229,17 @@ var FirstsAndThumbs = React.createClass({
 		var a = this.props.album;
 		return (
 			<div>
-				<section className="col-md-3 firsts">
-					<h2 className="hidden">Firsts</h2>
+				<section className='col-md-3 firsts'>
+					<h2 className='hidden'>Firsts</h2>
 				    FIRSTS GO HERE
 				</section>
-				<section className="col-md-9">
+				<section className='col-md-9'>
 					<MonthThumbs album={a}/>
 				</section>
 			</div>
 		);
 	}
 });
-
-				
 
 /**
  * Component for year pages.  
@@ -272,7 +272,7 @@ var MonthThumb = React.createClass({
         });
 
         return (
-        	<section className="month">
+        	<section className='month'>
 				<h1>{month.monthName}</h1>
 				{thumbs}
 			</section>
@@ -292,8 +292,8 @@ var Thumbnails = React.createClass({
         });
 
         return (
-        	<section className="thumbnails">
-				<h1 className="hidden">Pictures</h1>
+        	<section className='thumbnails'>
+				<h1 className='hidden'>Pictures</h1>
 				{thumbs}
 			</section>
         );
@@ -318,12 +318,12 @@ var Thumbnail = React.createClass({
 
 		var thumbUrl = 'http://tacocat.com/' + item.urlThumb;
 		return(
-			<span className="thumbnail">
+			<span className='thumbnail'>
 				<a href={'#'+item.path}>
 					<img src={thumbUrl} width={width} height={height} alt={title}/>
 				</a>
 				<a href={'#'+item.path}>
-					<span className="thumb-caption" style={style}>{title}</span>
+					<span className='thumb-caption' style={style}>{title}</span>
 				</a>
 				{summary ? <p style={style}>{summary}</p> : ''}
 			</span>
