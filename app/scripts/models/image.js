@@ -1,3 +1,5 @@
+'use strict';
+
 //
 // An Ampersand.js State class (i.e. a Model) representing an image.
 //

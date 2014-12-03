@@ -1,3 +1,5 @@
+'use strict';
+
 //
 // An Ampersand.js Model representing a photo album.
 //
@@ -5,7 +7,6 @@
 var _ = require('underscore');
 var Model = require('ampersand-model');
 var Images = require('./images.js');
-
 module.exports = Model.extend({
 	idAttribute: 'path',
     props: {
@@ -39,7 +40,7 @@ module.exports = Model.extend({
 		href: {
             deps: ['path'],
             fn: function () {
-					return '#'+this.path
+				return '#'+this.path;
 			}
 		},
 		// URL to next album, including hash
@@ -118,17 +119,17 @@ module.exports = Model.extend({
 					case 'year':
 						return this.title;
 					case 'week':
-						var month_names = new Array("January", "February", "March", 
-						"April", "May", "June", "July", "August", "September", 
-						"October", "November", "December");
+						var month_names = new Array('January', 'February', 'March', 
+						'April', 'May', 'June', 'July', 'August', 'September', 
+						'October', 'November', 'December');
 
 						var d = new Date(this.date*1000);
 						var curr_day = d.getDate();
 						var curr_month = d.getMonth();
 						var curr_year = d.getFullYear();
-						return month_names[curr_month] + " " + curr_day + ", " + curr_year;
+						return month_names[curr_month] + ' ' + curr_day + ', ' + curr_year;
 					default:
-						throw 'no such type: ' + album.type;
+						throw 'no such type: ' + this.type;
 				 }
 			 }
 		},
@@ -160,15 +161,14 @@ module.exports = Model.extend({
 		}
 	},
 	shortDate: function(seconds) {
-		var month_names = new Array("Jan", "Feb", "Mar", 
-		"Apr", "May", "Jun", "Jul", "Aug", "Sept", 
-		"Oct", "Nov", "Dec");
+		var month_names = new Array('Jan', 'Feb', 'Mar', 
+		'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 
+		'Oct', 'Nov', 'Dec');
 
 		var d = new Date(seconds*1000);
 		var curr_day = d.getDate();
 		var curr_month = d.getMonth();
-		var curr_year = d.getFullYear();
-		return month_names[curr_month] + " " + curr_day;
+		return month_names[curr_month] + ' ' + curr_day;
 	},
 	// the URL of the JSON REST API from which to retrieve the album
 	url: function() {

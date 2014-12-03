@@ -1,10 +1,13 @@
+'use strict';
+
 var React = require('react');
 
 var AlbumPage = React.createFactory(require('../components/album.jsx'));
 var ImagePage = React.createFactory(require('../components/image.jsx'));
 
 // the DOM element into which the React.js components are mounted
-var mountNode = document.getElementById("main");
+/*global document*/
+var mountNode = document.getElementById('main');
 
 /**
  * Ampersand.js router.
@@ -27,14 +30,14 @@ module.exports = Router.extend({
 		// #2014/12-31
 		// #2014/12-31/someSubAlbum
 		// #2014/12-31/felix.jpg
-		"*path": "albumOrImage",
+		'*path': 'albumOrImage',
 	},
 	
 	albumOrImage: function(path) {
 		if (!path) {
 			path = '';
 		}
-		console.log("router path: '" + path + "'");
+		console.log('router path: "' + path + '"');
 		
 		// It's an album path if there's no '.' in the path.
 		// This is not robust, but it's safe enough because

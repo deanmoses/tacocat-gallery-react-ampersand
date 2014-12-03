@@ -1,3 +1,5 @@
+'use strict';
+
 //
 // An Ampersand.js Collection of Album models
 //

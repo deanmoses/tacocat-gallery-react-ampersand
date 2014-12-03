@@ -313,7 +313,7 @@ var Thumbnail = React.createClass({
 		width = width + 'px';
 		height = height + 'px';
 		var style = {
-			width: width,
+			width: width
 		}
 
 		var thumbUrl = 'http://tacocat.com/' + item.urlThumb;

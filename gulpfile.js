@@ -3,6 +3,8 @@
 var gulp = require('gulp');
 var del = require('del');
 var path = require('path');
+var jshint = require('gulp-jshint');
+var stylish = require('jshint-stylish');
 
 // Load plugins
 var $ = require('gulp-load-plugins')();
@@ -24,12 +26,21 @@ gulp.task('styles', function () {
 });
 
 
+// Check javascript for code style
+gulp.task('jshint', function() {
+  return gulp.src('./app/scripts/**/*.js')
+    .pipe(jshint())
+	.pipe(jshint.reporter(stylish))
+	.pipe(jshint.reporter('fail'))
+});
+
+
 // Scripts
 gulp.task('scripts', function () {
     return browserify('./app/scripts/app.js')
-            .bundle()
-            .pipe(source('app.js'))
-            .pipe(gulp.dest('dist/scripts'))
+        .bundle()
+        .pipe(source('app.js'))
+        .pipe(gulp.dest('dist/scripts'))
 });
 
 
@@ -122,7 +133,7 @@ gulp.task('watch', ['html', 'bundle', 'serve'], function () {
     gulp.watch('app/styles/**/*.scss', ['styles']);
   
     // Watch .js files
-    gulp.watch('app/scripts/**/*.js', ['scripts', 'jest' ]);
+    gulp.watch('app/scripts/**/*.js', ['jshint', 'scripts', 'jest' ]);
 	
 	// Watch .jsx files
 	gulp.watch('app/scripts/components/**/*.jsx', ['scripts']);
