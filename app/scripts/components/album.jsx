@@ -137,8 +137,11 @@ var RootAlbumPage = React.createClass({
 		var a = this.props.album;
 		return (
 			<div className='albumpage rootalbumtype container'>
-				<Site.HeaderTitle title={a.pageTitle} />
-				<Thumbnails items={a.albums} isAlbum={true} />
+				<Site.HeaderTitle title={a.pageTitle}/>
+			
+				<h3>Latest Album:</h3>
+				<Thumbnail item={a.latest} isAlbum={true}/>
+				<Thumbnails items={a.albums} isAlbum={true}/>
 			</div>
 		);
 	}

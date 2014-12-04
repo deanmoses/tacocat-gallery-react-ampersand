@@ -21,6 +21,7 @@ module.exports = Model.extend({
 		parent_album: 'object',
 		prev: 'object',
 		next: 'object',
+		latest: 'object', // most recent album.  Only supplied with the root album.
 		albums: 'array'
     },
 	collections: {
