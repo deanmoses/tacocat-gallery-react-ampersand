@@ -6,7 +6,8 @@
 //
 
 var AlbumStore = require('../album_store.js');
-var Site = require('./site.jsx'); // other React.js components these components depend on
+var Site = require('./site.jsx');
+var Thumb = require('./thumb.jsx');
 var React = window.React = require('react');
 
 /**
@@ -123,7 +124,7 @@ var LoadingAlbumPage = React.createClass({
 					<Site.UpButton />
 					<Site.NextButton />
 				</Site.HeaderTitle>
-				<Thumbnails items={emptyThumbArray} isAlbum={true} />
+				<Thumb.List items={emptyThumbArray} isAlbum={true} />
 			</div>
 		);
 	}
@@ -138,10 +139,10 @@ var RootAlbumPage = React.createClass({
 		return (
 			<div className='albumpage rootalbumtype container'>
 				<Site.HeaderTitle title={a.pageTitle}/>
-			
+				<a href="#search:"><Site.GlyphIcon glyph='search'/></a>
 				<h3>Latest Album:</h3>
-				<Thumbnail item={a.latest} isAlbum={true}/>
-				<Thumbnails items={a.albums} isAlbum={true}/>
+				<Thumb.Nail item={a.latest} isAlbum={true}/>
+				<Thumb.List items={a.albums} isAlbum={true}/>
 			</div>
 		);
 	}
@@ -202,7 +203,7 @@ var WeekAlbumPage = React.createClass({
 					<Site.NextButton href={a.prevAlbumHref} title={a.prevAlbumTitle}/>
 				</Site.HeaderTitle>
 				<AlbumDescription description={a.description}/>
-				<Thumbnails items={a.images} isAlbum={false} />
+				<Thumb.List items={a.images} isAlbum={false} />
 			</div>
 		);
 	}
@@ -244,7 +245,7 @@ var FirstsAndThumbs = React.createClass({
 });
 
 /**
- * Component for year pages.  
+ * Component for year pages.
  * Displays the thumbnail of each individual week album in the year.
  */
 var MonthThumbs = React.createClass({
@@ -270,7 +271,7 @@ var MonthThumb = React.createClass({
     render: function () {
     	var month = this.props.month;
         var thumbs = month.albums.map(function (child) {
-            return <Thumbnail item={child} isAlbum={true} key={child.path}/>;
+            return <Thumb.Nail item={child} isAlbum={true} key={child.path}/>;
         });
 
         return (
@@ -280,55 +281,4 @@ var MonthThumb = React.createClass({
 			</section>
         );
     }
-});
-
-/**
- * Displays the thumbnails of an album.
- * Component shared by the root album and week albums, but not year albums.
- */
-var Thumbnails = React.createClass({
-    render: function () {
-		var isAlbum = this.props.isAlbum;
-        var thumbs = this.props.items.map(function (child) {
-            return <Thumbnail item={child} isAlbum={isAlbum} key={child.path}/>;
-        });
-
-        return (
-        	<section className='thumbnails'>
-				<h1 className='hidden'>Pictures</h1>
-				{thumbs}
-			</section>
-        );
-    }
-});
-
-/**
- * Displays a thumbnail of either an album or an image.
- */
-var Thumbnail = React.createClass({
-	render: function() {
-		var item = this.props.item;
-		var width = 200;
-		var height = 200;
-		var title = item.title;
-		var summary = item.summary;
-		width = width + 'px';
-		height = height + 'px';
-		var style = {
-			width: width
-		};
-
-		var thumbUrl = 'http://tacocat.com/' + item.urlThumb;
-		return(
-			<span className='thumbnail'>
-				<a href={'#'+item.path}>
-					<img src={thumbUrl} width={width} height={height} alt={title}/>
-				</a>
-				<a href={'#'+item.path}>
-					<span className='thumb-caption' style={style}>{title}</span>
-				</a>
-				{summary ? <p style={style}>{summary}</p> : ''}
-			</span>
-		);
-	}
 });

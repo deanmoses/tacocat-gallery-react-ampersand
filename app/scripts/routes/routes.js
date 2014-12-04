@@ -4,6 +4,7 @@ var React = require('react');
 
 var AlbumPage = React.createFactory(require('../components/album.jsx'));
 var ImagePage = React.createFactory(require('../components/image.jsx'));
+var SearchPage = null; // don't create component for the search screen until it's needed
 
 // the DOM element into which the React.js components are mounted
 /*global document*/
@@ -28,11 +29,30 @@ module.exports = Router.extend({
 	 * into the browser.location.
 	 */
 	routes: {
+		// #search:cat&return:2014/12-13
+		'search:*searchTerms&return:*returnPath': 'search',
+		// #search:cat
+		'search:*searchTerms': 'search',
+		
 		// #2014
 		// #2014/12-31
 		// #2014/12-31/someSubAlbum
 		// #2014/12-31/felix.jpg
 		'*path': 'albumOrImage',
+	},
+	
+	search: function(searchTerms, returnPath) {
+		if (!searchTerms) {
+			searchTerms = '';
+		}
+		if (!returnPath) {
+			returnPath = '';
+		}
+		console.log('router search: "' + searchTerms + '"  "' + returnPath + '"');
+		if (SearchPage === null) {
+			SearchPage = React.createFactory(require('../components/search.jsx'));
+		}
+		React.render(SearchPage({searchTerms: searchTerms, returnPath: returnPath, key: searchTerms}), mountNode);
 	},
 	
 	albumOrImage: function(path) {
