@@ -12,11 +12,12 @@ var minifyCss = require('gulp-minify-css');
 var filesize = require('gulp-filesize');
 var buffer = require('gulp-buffer');
 var rsync = require('gulp-rsync');
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var transform = require('vinyl-transform');
 
 // Load plugins
 var $ = require('gulp-load-plugins')();
-var browserify = require('browserify');
-var source = require('vinyl-source-stream');
 
 // true: production build: minify
 var prod = false;
@@ -126,7 +127,6 @@ gulp.task('bundle', ['styles', 'copyfonts', 'scripts', 'bower'], function(){
 gulp.task('bower', function() {
     gulp.src('app/bower_components/**/*.js', {base: 'app/bower_components'})
         .pipe(gulp.dest('dist/bower_components/'));
-
 });
 
 // Watch
@@ -152,11 +152,24 @@ gulp.task('watch', ['html', 'bundle', 'serve'], function () {
 gulp.task('build', ['html', 'bundle', 'images']);
 
 
-gulp.task('minifyjs', function() {
-  gulp.src('dist/scripts/*.js')
+// gulp.task('minifyjs', function() {
+//
+//
+//   gulp.src('dist/scripts/*.js')
+//
+// 	.pipe(source('bundle.js')) // gives streaming vinyl file object
+//     .pipe(buffer()) // convert from streaming to buffered vinyl file object
+//     .pipe(uglify()) // gulp-uglify now works after above 3 commands
+//     .pipe(gulp.dest('dist/scripts'))
+// });
+
+//===========
+gulp.task('minifyjs', function () {
+  return gulp.src('dist/scripts/**/*.js')
     .pipe(uglify())
-    .pipe(gulp.dest('dist/scripts'))
+    .pipe(gulp.dest('dist/scripts'));
 });
+
 
 gulp.task('deploy', function() {
 	gulp.src('dist/**')
@@ -165,12 +178,13 @@ gulp.task('deploy', function() {
 		hostname: 'tacocat.com',
 		destination: '~/themosii.com/p2',
 		recursive: true,
+		//clean: true, // delete all files and directories that are not in the source paths. Be careful with this option as it could lead to data loss.
 		progress: true // the transfer progress for each file will be displayed in the console
 	}));
 });
 
 // Release
-gulp.task('release', ['setprod', 'build', 'minifyjs']);
+gulp.task('release', ['setprod', 'clean', 'build', 'minifyjs']);
 
 // Default task
 gulp.task('default', ['clean', 'build', 'jest' ]);
