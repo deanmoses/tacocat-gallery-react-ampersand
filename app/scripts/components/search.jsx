@@ -65,12 +65,13 @@ module.exports = SearchPage = React.createClass({
 				albums = <Thumb.List items={this.state.results.albums}/>;
 			}
 		}
-		if (!images & !albums) {
-			noResults = <div className='noresults'>No results</div>
+		if (this.props.searchTerms && this.state && !images && !albums) {
+			noResults = <div className='noresults'>No results</div>;
 		}
+		var returnUrl = (this.props.returnPath) ? encodeURIComponent(this.props.returnPath) : '';
 		return (
 			<div>
-				{(!this.props.returnPath) ? '' : <a href={'#'+this.props.returnPath}><Site.GlyphIcon glyph='circle-arrow-left'/></a>}
+				<a href={'#'+returnUrl}><Site.GlyphIcon glyph='circle-arrow-left'/></a>
 				<SearchBox searchTerms={this.props.searchTerms} returnPath={this.props.returnPath} />
 				{images}
 				{albums}

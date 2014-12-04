@@ -94,6 +94,27 @@ Site.HeaderButton = React.createClass({
 	}
 });
 
+/**
+ * Component that renders a search icon for navigating to search screen.
+ */
+Site.SearchButton = React.createClass({
+	propTypes: {
+		// search terms like 'cat dog puppy'
+	    searchTerms: React.PropTypes.string,
+		// URL to return to, like when clicking back button
+		returnPath: React.PropTypes.string
+	},
+	render: function() {
+		var searchUrl = '#search:';
+		searchUrl += (this.props.searchTerms) ? encodeURIComponent(this.props.searchTerms) : '';
+		searchUrl += '&return:';
+		searchUrl += (this.props.returnPath) ? encodeURIComponent(this.props.returnPath) : '';
+		return (
+			<a href={searchUrl}><Site.GlyphIcon glyph='search'/></a>
+		);
+	}
+});
+
 Site.GlyphIcon = React.createClass({
 	render: function() {
 		return(

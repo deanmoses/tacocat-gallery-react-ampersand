@@ -139,7 +139,7 @@ var RootAlbumPage = React.createClass({
 		return (
 			<div className='albumpage rootalbumtype container'>
 				<Site.HeaderTitle title={a.pageTitle}/>
-				<a href="#search:"><Site.GlyphIcon glyph='search'/></a>
+				<Site.SearchButton returnPath=''/>
 				<h3>Latest Album:</h3>
 				<Thumb.Nail item={a.latest} isAlbum={true}/>
 				<Thumb.List items={a.albums} isAlbum={true}/>
