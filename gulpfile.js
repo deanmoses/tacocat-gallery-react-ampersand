@@ -6,11 +6,25 @@ var path = require('path');
 var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
 var react = require('gulp-react');
+var uglify = require('gulp-uglify');
+var gulpif = require('gulp-if');
+var minifyCss = require('gulp-minify-css');
+var filesize = require('gulp-filesize');
+var buffer = require('gulp-buffer');
+var rsync = require('gulp-rsync');
 
 // Load plugins
 var $ = require('gulp-load-plugins')();
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
+
+// true: production build: minify
+var prod = false;
+
+// Set production = true
+gulp.task('setprod', function() {
+    prod = true;
+});
 
 
 // Compile SASS stylesheets
@@ -22,6 +36,7 @@ gulp.task('styles', function () {
             loadPath: ['app/bower_components']
         }))
         .pipe($.autoprefixer('last 1 version'))
+		.pipe(gulpif(prod, minifyCss()))
         .pipe(gulp.dest('dist/styles'))
         .pipe($.size());
 });
@@ -39,7 +54,7 @@ gulp.task('jshint', function() {
 gulp.task('jsxhint', function() {
   return gulp.src('./app/scripts/**/*.jsx')
 	.pipe(react())
-    .pipe(jshint({"quotmark": false, "latedef": true})) // jshint options to ignore in JSX files
+    .pipe(jshint({"quotmark": false, "latedef": false})) // jshint options to ignore in JSX files
 	.pipe(jshint.reporter(stylish))
 	.pipe(jshint.reporter('fail'))
 });
@@ -101,28 +116,11 @@ gulp.task('clean', function (cb) {
 // Bundle
 gulp.task('bundle', ['styles', 'copyfonts', 'scripts', 'bower'], function(){
     return gulp.src('./app/*.html')
-               .pipe($.useref.assets())
-               .pipe($.useref.restore())
-               .pipe($.useref())
-               .pipe(gulp.dest('dist'));
+		.pipe($.useref.assets())
+		.pipe($.useref.restore())
+		.pipe($.useref())
+		.pipe(gulp.dest('dist'));
 });
-
-// Build
-gulp.task('build', ['html', 'bundle', 'images']);
-
-// Default task
-gulp.task('default', ['clean', 'build', 'jest' ]);
-
-
-// Webserver
-gulp.task('serve', function () {
-    gulp.src('dist')
-        .pipe($.webserver({
-            livereload: true,
-            port: 9000
-        }));
-});
-
 
 // Bower helper
 gulp.task('bower', function() {
@@ -130,7 +128,6 @@ gulp.task('bower', function() {
         .pipe(gulp.dest('dist/bower_components/'));
 
 });
-
 
 // Watch
 gulp.task('watch', ['html', 'bundle', 'serve'], function () {
@@ -149,4 +146,40 @@ gulp.task('watch', ['html', 'bundle', 'serve'], function () {
 
     // Watch image files
     gulp.watch('app/images/**/*', ['images']);
+});
+
+// Build
+gulp.task('build', ['html', 'bundle', 'images']);
+
+
+gulp.task('minifyjs', function() {
+  gulp.src('dist/scripts/*.js')
+    .pipe(uglify())
+    .pipe(gulp.dest('dist/scripts'))
+});
+
+gulp.task('deploy', function() {
+	gulp.src('dist/**')
+	.pipe(rsync({
+		root: 'dist',
+		hostname: 'tacocat.com',
+		destination: '~/themosii.com/p2',
+		recursive: true,
+		progress: true // the transfer progress for each file will be displayed in the console
+	}));
+});
+
+// Release
+gulp.task('release', ['setprod', 'build', 'minifyjs']);
+
+// Default task
+gulp.task('default', ['clean', 'build', 'jest' ]);
+
+// Webserver
+gulp.task('serve', function () {
+    gulp.src('dist')
+        .pipe($.webserver({
+            livereload: true,
+            port: 9000
+        }));
 });
