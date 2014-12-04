@@ -9,12 +9,14 @@ var react = require('gulp-react');
 var uglify = require('gulp-uglify');
 var gulpif = require('gulp-if');
 var minifyCss = require('gulp-minify-css');
+var minifyHtml = require('gulp-minify-html');
 var filesize = require('gulp-filesize');
 var buffer = require('gulp-buffer');
 var rsync = require('gulp-rsync');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var transform = require('vinyl-transform');
+var manifest = require('gulp-manifest');
 
 // Load plugins
 var $ = require('gulp-load-plugins')();
@@ -72,11 +74,11 @@ gulp.task('scripts', function () {
 // HTML
 gulp.task('html', function () {
     return gulp.src('app/*.html')
+		.pipe(gulpif(prod, minifyHtml({conditionals:true})))
         .pipe($.useref())
         .pipe(gulp.dest('dist'))
         .pipe($.size());
 });
-
 
 // Images
 gulp.task('images', function () {
@@ -88,6 +90,25 @@ gulp.task('images', function () {
         })))
         .pipe(gulp.dest('dist/images'))
         .pipe($.size());
+});
+
+// Copy .htaccess
+gulp.task('copyhtaccess', function() {
+	gulp.src(['app/.htaccess'])
+	.pipe(gulp.dest('dist'));
+});
+
+// Create an application cache manifest
+gulp.task('manifest', function(){
+	gulp.src(['dist/*','dist/scripts/**/*.js', 'dist/styles/**/*.css', 'dist/fonts/**/*.*'])
+	.pipe(manifest({
+		hash: true,
+//		cache: ['/favicon.ico'],
+		network: ['*'],
+		filename: 'a.appcache',
+		exclude: 'a.appcache'
+	}))
+	.pipe(gulp.dest('dist'));
 });
 
 // Copy fonts 
@@ -115,7 +136,7 @@ gulp.task('clean', function (cb) {
 
 
 // Bundle
-gulp.task('bundle', ['styles', 'copyfonts', 'scripts', 'bower'], function(){
+gulp.task('bundle', ['styles', 'copyfonts', 'copyhtaccess', 'manifest', 'scripts', 'bower'], function(){
     return gulp.src('./app/*.html')
 		.pipe($.useref.assets())
 		.pipe($.useref.restore())
@@ -152,25 +173,14 @@ gulp.task('watch', ['html', 'bundle', 'serve'], function () {
 gulp.task('build', ['html', 'bundle', 'images']);
 
 
-// gulp.task('minifyjs', function() {
-//
-//
-//   gulp.src('dist/scripts/*.js')
-//
-// 	.pipe(source('bundle.js')) // gives streaming vinyl file object
-//     .pipe(buffer()) // convert from streaming to buffered vinyl file object
-//     .pipe(uglify()) // gulp-uglify now works after above 3 commands
-//     .pipe(gulp.dest('dist/scripts'))
-// });
-
-//===========
+// Minify Javascript
 gulp.task('minifyjs', function () {
   return gulp.src('dist/scripts/**/*.js')
     .pipe(uglify())
     .pipe(gulp.dest('dist/scripts'));
 });
 
-
+// Deploy to remote server
 gulp.task('deploy', function() {
 	gulp.src('dist/**')
 	.pipe(rsync({
@@ -184,7 +194,7 @@ gulp.task('deploy', function() {
 });
 
 // Release
-gulp.task('release', ['setprod', 'clean', 'build', 'minifyjs']);
+gulp.task('release', ['setprod', 'build', 'minifyjs']);
 
 // Default task
 gulp.task('default', ['clean', 'build', 'jest' ]);
