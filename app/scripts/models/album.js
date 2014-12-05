@@ -5,6 +5,7 @@
 //
 
 var _ = require('underscore');
+var DateUtils = require('../utils/date.js');
 var Model = require('ampersand-model');
 var Images = require('./images.js');
 module.exports = Model.extend({
@@ -73,7 +74,7 @@ module.exports = Model.extend({
 		nextAlbumTitle: {
             deps: ['next'],
             fn: function () {
-				return this.next ? this.shortDate(this.next.date) : '';
+				return this.next ? DateUtils.shortDate(this.next.date) : '';
 			}
 		},
 		// Title of previous album
@@ -81,7 +82,7 @@ module.exports = Model.extend({
 		prevAlbumTitle: {
             deps: ['prev'],
             fn: function () {
-				return this.prev ? this.shortDate(this.prev.date) : '';
+				return this.prev ? DateUtils.shortDate(this.prev.date) : '';
 			}
 		},
 		// Title of parent album
@@ -160,16 +161,6 @@ module.exports = Model.extend({
 				return byMonthReverse;
 			}
 		}
-	},
-	shortDate: function(seconds) {
-		var month_names = new Array('Jan', 'Feb', 'Mar', 
-		'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 
-		'Oct', 'Nov', 'Dec');
-
-		var d = new Date(seconds*1000);
-		var curr_day = d.getDate();
-		var curr_month = d.getMonth();
-		return month_names[curr_month] + ' ' + curr_day;
 	},
 	// the URL of the JSON REST API from which to retrieve the album
 	url: function() {

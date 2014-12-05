@@ -101,6 +101,7 @@ $titleColor: #fff;
 	box-shadow: none;
 	vertical-align: top;
 	margin-bottom: 0;
+	background-color: transparent;
 }
 
 .thumbnail .thumb-caption {
@@ -130,3 +131,8 @@ $titleColor: #fff;
     color: #000;
     padding: 0.2em 0;
 }
+
+/**
+ * Keep the years in a separate easy-to-maintain file.
+ */
+@import "years";

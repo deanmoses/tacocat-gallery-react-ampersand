@@ -1,10 +1,20 @@
+//
 // colors for each year
+//
+.albumpage.yearalbumtype {
 
-.album.year {
-
-	// 2013
-	&.y2013 {
+	&.y2014 {
+		background-color: #b7c8a4;
 		
+		.firsts, .years, .month > h1 {
+		    background-color: #8a9e75;
+		}
+		.years {
+			border: none;
+		}
+	}
+
+	&.y2013 {
 		// top banner
 		.header {
 		    background-color: #b7c8a4;
@@ -35,7 +45,6 @@
 		}
 	}
 	
-	// 2012
 	&.y2012 {
 		// top banner
 		.header {
@@ -55,6 +64,26 @@
 		// links
 		a {
 			//color: #973450;
+		}
+	}
+	
+	&.y2001 {
+		background-color: #FF6600;
+		
+		.firsts, .years, .month > h1 {
+			border: 4px solid #FF99FF;
+		}
+		
+		.years, .month > h1 {
+			background-color: #FFCCFF;
+		}
+		
+		.firsts {
+		    background-color: #fff;
+			min-height: 250px;
+			background-image: url(http://tacocat.com/pix/img/kitten.gif);
+			background-repeat: no-repeat;
+			background-position: center center;
 		}
 	}
 }

@@ -1,6 +1,7 @@
 /** @jsx React.DOM */
 'use strict';
 
+var DateUtils = require('../utils/date.js');
 var React = window.React = require('react');
 
 // all the components in this file will be added to Thumb, 
@@ -36,7 +37,7 @@ Thumb.Nail = React.createClass({
 		var item = this.props.item;
 		var width = 200;
 		var height = 200;
-		var title = item.title;
+		var title = this.props.isAlbum ? DateUtils.shortDate(item.date) : item.title;
 		var summary = item.summary;
 		width = width + 'px';
 		height = height + 'px';

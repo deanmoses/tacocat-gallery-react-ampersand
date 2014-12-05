@@ -169,20 +169,20 @@ var Years = React.createClass({
 		return (
 			<nav className='years'>
 				<h1 className='hidden'>Years</h1>
-				<a href='#v/2014'>2014</a>
-			   	<a href='#v/2013'>2013</a>
-			    <a href='#v/2012'>2012</a>
-			    <a href='#v/2011'>2011</a>
-			    <a href='#v/2010'>2010</a>
-			    <a href='#v/2009'>2009</a>
-			    <a href='#v/2008'>2008</a>
-			    <a href='#v/2007'>2007</a>
-			    <a href='#v/2006'>2006</a>
-			    <a href='#v/2005'>2005</a>
-			    <a href='#v/2004'>2004</a>
-			    <a href='#v/2003'>2003</a>
-			    <a href='#v/2002'>2002</a>
-			    <a href='#v/2001'>2001</a>
+				<a href='#2014'>2014</a>
+			   	<a href='#2013'>2013</a>
+			    <a href='#2012'>2012</a>
+			    <a href='#2011'>2011</a>
+			    <a href='#2010'>2010</a>
+			    <a href='#2009'>2009</a>
+			    <a href='#2008'>2008</a>
+			    <a href='#2007'>2007</a>
+			    <a href='#2006'>2006</a>
+			    <a href='#2005'>2005</a>
+			    <a href='#2004'>2004</a>
+			    <a href='#2003'>2003</a>
+			    <a href='#2002'>2002</a>
+			    <a href='#2001'>2001</a>
 			    <a href='/pix/1973/dean/index.php'>1973</a>
 			</nav>
 		);
