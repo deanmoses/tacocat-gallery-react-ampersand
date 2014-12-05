@@ -120,7 +120,7 @@ var LoadingAlbumPage = React.createClass({
 		return (
 			<div className='albumpage loading container'>
 				<Site.HeaderTitle title=''>
-					<Site.PrevButton />						
+					<Site.PrevButton />
 					<Site.UpButton />
 					<Site.NextButton />
 				</Site.HeaderTitle>
@@ -137,12 +137,15 @@ var RootAlbumPage = React.createClass({
 	render: function() {
 		var a = this.props.album;
 		return (
-			<div className='albumpage rootalbumtype container'>
-				<Site.HeaderTitle title={a.pageTitle}/>
-				<Site.SearchButton returnPath=''/>
-				<h3>Latest Album:</h3>
-				<Thumb.Nail item={a.latest} isAlbum={true}/>
-				<Thumb.List items={a.albums} isAlbum={true}/>
+			<div className='albumpage rootalbumtype container-fluid'>
+				<Site.HeaderTitle title={a.pageTitle} path=''/>
+				<section className='col-md-3 latest'>
+					<h2>Latest Album</h2>
+					<Thumb.Nail item={a.latest} isAlbum={true} albumType='root'/>
+				</section>
+				<section className='col-md-9'>
+					<Thumb.List items={a.albums} isAlbum={true} albumType='root'/>
+				</section>
 			</div>
 		);
 	}
@@ -156,35 +159,13 @@ var YearAlbumPage = React.createClass({
 		var a = this.props.album;
 		return (
 			<div className={'albumpage yearalbumtype container-fluid y'+this.props.album.title}>
-				<Site.HeaderTitle href='#' title={a.pageTitle}/>
-				<Years/>
+				<Site.HeaderTitle href='#' title={a.pageTitle} path={this.props.album.path}>
+					<Site.PrevButton href={a.nextAlbumHref} title={a.nextAlbumTitle} />
+					<Site.UpButton href='#' title='' />
+					<Site.NextButton href={a.prevAlbumHref} title={a.prevAlbumTitle}/>
+				</Site.HeaderTitle>
 				<FirstsAndThumbs album={a}/>
 			</div>
-		);
-	}
-});
-
-var Years = React.createClass({
-	render: function() {
-		return (
-			<nav className='years'>
-				<h1 className='hidden'>Years</h1>
-				<a href='#2014'>2014</a>
-			   	<a href='#2013'>2013</a>
-			    <a href='#2012'>2012</a>
-			    <a href='#2011'>2011</a>
-			    <a href='#2010'>2010</a>
-			    <a href='#2009'>2009</a>
-			    <a href='#2008'>2008</a>
-			    <a href='#2007'>2007</a>
-			    <a href='#2006'>2006</a>
-			    <a href='#2005'>2005</a>
-			    <a href='#2004'>2004</a>
-			    <a href='#2003'>2003</a>
-			    <a href='#2002'>2002</a>
-			    <a href='#2001'>2001</a>
-			    <a href='/pix/1973/dean/index.php'>1973</a>
-			</nav>
 		);
 	}
 });
@@ -203,7 +184,7 @@ var WeekAlbumPage = React.createClass({
 					<Site.NextButton href={a.prevAlbumHref} title={a.prevAlbumTitle}/>
 				</Site.HeaderTitle>
 				<AlbumDescription description={a.description}/>
-				<Thumb.List items={a.images} isAlbum={false} />
+				<Thumb.List items={a.images} isAlbum={false}/>
 			</div>
 		);
 	}

@@ -199,7 +199,7 @@ var ImagePageBody = React.createClass({
 					<h2 className='hidden'>Photo</h2>
 					<Site.HeaderButtons>
 						<Site.PrevButton href={image.prevImageHref} />
-						<Site.UpButton href={album.href} title={album.title} />
+						<Site.UpButton href={album.href} title={album.pageTitle} />
 						<Site.NextButton href={image.nextImageHref} />
 					</Site.HeaderButtons>
 					<img src={'http://tacocat.com' + image.urlSized} style={style} className={orientation}/>

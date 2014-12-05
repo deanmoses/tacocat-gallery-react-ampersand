@@ -14,11 +14,14 @@ var Thumb = {};
  */
 Thumb.List = React.createClass({
     render: function () {
+		if (!this.props.items) {
+			return false;
+		}
 		var isAlbum = this.props.isAlbum;
 		var sectionText = isAlbum ? 'Albums' : 'Photos';
         var thumbs = this.props.items.map(function (child) {
-            return <Thumb.Nail item={child} isAlbum={isAlbum} key={child.path}/>;
-        });
+            return <Thumb.Nail item={child} isAlbum={isAlbum} albumType={this.props.albumType} key={child.path}/>;
+        }.bind(this));
 
         return (
         	<section className='thumbnails'>
@@ -35,9 +38,24 @@ Thumb.List = React.createClass({
 Thumb.Nail = React.createClass({
 	render: function() {
 		var item = this.props.item;
+		if (!item) {
+			return false;
+		}
 		var width = 200;
 		var height = 200;
-		var title = this.props.isAlbum ? DateUtils.shortDate(item.date) : item.title;
+		var title;
+		if (this.props.isAlbum) {
+			if (this.props.albumType === 'root') {
+				title = DateUtils.year(item.date);
+			}
+			else {
+				title = DateUtils.shortDate(item.date);
+			}
+		}
+		else {
+			title = item.title;
+		}
+			
 		var summary = item.summary;
 		width = width + 'px';
 		height = height + 'px';

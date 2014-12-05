@@ -25,6 +25,7 @@ Site.HeaderTitle = React.createClass({
 							</a>
 						</div>
 						<div className='nav navbar-nav navbar-right'>
+								<span className='navbar-text'><Site.SearchButton returnPath={this.props.path}/></span>
 								<span className='navbar-text site-title'>{siteTitle}</span>
 						</div>
 				</nav>

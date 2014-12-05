@@ -1,3 +1,5 @@
+'use strict';
+
 //
 // date utilities
 //
@@ -11,5 +13,10 @@ module.exports = {
 		var curr_day = d.getDate();
 		var curr_month = d.getMonth();
 		return month_names[curr_month] + ' ' + curr_day;
+	},
+	
+	year: function(seconds) {
+		var d = new Date(seconds*1000);
+		return '' + d.getFullYear();
 	}
 };

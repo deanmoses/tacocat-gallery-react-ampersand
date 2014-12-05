@@ -45,12 +45,28 @@ module.exports = Model.extend({
 				return '#'+this.path;
 			}
 		},
+		// Path of next album
+		// Blank if no next album
+		nextAlbumPath: {
+            deps: ['next'],
+            fn: function () {
+				return this.next ? this.next.path : '';
+			}
+		},
 		// URL to next album, including hash
 		// Blank if no next album
 		nextAlbumHref: {
             deps: ['next'],
             fn: function () {
 				return this.next ? '#'+this.next.path : '';
+			}
+		},
+		// Path of prev album
+		// Blank if no previous album
+		prevAlbumPath: {
+            deps: ['prev'],
+            fn: function () {
+				return this.prev ? this.prev.path : '';
 			}
 		},
 		// URL to previous album, including hash
@@ -72,17 +88,33 @@ module.exports = Model.extend({
 		// Title of next album
 		// Blank if no next album
 		nextAlbumTitle: {
-            deps: ['next'],
+            deps: ['next','type'],
             fn: function () {
-				return this.next ? DateUtils.shortDate(this.next.date) : '';
+				if (!this.next) {
+					return '';
+				}
+				else if (this.type === 'year') {
+					return DateUtils.year(this.next.date);
+				}
+				else {
+					return DateUtils.shortDate(this.next.date);
+				}
 			}
 		},
 		// Title of previous album
 		// Blank if no previous album
 		prevAlbumTitle: {
-            deps: ['prev'],
+            deps: ['prev','type'],
             fn: function () {
-				return this.prev ? DateUtils.shortDate(this.prev.date) : '';
+				if (!this.prev) {
+					return '';
+				}
+				else if (this.type === 'year') {
+					return DateUtils.year(this.prev.date);
+				}
+				else {
+					return DateUtils.shortDate(this.prev.date);
+				}
 			}
 		},
 		// Title of parent album
@@ -119,7 +151,7 @@ module.exports = Model.extend({
 					case 'root':
 						return '';
 					case 'year':
-						return this.title;
+						return DateUtils.year(this.date);
 					case 'week':
 						var month_names = new Array('January', 'February', 'March', 
 						'April', 'May', 'June', 'July', 'August', 'September', 
