@@ -161,6 +161,7 @@ var ImagePageNotWaiting = React.createClass({
 			<div className='imagepage container-fluid'>
 				<Site.HeaderTitle href={album.href} title={image.title} />
 				<ImagePageBody album={album} image={image} />
+				<EditMenu />
 			</div>
 		);
 	}
@@ -292,3 +293,18 @@ var ImagePageBody = React.createClass({
 	}
 	
 });
+
+var EditMenu = React.createClass({
+	render: function() {
+		return (
+			<a onClickCapture={this.navigateToEdit}>edit</a>
+		)
+	},
+	
+	navigateToEdit: function() {
+		debugger;
+		alert('edit');
+	}
+});
+
+

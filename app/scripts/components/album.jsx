@@ -183,7 +183,10 @@ var WeekAlbumPage = React.createClass({
 					<Site.UpButton href={a.parentAlbumHref} title={a.parentAlbumTitle} />
 					<Site.NextButton href={a.prevAlbumHref} title={a.prevAlbumTitle}/>
 				</Site.HeaderTitle>
-				<AlbumDescription description={a.description}/>
+				<section className='caption'>
+					<h1 className='hidden'>Overview</h1>
+					<span className='caption' dangerouslySetInnerHTML={{__html: a.description}}/>
+				</section>
 				<Thumb.List items={a.images} isAlbum={false}/>
 			</div>
 		);
@@ -215,7 +218,7 @@ var FirstsAndThumbs = React.createClass({
 			<div>
 				<section className='col-md-3 firsts'>
 					<h2 className='hidden'>Firsts</h2>
-				    FIRSTS GO HERE
+				    <div className='firsts-text' dangerouslySetInnerHTML={{__html: a.description}}/>
 				</section>
 				<section className='col-md-9'>
 					<MonthThumbs album={a}/>
