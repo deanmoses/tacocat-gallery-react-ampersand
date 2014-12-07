@@ -136,6 +136,11 @@ $titleColor: #fff;
     padding: 0.2em 0;
 }
 
+.modal textarea {
+	width: 100%;
+	min-height: 200px;
+}
+
 /**
  * Keep the years in a separate easy-to-maintain file.
  */

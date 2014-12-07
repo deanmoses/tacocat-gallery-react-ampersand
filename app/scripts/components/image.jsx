@@ -6,9 +6,10 @@
 //
 
 var AlbumStore = require('../album_store.js');
+var ImageEdit = require('./imageEdit.jsx');
 var Site = require('./site.jsx'); // other React.js components these components depend on
-var React = window.React = require('react');
 var $ = require('jquery');
+var React = window.React = require('react');
 
 /**
  * The React.js component that renders the photo detail screen.
@@ -154,14 +155,15 @@ var ImagePageNotWaiting = React.createClass({
 	},
 	
 	render: function() {
+		console.log('image page render');
 		var album = this.props.album;
 		var image = this.props.image;
-
+		
 		return (
 			<div className='imagepage container-fluid'>
 				<Site.HeaderTitle href={album.href} title={image.title} />
 				<ImagePageBody album={album} image={image} />
-				<EditMenu />
+				<EditMenu image={image} />
 			</div>
 		);
 	}
@@ -296,14 +298,39 @@ var ImagePageBody = React.createClass({
 
 var EditMenu = React.createClass({
 	render: function() {
+		var image = this.props.image;
+		var edit = (this.state && this.state.edit) ? <ImageEdit image={this.props.image} show={true} onClose={this.closeDialog}/> : '';
+		var zeditUrl = 'http://tacocat.com/zenphoto/zp-core/admin-edit.php?page=edit&tab=imageinfo&album=ALBUM_PATH&singleimage=IMAGE_FILENAME';
+		zeditUrl = zeditUrl.replace('ALBUM_PATH', image.albumPath).replace('IMAGE_FILENAME', image.filename);
 		return (
-			<a onClickCapture={this.navigateToEdit}>edit</a>
+			<div>
+				<a onClickCapture={this.navigateToEdit}>edit</a> | 
+				<a href={zeditUrl} target='zenedit'>zedit</a>
+				{edit}
+			</div>
 		)
 	},
 	
+	getInitialState: function() {
+      return {
+      	edit: false
+      };
+    },
+	
+	closeDialog: function() {
+		if (this.isMounted()) {
+			this.setState({
+				edit: false
+			});
+		}
+	},
+	
 	navigateToEdit: function() {
-		debugger;
-		alert('edit');
+		if (this.isMounted()) {
+			this.setState({
+				edit: true
+			});
+		}
 	}
 });
 

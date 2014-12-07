@@ -60,7 +60,8 @@
     ]
   },
   "browser": {
-    "jquery": "./app/bower_components/jquery/dist/jquery.js"
+    "jquery": "./app/bower_components/jquery/dist/jquery.js",
+	"bootstrap-modal": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js"
   },
   "browserify-shim": {
     "jquery": "$"

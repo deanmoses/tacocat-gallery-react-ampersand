@@ -27,6 +27,22 @@ module.exports = AmpersandState.extend({
 				return parseInt(this.height) > parseInt(this.width);
 			}
 		},
+		// filename without path, like 'felix.jpg'
+		filename: {
+			deps: ['path'],
+			fn: function () {
+				return this.path.split('/').pop();
+			}
+		},
+		// parent album path, like '2001/12-31'
+		albumPath: {
+			deps: ['path'],
+			fn: function () {
+				var pathparts = this.path.split('/');
+				pathparts.pop();
+				return pathparts.join('/');
+			}
+		},
 		// URL (including hashtag) to screen displaying album, like #2014/12-31/felix.jpg
 		href: {
             deps: ['path'],
