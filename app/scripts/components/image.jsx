@@ -8,6 +8,7 @@
 var $ = require('jquery'); // must be before bootstrap-dropdown
 require('bootstrap-dropdown'); // must be after jquery
 var AlbumStore = require('../album_store.js');
+var User = require('../models/user.js');
 var ImageEdit = require('./imageEdit.jsx');
 var Site = require('./site.jsx'); // other React.js components these components depend on
 var React = window.React = require('react');
@@ -299,13 +300,16 @@ var ImagePageBody = React.createClass({
 
 var EditMenu = React.createClass({
 	render: function() {
-		var image = this.props.image;
-		var zeditUrl = 'http://tacocat.com/zenphoto/zp-core/admin-edit.php?page=edit&tab=imageinfo&album=ALBUM_PATH&singleimage=IMAGE_FILENAME';
-		zeditUrl = zeditUrl.replace('ALBUM_PATH', image.albumPath).replace('IMAGE_FILENAME', image.filename);
-		var zviewUrl = 'http://tacocat.com/zenphoto/' + image.path;
-		var fullSizeUrl = 'http://tacocat.com/zenphoto/albums/' + image.path;
-		
-		if (!this.state.edit) {
+		if (!User.isAdmin()) {
+			return false;
+		}
+		else if (!this.state.edit) {
+			var image = this.props.image;
+			var zeditUrl = 'http://tacocat.com/zenphoto/zp-core/admin-edit.php?page=edit&tab=imageinfo&album=ALBUM_PATH&singleimage=IMAGE_FILENAME';
+			zeditUrl = zeditUrl.replace('ALBUM_PATH', image.albumPath).replace('IMAGE_FILENAME', image.filename);
+			var zviewUrl = 'http://tacocat.com/zenphoto/' + image.path;
+			var fullSizeUrl = 'http://tacocat.com/zenphoto/albums/' + image.path;
+			
 			return (
 				<div>				
 					<div className='btn-group'>

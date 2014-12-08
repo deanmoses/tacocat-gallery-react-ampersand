@@ -15,8 +15,8 @@ module.exports = Model.extend({
         title: 'string',
 		description: 'string',
 		unpublished: 'boolean', // true: album is NOT available to the public
-		image_size: 'string', // a number like 1024 denoting the largest edge of this album's images
-		thumb_size: 'string', // a number like 200 denoting both edges of this album's thumbnails
+		image_size: 'integer', // a number like 1024 denoting the largest edge of this album's images
+		thumb_size: 'integer', // a number like 200 denoting both edges of this album's thumbnails
 		date: 'date', // in seconds.  Needs to be * 1000 to convert to a Date object
 		thumb: 'object',
 		parent_album: 'object',
