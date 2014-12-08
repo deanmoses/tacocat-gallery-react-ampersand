@@ -5,10 +5,11 @@
 // React.js components that render the photo detail screen
 //
 
+var $ = require('jquery'); // must be before bootstrap-dropdown
+require('bootstrap-dropdown'); // must be after jquery
 var AlbumStore = require('../album_store.js');
 var ImageEdit = require('./imageEdit.jsx');
 var Site = require('./site.jsx'); // other React.js components these components depend on
-var $ = require('jquery');
 var React = window.React = require('react');
 
 /**
@@ -299,16 +300,36 @@ var ImagePageBody = React.createClass({
 var EditMenu = React.createClass({
 	render: function() {
 		var image = this.props.image;
-		var edit = (this.state && this.state.edit) ? <ImageEdit image={this.props.image} show={true} onClose={this.closeDialog}/> : '';
 		var zeditUrl = 'http://tacocat.com/zenphoto/zp-core/admin-edit.php?page=edit&tab=imageinfo&album=ALBUM_PATH&singleimage=IMAGE_FILENAME';
 		zeditUrl = zeditUrl.replace('ALBUM_PATH', image.albumPath).replace('IMAGE_FILENAME', image.filename);
-		return (
-			<div>
-				<a onClickCapture={this.navigateToEdit}>edit</a> | 
-				<a href={zeditUrl} target='zenedit'>zedit</a>
-				{edit}
-			</div>
-		)
+		var zviewUrl = 'http://tacocat.com/zenphoto/' + image.path;
+		var fullSizeUrl = 'http://tacocat.com/zenphoto/albums/' + image.path;
+		
+		if (!this.state.edit) {
+			return (
+				<div>				
+					<div className='btn-group'>
+						<button type='button' className='btn btn-default' onClick={this.edit}><Site.GlyphIcon glyph='pencil'/> Edit</button>
+						<button type='button' className='btn btn-default dropdown-toggle' data-toggle='dropdown' aria-expanded='false'>
+							<span className='caret'></span>
+							<span className='sr-only'>Toggle Dropdown</span>
+						</button>
+						<ul className='dropdown-menu' role='menu'>
+							<li><a href={zeditUrl} target='zenedit' title='Edit in Zenphoto'><Site.GlyphIcon glyph='new-window'/> Full Edit</a></li>
+							<li><a href={zviewUrl} target='zenedit' title='View in Zenphoto'><Site.GlyphIcon glyph='eye-open'/> Full View</a></li>
+							<li><a href={fullSizeUrl} target='zenedit' title="View the full size original image"><Site.GlyphIcon glyph='download-alt'/> Full Size</a></li>
+						</ul>
+					</div>
+				</div>
+			)
+		}
+		else {
+			return (
+				<div>
+					<a onClickCapture={this.cancel}>cancel</a> | <a onClickCapture={this.save}>save</a>
+				</div>
+			)
+		}
 	},
 	
 	getInitialState: function() {
@@ -317,20 +338,29 @@ var EditMenu = React.createClass({
       };
     },
 	
-	closeDialog: function() {
+	edit: function() {
+		this.toggleEdit(true);
+	},
+	
+	cancel: function() {
+		this.toggleEdit(false);
+	},
+	
+	/**
+	 * pass in true to start edit mode
+	 */
+	toggleEdit: function(edit) {
 		if (this.isMounted()) {
 			this.setState({
-				edit: false
+				edit: edit
 			});
+			$('.navbar-brand').attr('contentEditable', edit);
+			$('.caption').attr('contentEditable', edit);
 		}
 	},
 	
-	navigateToEdit: function() {
-		if (this.isMounted()) {
-			this.setState({
-				edit: true
-			});
-		}
+	save: function() {
+		alert('Not yet implemented');
 	}
 });
 
