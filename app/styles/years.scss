@@ -5,7 +5,7 @@
 
 	&.y2014 {
 		background-color: #b7c8a4;
-		
+
 		.firsts, .years, .month > h1 {
 		    background-color: #8a9e75;
 		}
@@ -19,12 +19,12 @@
 		.header {
 		    background-color: #b7c8a4;
 		}
-		
+
 		// years
 		.years {
 			background-color: #8a9e75;
 		}
-		
+
 		// thumbnail area
 		#body {
 			background-color: #b1ceb3;
@@ -35,27 +35,27 @@
 		    background-color: #8a9e75;
 		}
 
-		// links 
+		// links
 		a {
 			//color: #7e684a;
 		}
-	
+
 		.years a {
 			//color: #685233;
 		}
 	}
-	
+
 	&.y2012 {
 		// top banner
 		.header {
 		    background-color: #edb79c;
 		}
-		
+
 		// thumbnail area
 		#body {
 			background-color: #973450;
 		}
-		
+
 		// firsts column
 		.firsts {
 			background-color: #e77f4b;
@@ -66,24 +66,20 @@
 			//color: #973450;
 		}
 	}
-	
+
 	&.y2001 {
 		background-color: #FF6600;
-		
+
 		.firsts, .years, .month > h1 {
 			border: 4px solid #FF99FF;
 		}
-		
+
 		.years, .month > h1 {
 			background-color: #FFCCFF;
 		}
-		
+
 		.firsts {
 		    background-color: #fff;
-			min-height: 250px;
-			background-image: url(http://tacocat.com/pix/img/kitten.gif);
-			background-repeat: no-repeat;
-			background-position: center center;
 		}
 	}
 }
