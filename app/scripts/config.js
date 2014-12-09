@@ -1,6 +1,9 @@
+'use strict';
+
 //
 // configuration global to the entire gallery app
 //
+
 module.exports = {
 
 	site_title: 'Dean, Lucie, Felix and Milo Moses',
@@ -19,12 +22,20 @@ module.exports = {
 
 	zenphotoImageEditUrl: function(albumPath, imageFilename) {
         var zeditUrl = 'http://tacocat.com/zenphoto/zp-core/admin-edit.php?page=edit&tab=imageinfo&album=ALBUM_PATH&image=IMAGE_FILENAME#IT';
-		return zeditUrl.replace('ALBUM_PATH', albumPath).replace('IMAGE_FILENAME', imageFilename);
+		return zeditUrl.replace('ALBUM_PATH', encodeURIComponent(albumPath)).replace('IMAGE_FILENAME', encodeURIComponent(imageFilename));
 	},
 
-    staticTacocatAlbumUrl: function(albumPath) {
+    zenphotoAlbumViewUrl: function(albumPath) {
+        return 'http://tacocat.com/zenphoto/' + albumPath;
+    },
+
+    zenphotoAlbumEditUrl: function(albumPath) {
+    return 'http://tacocat.com/zenphoto/zp-core/admin-edit.php?page=edit&album=' + encodeURIComponent(albumPath);
+    },
+
+    staticAlbumUrl: function(albumPath) {
         // format: 2001/12-31
         // new format: 2001/12/31
-        return 'http://tacocat.com/pix/' + albumPath.split('-').join('/') + '/'
+        return 'http://tacocat.com/pix/' + albumPath.split('-').join('/') + '/';
     }
 };

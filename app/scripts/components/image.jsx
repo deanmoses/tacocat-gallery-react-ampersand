@@ -302,8 +302,10 @@ var ImagePageBody = React.createClass({
  * Component that renders the admin's image edit controls.
  */
 var EditMenu = React.createClass({
+
 	render: function() {
-		if (!User.isAdmin()) {
+        var debug = false; // my localhost can't login to tacocat, so this is the kludge to test functionality
+		if (!User.isAdmin() && !debug) {
 			return false;
 		}
 		else if (!this.state.edit) {
