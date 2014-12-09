@@ -64,7 +64,7 @@ var AlbumPage = React.createClass({
 					console.log('error getting album', err);
 				} 
 				else {
-					console.log('success getting album ' + album.path);
+					//console.log('success getting album ' + album.path);
 					if (this.isMounted()) {
 						this.setState({
 							album: album

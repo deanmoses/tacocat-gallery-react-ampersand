@@ -30,7 +30,6 @@ var UserStore = {
 	},
 	
 	isAdmin: function() {
-		debugger;
 		return this.currentUser && this.currentUser.isAdmin;
 	}
 };

@@ -7,6 +7,7 @@
 
 var $ = require('jquery'); // must be before bootstrap-dropdown
 require('bootstrap-dropdown'); // must be after jquery
+var Config = require('../config.js');
 var AlbumStore = require('../album_store.js');
 var User = require('../models/user.js');
 var ImageEdit = require('./imageEdit.jsx');
@@ -20,7 +21,7 @@ var React = window.React = require('react');
  * it's called by the router to render an album.
  */
 var ImagePage = React.createClass({
-	
+
 	/**
 	 * Declare the properties that this component takes.
 	 */
@@ -28,20 +29,20 @@ var ImagePage = React.createClass({
 		// path to image, like '2014/12-31/felix.jpg'
 	    imagePath: React.PropTypes.string.isRequired
 	},
-	
-	/** 
+
+	/**
 	 * Initial state of the component.
-	 * Invoked once before the component is mounted. 
+	 * Invoked once before the component is mounted.
 	 * The return value will be used as the initial value of this.state.
 	 */
 	getInitialState: function() {
 		// console.log('getInitialState ' + this.props.imagePath);
-		
+
 		// get the album's path from the photo's path
 		var pathParts = this.props.imagePath.split('/');
 		pathParts.pop(); // remove photo filename
 		var albumPath = pathParts.join('/');
-		
+
 		return {
 			// Get the album if it already exists client-side.
 			// Does NOT fetch it from server.
@@ -51,27 +52,27 @@ var ImagePage = React.createClass({
 			albumPath: albumPath
 		};
 	},
-	
+
 	/**
 	 * Invoked after the component is mounted into the DOM.
 	 *
-	 * Invoked once, immediately after the initial rendering occurs. 
-	 * At this point in the lifecycle, the component has a DOM 
+	 * Invoked once, immediately after the initial rendering occurs.
+	 * At this point in the lifecycle, the component has a DOM
 	 * representation which you can access via this.getDOMNode().
 	 *
 	 * This is the place to send AJAX requests.
 	 */
 	componentDidMount: function() {
-		// console.log('componentDidMount ' + this.props.imagePath);	
-		
-		// If getInitialState() didn't get the album Model from the 
+		// console.log('componentDidMount ' + this.props.imagePath);
+
+		// If getInitialState() didn't get the album Model from the
 		// client side cache, now's the time to fetch it from the server.
 		// This is Ampersand Collection.fetchById().
 		if (!this.state.album) {
 			AlbumStore.fetchById(this.state.albumPath, function (err, album) {
 				if (err) {
 					console.log('error getting album', err);
-				} 
+				}
 				else {
 					console.log('success getting album ' + album.path);
 					if (this.isMounted()) {
@@ -83,10 +84,10 @@ var ImagePage = React.createClass({
 			}.bind(this));
 		}
 	},
-	
+
 	render: function() {
 		// console.log('render ' + this.props.imagePath);
-		
+
 		var album = this.state.album;
 		if (album) {
 			var image = album.images.get(this.props.imagePath);
@@ -94,7 +95,7 @@ var ImagePage = React.createClass({
 			return (
 				<ImagePageNotWaiting album={album} image={image} />
 			);
-		} 
+		}
 		else {
 			document.title = 'Loading album...';
 			return (
@@ -155,12 +156,11 @@ var ImagePageNotWaiting = React.createClass({
 		album: React.PropTypes.object.isRequired,
 	    image: React.PropTypes.object.isRequired
 	},
-	
+
 	render: function() {
-		console.log('image page render');
 		var album = this.props.album;
 		var image = this.props.image;
-		
+
 		return (
 			<div className='imagepage container-fluid'>
 				<Site.HeaderTitle href={album.href} title={image.title} />
@@ -179,7 +179,7 @@ var ImagePageBody = React.createClass({
 	    image: React.PropTypes.object.isRequired,
 		album: React.PropTypes.object.isRequired
 	},
-	
+
 	render: function() {
 		var image = this.props.image;
 		var album = this.props.album;
@@ -212,17 +212,17 @@ var ImagePageBody = React.createClass({
 			</div>
 		);
 	},
-	
+
 	/**
 	 * Invoked after the component is mounted into the DOM.
 	 *
-	 * Invoked once, immediately after the initial rendering occurs. 
-	 * At this point in the lifecycle, the component has a DOM 
+	 * Invoked once, immediately after the initial rendering occurs.
+	 * At this point in the lifecycle, the component has a DOM
 	 * representation which you can access via this.getDOMNode().
 	 *
 	 * This is the place to send AJAX requests.
 	 */
-	componentDidMount: function() {		
+	componentDidMount: function() {
 		// Hook up the image resizing
         this.resizeImage(
 			// image
@@ -231,9 +231,9 @@ var ImagePageBody = React.createClass({
 			'.photo-body .col-md-9'
 		);
 	},
-	
+
 	/**
-	 * Continuously resize an image to best fit the HTML element that it 
+	 * Continuously resize an image to best fit the HTML element that it
      * lives inside of.
      *
      * @param imageExpression css/jQuery expression targeting the image
@@ -243,9 +243,9 @@ var ImagePageBody = React.createClass({
 		var image = $(imageExpression);
 		var container = $(containerExpression);
 		var _this = this;
-		
+
 		image.load(function(){
-			console.log('imageUtil.resizeImage(): img loaded'); 
+			//console.log('imageUtil.resizeImage(): img loaded');
 			_this.resizeImageOnce(image, container);
 		});  // on initial image load (won't be called if it's already loaded)
 		//$(function(){ _this.resizeImageOnce(image, container); });  // on initial page load
@@ -256,7 +256,7 @@ var ImagePageBody = React.createClass({
 	 * Resize an image to best fit the HTML element in which it lives.
 	 */
 	resizeImageOnce : function(image, container) {
-	
+
 		// get image width and height
 		var imgWidth = image.width();
 		var imgHeight = image.height();
@@ -272,32 +272,35 @@ var ImagePageBody = React.createClass({
 		if (containerWidth <= 0 || containerHeight <= 0) {
 			return;
 		}
-		
+
 		// calculate image height if we resized to 100% width
 		var newImgHeight = Math.round(containerWidth * (imgHeight / imgWidth));
-		
+
 		// if new image height fits within container, we've got our dimensions
 		if (newImgHeight <= containerHeight) {
 			//console.log('width based.  container w: ' + containerWidth + ' > ' + container.parent().width() + ' > ' + container.parent().width());
 			image.width(containerWidth);
 			image.height(newImgHeight);
 		}
-		// else if new image height is too tall for container, 
+		// else if new image height is too tall for container,
 		// make image height 100% of container
 		else {
 			//console.log('height based');
 			image.height(containerHeight);
 			image.width(Math.round(containerHeight * (imgWidth / imgHeight)));
 		}
-		
+
 		image.css('display', 'block');
 
 		// update header width to match image
 		//$('.header-container header').width(image.width());
 	}
-	
+
 });
 
+/**
+ * Component that renders the admin's image edit controls.
+ */
 var EditMenu = React.createClass({
 	render: function() {
 		if (!User.isAdmin()) {
@@ -305,13 +308,11 @@ var EditMenu = React.createClass({
 		}
 		else if (!this.state.edit) {
 			var image = this.props.image;
-			var zeditUrl = 'http://tacocat.com/zenphoto/zp-core/admin-edit.php?page=edit&tab=imageinfo&album=ALBUM_PATH&singleimage=IMAGE_FILENAME';
-			zeditUrl = zeditUrl.replace('ALBUM_PATH', image.albumPath).replace('IMAGE_FILENAME', image.filename);
-			var zviewUrl = 'http://tacocat.com/zenphoto/' + image.path;
-			var fullSizeUrl = 'http://tacocat.com/zenphoto/albums/' + image.path;
-			
+			var zeditUrl = Config.zenphotoImageEditUrl(image.albumPath, image.filename);
+			var zviewUrl = Config.zenphotoImageViewUrl(image.path);
+			var fullSizeUrl = Config.zenphotoImageFullSizeUrl(image.path);
 			return (
-				<div>				
+				<div>
 					<div className='btn-group'>
 						<button type='button' className='btn btn-default' onClick={this.edit}><Site.GlyphIcon glyph='pencil'/> Edit</button>
 						<button type='button' className='btn btn-default dropdown-toggle' data-toggle='dropdown' aria-expanded='false'>
@@ -330,28 +331,32 @@ var EditMenu = React.createClass({
 		else {
 			return (
 				<div>
-					<a onClickCapture={this.cancel}>cancel</a> | <a onClickCapture={this.save}>save</a>
+					<div className='btn-group'>
+						<button type='button' className='btn btn-default' onClick={this.cancel}><Site.GlyphIcon glyph='remove'/> Cancel</button>
+						<button type='button' className='btn btn-primary' onClick={this.save}><Site.GlyphIcon glyph='ok'/> Save</button>
+					</div>
 				</div>
 			)
 		}
 	},
-	
+
 	getInitialState: function() {
-      return {
-      	edit: false
-      };
+		return {
+			edit: false
+		};
     },
-	
+
 	edit: function() {
 		this.toggleEdit(true);
 	},
-	
+
 	cancel: function() {
 		this.toggleEdit(false);
 	},
-	
+
 	/**
-	 * pass in true to start edit mode
+	 * true: start edit mode
+	 * false: end edit mode
 	 */
 	toggleEdit: function(edit) {
 		if (this.isMounted()) {
@@ -360,12 +365,43 @@ var EditMenu = React.createClass({
 			});
 			$('.navbar-brand').attr('contentEditable', edit);
 			$('.caption').attr('contentEditable', edit);
+			if (edit) {
+				$('.navbar-brand').focus();
+			}
 		}
 	},
-	
+
+	/**
+	 * Save to server
+	 */
 	save: function() {
-		alert('Not yet implemented');
+		var _this = this;
+		var title = $('.navbar-brand').text();
+		var description = $('.caption').html();
+		console.log('title', title);
+		console.log('desc', description);
+
+		var ajaxData = {
+			eip_context	: 'image',
+			title: title,
+			desc: description
+		}
+
+		$.ajax({
+			type: "POST",
+			url: Config.zenphotoImageViewUrl(this.props.image.path),
+			cache: false,
+			dataType: "text",
+			data: ajaxData
+		})
+		.done(function( msg ) {
+			_this.props.image.title = title;
+			_this.props.image.description = description;
+			_this.cancel();
+		})
+		.fail(function(e) {
+			alert('error: ' + e);
+			console.log('error saving image: ', e);
+		});
 	}
 });
-
-

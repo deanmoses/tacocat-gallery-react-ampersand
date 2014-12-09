@@ -48,7 +48,7 @@ module.exports = Router.extend({
 		if (!returnPath) {
 			returnPath = '';
 		}
-		console.log('router search: "' + searchTerms + '"  "' + returnPath + '"');
+		//console.log('router search: "' + searchTerms + '"  "' + returnPath + '"');
 		if (SearchPage === null) {
 			SearchPage = React.createFactory(require('../components/search.jsx'));
 		}
@@ -59,7 +59,7 @@ module.exports = Router.extend({
 		if (!path) {
 			path = '';
 		}
-		console.log('router path: "' + path + '"');
+		//console.log('router path: "' + path + '"');
 		
 		// It's an album path if there's no '.' in the path.
 		// This is not robust, but it's safe enough because
