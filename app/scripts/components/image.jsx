@@ -361,6 +361,11 @@ var EditMenu = React.createClass({
         }, this);
     },
 
+    componentWillUnmount: function() {
+        User.currentUser().off('change:isAdmin');
+        User.currentUser().off('change:editMode');
+    },
+
     componentDidMount: function() {
         if (this.state.editMode) {
             this.doEditMode(true);
