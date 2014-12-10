@@ -61,8 +61,8 @@
   },
   "browser": {
     "jquery": "./app/bower_components/jquery/dist/jquery.js",
-	"bootstrap-modal": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js",
-	"bootstrap-dropdown": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js"
+    "bootstrap-modal": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js",
+    "bootstrap-dropdown": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js"
   },
   "browserify-shim": {
     "jquery": "$"

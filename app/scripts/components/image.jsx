@@ -183,6 +183,7 @@ var ImagePageBody = React.createClass({
 	render: function() {
 		var image = this.props.image;
 		var album = this.props.album;
+        var fullSizeUrl = Config.zenphotoImageFullSizeUrl(image.path);
 		var orientation = image.isPortrait ? 'portrait' : 'landscape';
 		var style = {
 			'maxWidth': image.width,
@@ -207,7 +208,7 @@ var ImagePageBody = React.createClass({
 						<Site.UpButton href={album.href} title={album.pageTitle} />
 						<Site.NextButton href={image.nextImageHref} />
 					</Site.HeaderButtons>
-					<img src={'http://tacocat.com' + image.urlSized} style={style} className={orientation}/>
+					<a href={fullSizeUrl} target='zen'><img src={'http://tacocat.com' + image.urlSized} style={style} className={orientation}/></a>
 				</section>
 			</div>
 		);
@@ -312,7 +313,6 @@ var EditMenu = React.createClass({
 			var image = this.props.image;
 			var zeditUrl = Config.zenphotoImageEditUrl(image.albumPath, image.filename);
 			var zviewUrl = Config.zenphotoImageViewUrl(image.path);
-			var fullSizeUrl = Config.zenphotoImageFullSizeUrl(image.path);
 			return (
 				<div>
 					<div className='btn-group'>
@@ -322,9 +322,8 @@ var EditMenu = React.createClass({
 							<span className='sr-only'>Toggle Dropdown</span>
 						</button>
 						<ul className='dropdown-menu' role='menu'>
-							<li><a href={zeditUrl} target='zenedit' title='Edit in Zenphoto'><Site.GlyphIcon glyph='new-window'/> Full Edit</a></li>
-							<li><a href={zviewUrl} target='zenedit' title='View in Zenphoto'><Site.GlyphIcon glyph='eye-open'/> Full View</a></li>
-							<li><a href={fullSizeUrl} target='zenedit' title="View the full size original image"><Site.GlyphIcon glyph='download-alt'/> Full Size</a></li>
+							<li><a href={zeditUrl} target='zen' title='Edit in Zenphoto'><Site.GlyphIcon glyph='new-window'/> Full Edit</a></li>
+							<li><a href={zviewUrl} target='zen' title='View in Zenphoto'><Site.GlyphIcon glyph='eye-open'/> Full View</a></li>
 						</ul>
 					</div>
 				</div>
