@@ -4,15 +4,17 @@
 // An Ampersand.js Model representing a logged in user
 //
 
+var Config = require('../config.js');
 var Model = require('ampersand-model');
 var User = Model.extend({
     props: {
 		isAdmin: ['boolean', true, false], // required attribute, defaulted to false
+        editMode: ['boolean', false, false] // never sent from server, defaulted to false
 	},
 
 	// the URL of the JSON REST API from which to retrieve the album
 	url: function() {
-		return 'http://tacocat.com/zenphoto/?api&auth';
+		return Config.zenphotoBaseUrl() + '?api&auth';
 	}
 });
 

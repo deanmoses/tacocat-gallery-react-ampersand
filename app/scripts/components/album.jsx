@@ -321,7 +321,7 @@ var EditMenu = React.createClass({
     },
 
     componentWillMount: function(){
-        User.currentUser().on('change', function() {
+        User.currentUser().on('change:isAdmin', function() {
             this.setState({isAdmin: User.currentUser().isAdmin});
         }, this);
     },

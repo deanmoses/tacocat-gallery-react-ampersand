@@ -305,11 +305,10 @@ var ImagePageBody = React.createClass({
 var EditMenu = React.createClass({
 
 	render: function() {
-        var debug = false; // my localhost can't login to tacocat, so this is the kludge to test functionality
-		if (!this.state.isAdmin && !debug) {
+		if (!this.state.editAllowed) {
 			return false;
 		}
-		else if (!this.state.edit) {
+		else if (!this.state.editMode) {
 			var image = this.props.image;
 			var zeditUrl = Config.zenphotoImageEditUrl(image.albumPath, image.filename);
 			var zviewUrl = Config.zenphotoImageViewUrl(image.path);
@@ -343,40 +342,59 @@ var EditMenu = React.createClass({
 
 	getInitialState: function() {
 		return {
-			edit: false,
-            isAdmin: User.currentUser().isAdmin
+            editMode: User.currentUser().editMode,
+            editAllowed: User.currentUser().isAdmin
 		};
     },
 
-    componentWillMount: function(){
-        User.currentUser().on('change', function() {
-            this.setState({isAdmin: User.currentUser().isAdmin});
+    componentWillMount: function() {
+        User.currentUser().on('change:isAdmin', function() {
+            if (this.isMounted()) {
+                this.setState({editAllowed: User.currentUser().isAdmin});
+            }
+        }, this);
+
+        User.currentUser().on('change:editMode', function() {
+            if (this.isMounted()) {
+                this.setState({editMode: User.currentUser().editMode});
+            }
         }, this);
     },
 
+    componentDidMount: function() {
+        if (this.state.editMode) {
+            this.doEditMode(true);
+        }
+    },
+
+    componentDidUpdate: function(prevProps, prevState) {
+        if (prevState.editMode != this.state.editMode) {
+            this.doEditMode(this.state.editMode);
+        }
+    },
+
+    /**
+     * Really, we should be managing the edit mode state
+     * at a higher level, rather than breaking encapsulation
+     * and making this component know about parent components.
+     */
+    doEditMode: function(edit) {
+        $('.navbar-brand').attr('contentEditable', edit);
+        $('.caption').attr('contentEditable', edit);
+
+        if (edit) {
+            $('.navbar-brand').focus();
+        }
+    },
+
 	edit: function() {
-		this.toggleEdit(true);
+        // will trigger the event listener in componentWillMount
+        User.currentUser().editMode = true;
 	},
 
 	cancel: function() {
-		this.toggleEdit(false);
-	},
-
-	/**
-	 * true: start edit mode
-	 * false: end edit mode
-	 */
-	toggleEdit: function(edit) {
-		if (this.isMounted()) {
-			this.setState({
-				edit: edit
-			});
-			$('.navbar-brand').attr('contentEditable', edit);
-			$('.caption').attr('contentEditable', edit);
-			if (edit) {
-				$('.navbar-brand').focus();
-			}
-		}
+        // will trigger the event listener in componentWillMount
+        User.currentUser().editMode = false;
 	},
 
 	/**
@@ -405,7 +423,6 @@ var EditMenu = React.createClass({
 		.done(function( msg ) {
 			_this.props.image.title = title;
 			_this.props.image.description = description;
-			_this.cancel();
 		})
 		.fail(function(e) {
 			alert('error: ' + e);
