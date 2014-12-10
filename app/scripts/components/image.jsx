@@ -306,7 +306,7 @@ var EditMenu = React.createClass({
 
 	render: function() {
         var debug = false; // my localhost can't login to tacocat, so this is the kludge to test functionality
-		if (!User.isAdmin() && !debug) {
+		if (!this.state.isAdmin && !debug) {
 			return false;
 		}
 		else if (!this.state.edit) {
@@ -343,8 +343,15 @@ var EditMenu = React.createClass({
 
 	getInitialState: function() {
 		return {
-			edit: false
+			edit: false,
+            isAdmin: User.currentUser().isAdmin
 		};
+    },
+
+    componentWillMount: function(){
+        User.currentUser().on('change', function() {
+            this.setState({isAdmin: User.currentUser().isAdmin});
+        }, this);
     },
 
 	edit: function() {
@@ -386,7 +393,7 @@ var EditMenu = React.createClass({
 			eip_context	: 'image',
 			title: title,
 			desc: description
-		}
+		};
 
 		$.ajax({
 			type: "POST",

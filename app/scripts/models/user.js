@@ -17,20 +17,22 @@ var User = Model.extend({
 });
 
 var UserStore = {
-	currentUser: null,
-	
+	_currentUser: new User({id: 'x'}), // The id doesn't matter, the server doesn't check it
+
+    currentUser: function() {
+        return this._currentUser;
+    },
+
 	/**
 	 * Fetch the user object.  The user will be considered not an admin
 	 * until the user object is populated from the server.
 	 */
 	fetchUser: function() {
-		// The id doesn't matter, the server doesn't check it
-		this.currentUser = new User({id: 'x'});
-		this.currentUser.fetch();
+		this._currentUser.fetch();
 	},
-	
+
 	isAdmin: function() {
-		return this.currentUser && this.currentUser.isAdmin;
+		return this._currentUser && this._currentUser.isAdmin;
 	}
 };
 
