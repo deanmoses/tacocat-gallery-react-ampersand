@@ -77,7 +77,7 @@ gulp.task('scripts', function () {
     if (!prod) {
         opts.debug = true; // add a source map inline to the end of the bundle. This makes debugging easier because you can see all the original files if you are in a modern enough browser.
     }
-    return browserify('./app/scripts/app.js')
+    return browserify('./app/scripts/app.js', opts)
         .bundle()
         .pipe(source('app.js'))
         .pipe(gulp.dest('dist/scripts'))

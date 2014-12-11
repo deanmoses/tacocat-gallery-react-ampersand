@@ -9,7 +9,7 @@ var Config = require('../config.js');
 var AlbumStore = require('../album_store.js');
 var Site = require('./site.jsx');
 var Thumb = require('./thumb.jsx');
-var React = window.React = require('react');
+var React = require('react');
 var User = require('../models/user.js');
 
 /**

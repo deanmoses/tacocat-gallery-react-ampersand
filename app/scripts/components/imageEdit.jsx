@@ -3,7 +3,7 @@
 
 var $ = require('jquery'); // bootstrap-modal needs jquery so this has to be before it
 require('bootstrap-modal');
-var React = window.React = require('react');
+var React = require('react');
 
 /**
  * The React.js component that renders the photo detail screen.

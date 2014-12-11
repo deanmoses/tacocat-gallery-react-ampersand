@@ -17,13 +17,13 @@ var mountNode = document.getElementById('main');
  */
 var Router = require('ampersand-router');
 module.exports = Router.extend({
-	
+
 	/*global console*/
 
 	/**
 	 * Define the application's routes.
 	 *
-	 * This maps a URL 'route' expression to a 
+	 * This maps a URL 'route' expression to a
 	 * javascript function to call when Ampersand.js
 	 * detects a matching URL has been entered
 	 * into the browser.location.
@@ -33,14 +33,14 @@ module.exports = Router.extend({
 		'search:*searchTerms&return:*returnPath': 'search',
 		// #search:cat
 		'search:*searchTerms': 'search',
-		
+
 		// #2014
 		// #2014/12-31
 		// #2014/12-31/someSubAlbum
 		// #2014/12-31/felix.jpg
-		'*path': 'albumOrImage',
+		'*path': 'albumOrImage'
 	},
-	
+
 	search: function(searchTerms, returnPath) {
 		if (!searchTerms) {
 			searchTerms = '';
@@ -54,24 +54,24 @@ module.exports = Router.extend({
 		}
 		React.render(SearchPage({searchTerms: searchTerms, returnPath: returnPath, key: searchTerms}), mountNode);
 	},
-	
+
 	albumOrImage: function(path) {
 		if (!path) {
 			path = '';
 		}
 		//console.log('router path: "' + path + '"');
-		
+
 		// It's an album path if there's no '.' in the path.
 		// This is not robust, but it's safe enough because
-		// I know i've never created an album with a '.' in 
+		// I know i've never created an album with a '.' in
 		// the name.
 		var isAlbum = path.indexOf('.') === -1;
-		
+
 		// render album page
 		if (isAlbum) {
 			// The key is so that React knows that this is a new component.
 			// Otherwise, it'll treat it as an existing component and won't
-			// call the component's getInitialState() and componentDidMount(), 
+			// call the component's getInitialState() and componentDidMount(),
 			// and thus the new album won't be set and retrieved.
 			React.render(AlbumPage({albumPath: path, key: path}), mountNode);
 		}
@@ -79,7 +79,7 @@ module.exports = Router.extend({
 		else {
 			// The key is so that React knows that this is a new component.
 			// Otherwise, it'll treat it as an existing component and won't
-			// call the component's getInitialState() and componentDidMount(), 
+			// call the component's getInitialState() and componentDidMount(),
 			// and thus the new album won't be set and retrieved.
 			React.render(ImagePage({imagePath: path, key: path}), mountNode);
 		}

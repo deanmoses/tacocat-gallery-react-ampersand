@@ -12,7 +12,7 @@ var AlbumStore = require('../album_store.js');
 var User = require('../models/user.js');
 var ImageEdit = require('./imageEdit.jsx');
 var Site = require('./site.jsx'); // other React.js components these components depend on
-var React = window.React = require('react');
+var React = require('react');
 
 /**
  * The React.js component that renders the photo detail screen.

@@ -7,9 +7,9 @@
 //
 
 var Config = require('../config.js');
-var React = window.React = require('react');
+var React = require('react');
 
-// all the components in this file will be added to Site, 
+// all the components in this file will be added to Site,
 // which will then be made available as a module
 var Site = {};
 
@@ -40,7 +40,7 @@ Site.HeaderButtons = React.createClass({
 		if (!this.props.children) {
 			return false;
 		}
-		
+
 		return (
 			<div>
 				<div className='btn-group btn-group-justified' role='group'>{this.props.children}</div>

@@ -2,9 +2,9 @@
 'use strict';
 
 var DateUtils = require('../utils/date.js');
-var React = window.React = require('react');
+var React = require('react');
 
-// all the components in this file will be added to Thumb, 
+// all the components in this file will be added to Thumb,
 // which will then be made available as a module
 var Thumb = {};
 
@@ -55,7 +55,7 @@ Thumb.Nail = React.createClass({
 		else {
 			title = item.title;
 		}
-			
+
 		var summary = item.summary;
 		width = width + 'px';
 		height = height + 'px';

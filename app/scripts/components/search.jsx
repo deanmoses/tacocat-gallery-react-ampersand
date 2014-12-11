@@ -3,7 +3,7 @@
 
 var Site = require('./site.jsx');
 var Thumb = require('./thumb.jsx');
-var React = window.React = require('react');
+var React = require('react');
 var $ = require('jquery');
 
 /**
@@ -14,7 +14,7 @@ var $ = require('jquery');
  */
 var SearchPage;
 module.exports = SearchPage = React.createClass({
-	
+
 	/**
 	 * Declare the properties that this component takes
 	 */
@@ -24,17 +24,17 @@ module.exports = SearchPage = React.createClass({
 		// URL to return to, like when clicking back button
 		returnPath: React.PropTypes.string
 	},
-	
+
 	/**
 	 * Invoked after the component is mounted into the DOM.
 	 *
-	 * Invoked once, immediately after the initial rendering occurs. 
-	 * At this point in the lifecycle, the component has a DOM 
+	 * Invoked once, immediately after the initial rendering occurs.
+	 * At this point in the lifecycle, the component has a DOM
 	 * representation which you can access via this.getDOMNode().
 	 *
 	 * This is the place to send AJAX requests.
 	 */
-	componentDidMount: function() {		
+	componentDidMount: function() {
 		// if the component was created with search terms, ask server to search
 		if (this.props.searchTerms) {
 			var url = 'http://tacocat.com/zenphoto/page/search?words=' + encodeURIComponent(this.props.searchTerms) +'&api';
@@ -52,7 +52,7 @@ module.exports = SearchPage = React.createClass({
 			});
 		}
 	},
-	
+
 	render: function() {
 		var images = '';
 		var albums = '';
@@ -83,11 +83,11 @@ module.exports = SearchPage = React.createClass({
 
 
 /**
- * Component that renders the search box 
+ * Component that renders the search box
  * and handles retrieving user input from it.
  */
 var SearchBox = React.createClass({
-	
+
 	/**
 	 * Declare the properties that this component takes
 	 */
@@ -105,12 +105,12 @@ var SearchBox = React.createClass({
 			</form>
 		);
 	},
-	
+
 	/**
 	 * Handle the user submitting the search form
 	 * by setting the new search terms on the URL.
-	 * 
-	 * The actual searching will be done when the 
+	 *
+	 * The actual searching will be done when the
 	 * component is re-rendered because of the URL change.
 	 */
 	handleSearch: function(e) {
@@ -118,5 +118,5 @@ var SearchBox = React.createClass({
 		var search = 'search:' + encodeURIComponent(this.refs.searchBox.getDOMNode().value.trim());
 		var returnPath = (this.props.returnPath) ? '&return:' + encodeURIComponent(this.props.returnPath) : '';
 		window.location.hash = search + returnPath;
-	}	
+	}
 });
