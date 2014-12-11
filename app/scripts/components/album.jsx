@@ -6,11 +6,11 @@
 //
 
 var Config = require('../config.js');
-var AlbumStore = require('../album_store.js');
 var Site = require('./site.jsx');
 var Thumb = require('./thumb.jsx');
 var React = require('react');
 var User = require('../models/user.js');
+var AlbumStore = require('../models/album_store.js');
 
 /**
  * The React.js component that renders an album.

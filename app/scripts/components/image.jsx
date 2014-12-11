@@ -8,7 +8,7 @@
 var $ = require('jquery'); // must be before bootstrap-dropdown
 require('bootstrap-dropdown'); // must be after jquery
 var Config = require('../config.js');
-var AlbumStore = require('../album_store.js');
+var AlbumStore = require('../models/album_store.js');
 var User = require('../models/user.js');
 var ImageEdit = require('./imageEdit.jsx');
 var Site = require('./site.jsx'); // other React.js components these components depend on
