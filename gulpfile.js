@@ -24,6 +24,15 @@ var $ = require('gulp-load-plugins')();
 // true: production build: minify
 var prod = false;
 
+// configuration that changes on prod vs dev
+var config = {
+  userUrl: {
+      prod: 'http://tacocat.com/zenphoto/',
+      dev: 'app/json/user.json'
+  }
+};
+
+
 // Set production = true
 gulp.task('setprod', function() {
     prod = true;
@@ -64,6 +73,10 @@ gulp.task('jsxhint', function() {
 
 // Scripts
 gulp.task('scripts', function () {
+    var opts = {};
+    if (!prod) {
+        opts.debug = true; // add a source map inline to the end of the bundle. This makes debugging easier because you can see all the original files if you are in a modern enough browser.
+    }
     return browserify('./app/scripts/app.js')
         .bundle()
         .pipe(source('app.js'))
@@ -111,7 +124,7 @@ gulp.task('manifest', function(){
 	.pipe(gulp.dest('dist'));
 });
 
-// Copy fonts 
+// Copy fonts
 gulp.task('copyfonts', function() {
    gulp.src('app/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/**/*.{ttf,woff,eof,svg}')
    .pipe(gulp.dest('dist/fonts/bootstrap'));
@@ -136,18 +149,12 @@ gulp.task('clean', function (cb) {
 
 
 // Bundle
-gulp.task('bundle', ['styles', 'copyfonts', 'copyhtaccess', 'manifest', 'scripts', 'bower'], function(){
+gulp.task('bundle', ['styles', 'copyfonts', 'copyhtaccess', 'manifest', 'scripts'], function(){
     return gulp.src('./app/*.html')
 		.pipe($.useref.assets())
 		.pipe($.useref.restore())
 		.pipe($.useref())
 		.pipe(gulp.dest('dist'));
-});
-
-// Bower helper
-gulp.task('bower', function() {
-    gulp.src('app/bower_components/**/*.js', {base: 'app/bower_components'})
-        .pipe(gulp.dest('dist/bower_components/'));
 });
 
 // Watch
@@ -158,10 +165,10 @@ gulp.task('watch', ['html', 'bundle', 'serve'], function () {
 
     // Watch .scss files
     gulp.watch('app/styles/**/*.scss', ['styles']);
-  
+
     // Watch .js files
     gulp.watch('app/scripts/**/*.js', ['jshint', 'scripts', 'jest' ]);
-	
+
 	// Watch .jsx files
 	gulp.watch('app/scripts/components/**/*.jsx', ['jsxhint', 'scripts']);
 

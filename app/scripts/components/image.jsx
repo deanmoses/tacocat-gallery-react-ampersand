@@ -30,6 +30,25 @@ var ImagePage = React.createClass({
 	    imagePath: React.PropTypes.string.isRequired
 	},
 
+    render: function() {
+        // console.log('render ' + this.props.imagePath);
+
+        var album = this.state.album;
+        if (album) {
+            var image = album.images.get(this.props.imagePath);
+            document.title = image.title;
+            return (
+                <ImagePageNotWaiting album={album} image={image} user={User.currentUser()}/>
+            );
+        }
+        else {
+            document.title = 'Loading album...';
+            return (
+                <ImagePageWaiting />
+            );
+        }
+    },
+
 	/**
 	 * Initial state of the component.
 	 * Invoked once before the component is mounted.
@@ -49,9 +68,30 @@ var ImagePage = React.createClass({
 			// No album: component will show a waiting... indicator.
 			// This is Ampersand Collection.get().
 			album: AlbumStore.get(albumPath),
-			albumPath: albumPath
+			albumPath: albumPath,
+            editMode: User.currentUser().editMode,
+            editAllowed: User.currentUser().isAdmin
 		};
 	},
+
+    componentWillMount: function() {
+        User.currentUser().on('change:isAdmin', function() {
+            if (this.isMounted()) {
+                this.setState({editAllowed: User.currentUser().isAdmin});
+            }
+        }, this);
+
+        User.currentUser().on('change:editMode', function() {
+            if (this.isMounted()) {
+                this.setState({editMode: User.currentUser().editMode});
+            }
+        }, this);
+    },
+
+    componentWillUnmount: function() {
+        User.currentUser().off('change:isAdmin');
+        User.currentUser().off('change:editMode');
+    },
 
 	/**
 	 * Invoked after the component is mounted into the DOM.
@@ -83,25 +123,6 @@ var ImagePage = React.createClass({
 				}
 			}.bind(this));
 		}
-	},
-
-	render: function() {
-		// console.log('render ' + this.props.imagePath);
-
-		var album = this.state.album;
-		if (album) {
-			var image = album.images.get(this.props.imagePath);
-			document.title = image.title;
-			return (
-				<ImagePageNotWaiting album={album} image={image} />
-			);
-		}
-		else {
-			document.title = 'Loading album...';
-			return (
-				<ImagePageWaiting />
-			);
-		}
 	}
 });
 
@@ -112,14 +133,14 @@ module.exports = ImagePage;
  * being loaded from the server.
  */
 var ImagePageWaiting = React.createClass({
-	render: function() {
-		return (
-			<div className='imagepage waiting container-fluid'>
-				<Site.HeaderTitle title='' />
-				<ImagePageBodyWaiting />
-			</div>
-		);
-	}
+    render: function() {
+        return (
+            <div className='imagepage waiting container-fluid'>
+                <Site.HeaderTitle title='' />
+                <ImagePageBodyWaiting />
+            </div>
+        );
+    }
 });
 
 /**
@@ -127,24 +148,24 @@ var ImagePageWaiting = React.createClass({
  * being loaded from the server.
  */
 var ImagePageBodyWaiting = React.createClass({
-	render: function() {
-		return (
-			<div className='photo-body'>
-				<section className='col-md-3'>
-					<h2 className='hidden'>Caption</h2>
-				    <span className='caption'></span>
-				</section>
-				<section className='col-md-9'>
-					<h2 className='hidden'>Photo</h2>
-					<Site.HeaderButtons>
-						<Site.PrevButton />
-						<Site.UpButton />
-						<Site.NextButton/>
-					</Site.HeaderButtons>
-				</section>
-			</div>
-		);
-	}
+    render: function() {
+        return (
+            <div className='photo-body'>
+                <section className='col-md-3'>
+                    <h2 className='hidden'>Caption</h2>
+                    <span className='caption'></span>
+                </section>
+                <section className='col-md-9'>
+                    <h2 className='hidden'>Photo</h2>
+                    <Site.HeaderButtons>
+                        <Site.PrevButton />
+                        <Site.UpButton />
+                        <Site.NextButton/>
+                    </Site.HeaderButtons>
+                </section>
+            </div>
+        );
+    }
 });
 
 /**
@@ -165,7 +186,7 @@ var ImagePageNotWaiting = React.createClass({
 			<div className='imagepage container-fluid'>
 				<Site.HeaderTitle href={album.href} title={image.title} />
 				<ImagePageBody album={album} image={image} />
-				<EditMenu image={image} />
+				<EditMenu image={image} user={this.props.user}/>
 			</div>
 		);
 	}
@@ -305,10 +326,10 @@ var ImagePageBody = React.createClass({
 var EditMenu = React.createClass({
 
 	render: function() {
-		if (!this.state.editAllowed) {
+		if (!this.props.user.isAdmin) {
 			return false;
 		}
-		else if (!this.state.editMode) {
+		else if (!this.props.user.editMode) {
 			var image = this.props.image;
 			var zeditUrl = Config.zenphotoImageEditUrl(image.albumPath, image.filename);
 			var zviewUrl = Config.zenphotoImageViewUrl(image.path);
@@ -340,67 +361,29 @@ var EditMenu = React.createClass({
 		}
 	},
 
-	getInitialState: function() {
-		return {
-            editMode: User.currentUser().editMode,
-            editAllowed: User.currentUser().isAdmin
-		};
-    },
-
-    componentWillMount: function() {
-        User.currentUser().on('change:isAdmin', function() {
-            if (this.isMounted()) {
-                this.setState({editAllowed: User.currentUser().isAdmin});
-            }
-        }, this);
-
-        User.currentUser().on('change:editMode', function() {
-            if (this.isMounted()) {
-                this.setState({editMode: User.currentUser().editMode});
-            }
-        }, this);
-    },
-
-    componentWillUnmount: function() {
-        User.currentUser().off('change:isAdmin');
-        User.currentUser().off('change:editMode');
-    },
-
-    componentDidMount: function() {
-        if (this.state.editMode) {
-            this.doEditMode(true);
-        }
-    },
-
-    componentDidUpdate: function(prevProps, prevState) {
-        if (prevState.editMode != this.state.editMode) {
-            this.doEditMode(this.state.editMode);
-        }
-    },
-
-    /**
-     * Really, we should be managing the edit mode state
-     * at a higher level, rather than breaking encapsulation
-     * and making this component know about parent components.
-     */
-    doEditMode: function(edit) {
-        $('.navbar-brand').attr('contentEditable', edit);
-        $('.caption').attr('contentEditable', edit);
-
-        if (edit) {
-            $('.navbar-brand').focus();
-        }
-    },
-
 	edit: function() {
-        // will trigger the event listener in componentWillMount
+        // will trigger the event listener in a parent component
         User.currentUser().editMode = true;
 	},
 
 	cancel: function() {
-        // will trigger the event listener in componentWillMount
+        // will trigger the event listener in a parent component
         User.currentUser().editMode = false;
 	},
+
+    /**
+     * I don't like how I'm modifying the DOM with jQuery,
+     * but nothing in my parent tree has this HTML.  I'd have
+     * to pass an 'editableTitle' flag into the header component.
+     * I guess maybe I should...
+     */
+    componentDidMount: function() {
+        if (this.props.user.editMode) {
+            $('.navbar-brand').attr('contentEditable', true);
+            $('.caption').attr('contentEditable', true);
+            $('.navbar-brand').focus();
+        }
+    },
 
 	/**
 	 * Save to server
