@@ -34,8 +34,8 @@ module.exports = {
     },
 
     zenphotoUserUrl: function() {
-        //return 'http://tacocat.com/zenphoto/?api&auth';
-        return 'dev/json/user.json';
+        return 'http://tacocat.com/zenphoto/?api&auth';
+        //return 'dev/json/user.json';
     },
 
     staticAlbumUrl: function(albumPath) {

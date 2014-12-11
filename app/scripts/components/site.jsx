@@ -14,25 +14,47 @@ var React = require('react');
 var Site = {};
 
 Site.HeaderTitle = React.createClass({
+    propTypes: {
+        title: React.PropTypes.string,
+        href: React.PropTypes.string,
+        editMode: React.PropTypes.bool
+    },
 	render: function() {
-		var siteTitle = Config.site_title;
+        var title = (this.props.editMode) ?
+            <input className='titleInput navbar-brand' value={this.state.title} onChange={this.titleChange} />
+            : <a className='navbar-brand' href={this.props.href}>{this.props.title}</a>
+
 		return (
 			<div>
 				<nav className='header navbar' role='navigation'>
-						<div className='navbar-header'>
-							<a className='navbar-brand' href={this.props.href} >
-								{this.props.title}
-							</a>
-						</div>
-						<div className='nav navbar-nav navbar-right'>
-								<span className='navbar-text'><Site.SearchButton returnPath={this.props.path}/></span>
-								<span className='navbar-text site-title'>{siteTitle}</span>
-						</div>
+                    <div className='navbar-header'>
+                        {title}
+                    </div>
+                    <div className='nav navbar-nav navbar-right'>
+                        <span className='navbar-text'><Site.SearchButton returnPath={this.props.path}/></span>
+                        <span className='navbar-text site-title'>{Config.site_title}</span>
+                    </div>
 				</nav>
 				<Site.HeaderButtons>{this.props.children}</Site.HeaderButtons>
 			</div>
 		);
-	}
+	},
+    getInitialState: function() {
+        return {title: this.props.title};
+    },
+    titleChange: function(event) {
+        this.setState({title: event.target.value});
+    },
+    componentDidMount: function() {
+        if (this.props.editMode) {
+           $('.titleInput').focus();
+        }
+    },
+    componentDidUpdate: function(prevProps, prevState) {
+        if (this.props.editMode) {
+           $('.titleInput').focus();
+        }
+    }
 });
 
 Site.HeaderButtons = React.createClass({

@@ -184,7 +184,7 @@ var ImagePageNotWaiting = React.createClass({
 
 		return (
 			<div className='imagepage container-fluid'>
-				<Site.HeaderTitle href={album.href} title={image.title} />
+				<Site.HeaderTitle href={album.href} title={image.title} editMode={this.props.user.editMode} />
 				<ImagePageBody album={album} image={image} />
 				<EditMenu image={image} allowEdit={this.props.user.isAdmin} editMode={this.props.user.editMode} />
 			</div>
@@ -374,28 +374,6 @@ var EditMenu = React.createClass({
         // will trigger the event listener in a parent component
         User.currentUser().editMode = false;
 	},
-
-    /**
-     * I don't like how I'm modifying the DOM with jQuery,
-     * but nothing in my parent tree has this HTML.  I'd have
-     * to pass an 'editableTitle' flag into the header component.
-     * I guess maybe I should...
-     */
-    componentDidMount: function() {
-        if (this.props.editMode) {
-            $('.navbar-brand').attr('contentEditable', true);
-            $('.caption').attr('contentEditable', true);
-            $('.navbar-brand').focus();
-        }
-    },
-
-    componentDidUpdate: function(prevProps, prevState) {
-        if (this.props.editMode) {
-            $('.navbar-brand').attr('contentEditable', true);
-            $('.caption').attr('contentEditable', true);
-            $('.navbar-brand').focus();
-        }
-    },
 
     /**
 	 * Save to server
