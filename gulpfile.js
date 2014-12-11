@@ -73,10 +73,10 @@ gulp.task('jsxhint', function() {
 
 // Scripts
 gulp.task('scripts', function () {
-    var opts = {};
-    if (!prod) {
-        opts.debug = true; // add a source map inline to the end of the bundle. This makes debugging easier because you can see all the original files if you are in a modern enough browser.
-    }
+    var opts = {
+        noparse: ['jquery'], // shave a little time off builds by telling browserify to not parse these files for require() statements
+        debug: !prod // add a source map inline to the end of the bundle. This makes debugging easier because you can see all the original files if you are in a modern enough browser.
+    };
     return browserify('./app/scripts/app.js', opts)
         .bundle()
         .pipe(source('app.js'))
@@ -113,10 +113,9 @@ gulp.task('copyhtaccess', function() {
 
 // Create an application cache manifest
 gulp.task('manifest', function(){
-	gulp.src(['dist/*','dist/scripts/**/*.js', 'dist/styles/**/*.css', 'dist/fonts/**/*.*'])
+	gulp.src(['dist/*','dist/scripts/**/*.js', 'dist/styles/**/*.css', 'dist/fonts/**/*.{ttf,woff,eof,svg}'])
 	.pipe(manifest({
 		hash: true,
-//		cache: ['/favicon.ico'],
 		network: ['*'],
 		filename: 'a.appcache',
 		exclude: 'a.appcache'

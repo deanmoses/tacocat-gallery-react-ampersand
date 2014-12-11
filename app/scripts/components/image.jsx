@@ -186,7 +186,7 @@ var ImagePageNotWaiting = React.createClass({
 			<div className='imagepage container-fluid'>
 				<Site.HeaderTitle href={album.href} title={image.title} />
 				<ImagePageBody album={album} image={image} />
-				<EditMenu image={image} user={this.props.user}/>
+				<EditMenu image={image} allowEdit={this.props.user.isAdmin} editMode={this.props.user.editMode} />
 			</div>
 		);
 	}
@@ -324,12 +324,16 @@ var ImagePageBody = React.createClass({
  * Component that renders the admin's image edit controls.
  */
 var EditMenu = React.createClass({
-
+    propTypes: {
+        allowEdit: React.PropTypes.bool.isRequired,
+        editMode: React.PropTypes.bool.isRequired
+    },
 	render: function() {
-		if (!this.props.user.isAdmin) {
+
+		if (!this.props.allowEdit) {
 			return false;
 		}
-		else if (!this.props.user.editMode) {
+		else if (!this.props.editMode) {
 			var image = this.props.image;
 			var zeditUrl = Config.zenphotoImageEditUrl(image.albumPath, image.filename);
 			var zviewUrl = Config.zenphotoImageViewUrl(image.path);
@@ -347,7 +351,7 @@ var EditMenu = React.createClass({
 						</ul>
 					</div>
 				</div>
-			)
+			);
 		}
 		else {
 			return (
@@ -357,7 +361,7 @@ var EditMenu = React.createClass({
 						<button type='button' className='btn btn-primary' onClick={this.save}><Site.GlyphIcon glyph='ok'/> Save</button>
 					</div>
 				</div>
-			)
+			);
 		}
 	},
 
@@ -378,14 +382,22 @@ var EditMenu = React.createClass({
      * I guess maybe I should...
      */
     componentDidMount: function() {
-        if (this.props.user.editMode) {
+        if (this.props.editMode) {
             $('.navbar-brand').attr('contentEditable', true);
             $('.caption').attr('contentEditable', true);
             $('.navbar-brand').focus();
         }
     },
 
-	/**
+    componentDidUpdate: function(prevProps, prevState) {
+        if (this.props.editMode) {
+            $('.navbar-brand').attr('contentEditable', true);
+            $('.caption').attr('contentEditable', true);
+            $('.navbar-brand').focus();
+        }
+    },
+
+    /**
 	 * Save to server
 	 */
 	save: function() {

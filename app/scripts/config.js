@@ -33,6 +33,11 @@ module.exports = {
     return 'http://tacocat.com/zenphoto/zp-core/admin-edit.php?page=edit&album=' + encodeURIComponent(albumPath);
     },
 
+    zenphotoUserUrl: function() {
+        //return 'http://tacocat.com/zenphoto/?api&auth';
+        return 'dev/json/user.json';
+    },
+
     staticAlbumUrl: function(albumPath) {
         // format: 2001/12-31
         // new format: 2001/12/31
