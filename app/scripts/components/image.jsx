@@ -10,7 +10,7 @@ require('bootstrap-dropdown'); // must be after jquery
 var Config = require('../config.js');
 var AlbumStore = require('../models/album_store.js');
 var User = require('../models/user.js');
-var ImageEdit = require('./imageEdit.jsx');
+var RichTextEditor = require('./richText.jsx');
 var Site = require('./site.jsx'); // other React.js components these components depend on
 var React = require('react');
 
@@ -185,7 +185,7 @@ var ImagePageNotWaiting = React.createClass({
 		return (
 			<div className='imagepage container-fluid'>
 				<Site.HeaderTitle href={album.href} title={image.title} editMode={this.props.user.editMode} />
-				<ImagePageBody album={album} image={image} />
+				<ImagePageBody album={album} image={image} editMode={this.props.user.editMode} />
 				<EditMenu image={image} allowEdit={this.props.user.isAdmin} editMode={this.props.user.editMode} />
 			</div>
 		);
@@ -198,7 +198,8 @@ var ImagePageNotWaiting = React.createClass({
 var ImagePageBody = React.createClass({
 	propTypes: {
 	    image: React.PropTypes.object.isRequired,
-		album: React.PropTypes.object.isRequired
+		album: React.PropTypes.object.isRequired,
+        editMode: React.PropTypes.bool
 	},
 
 	render: function() {
@@ -216,11 +217,16 @@ var ImagePageBody = React.createClass({
 		else {
 			style.width = '100%';
 		}
+
+        var desc = (this.props.editMode)
+            ? <RichTextEditor valueToEdit={image.description}/>
+            : <span className='caption' dangerouslySetInnerHTML={{__html: image.description}}/>
+
 		return (
 			<div className='photo-body'>
 				<section className='col-md-3'>
 					<h2 className='hidden'>Caption</h2>
-				    <span className='caption' dangerouslySetInnerHTML={{__html: image.description}}/>
+                    {desc}
 				</section>
 				<section className='col-md-9'>
 					<h2 className='hidden'>Photo</h2>
