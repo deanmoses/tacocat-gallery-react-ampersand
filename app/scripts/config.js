@@ -8,7 +8,9 @@ module.exports = {
 
 	site_title: 'Dean, Lucie, Felix and Milo Moses',
 
-    dev: false, // TODO: eliminate and instead replace URLs during build process
+    dev: function() {
+      return (document.location.hostname.toLowerCase() == "localhost");
+    },
 
 	zenphotoBaseUrl: function() {
 		return 'http://tacocat.com/zenphoto/';
@@ -36,7 +38,7 @@ module.exports = {
     },
 
     zenphotoUserUrl: function() {
-        return this.dev
+        return this.dev()
             ? 'dev/json/user.json'
             : 'http://tacocat.com/zenphoto/?api&auth';
     },
