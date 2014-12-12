@@ -55,8 +55,6 @@ var ImagePage = React.createClass({
 	 * The return value will be used as the initial value of this.state.
 	 */
 	getInitialState: function() {
-		// console.log('getInitialState ' + this.props.imagePath);
-
 		// get the album's path from the photo's path
 		var pathParts = this.props.imagePath.split('/');
 		pathParts.pop(); // remove photo filename
@@ -336,40 +334,56 @@ var EditMenu = React.createClass({
     },
 	render: function() {
 
-		if (!this.props.allowEdit) {
-			return false;
-		}
-		else if (!this.props.editMode) {
-			var image = this.props.image;
-			var zeditUrl = Config.zenphotoImageEditUrl(image.albumPath, image.filename);
-			var zviewUrl = Config.zenphotoImageViewUrl(image.path);
-			return (
-				<div>
-					<div className='btn-group'>
-						<button type='button' className='btn btn-default' onClick={this.edit}><Site.GlyphIcon glyph='pencil'/> Edit</button>
-						<button type='button' className='btn btn-default dropdown-toggle' data-toggle='dropdown' aria-expanded='false'>
-							<span className='caret'></span>
-							<span className='sr-only'>Toggle Dropdown</span>
-						</button>
-						<ul className='dropdown-menu' role='menu'>
-							<li><a href={zeditUrl} target='zen' title='Edit in Zenphoto'><Site.GlyphIcon glyph='new-window'/> Full Edit</a></li>
-							<li><a href={zviewUrl} target='zen' title='View in Zenphoto'><Site.GlyphIcon glyph='eye-open'/> Full View</a></li>
-						</ul>
-					</div>
-				</div>
-			);
+        if (!this.props.allowEdit) {
+            return false;
+        }
+        else if (this.state.step === 'saving') {
+            return (
+                <div>
+                    Saving...
+                </div>
+            );
+        }
+		else if (this.props.editMode) {
+            var saveMessage = this.state.step === 'saved' ? <span className='editStatusMsg'>Saved.</span> : '';
+            return (
+                <div>
+                    <div className='btn-group'>
+                        <button type='button' className='btn btn-default' onClick={this.cancel} title='Leave edit mode'><Site.GlyphIcon glyph='remove'/> Cancel</button>
+                        <button type='button' className='btn btn-default' onClick={this.save}><Site.GlyphIcon glyph='ok'/> Save</button>
+                        <button type='button' className='btn btn-primary' onClick={this.saveNext} title='Save and go to next image'><Site.GlyphIcon glyph='arrow-right'/> Next</button>
+                    </div>
+                    {saveMessage}
+                </div>
+            );
 		}
 		else {
-			return (
-				<div>
-					<div className='btn-group'>
-						<button type='button' className='btn btn-default' onClick={this.cancel}><Site.GlyphIcon glyph='remove'/> Cancel</button>
-						<button type='button' className='btn btn-primary' onClick={this.save}><Site.GlyphIcon glyph='ok'/> Save</button>
-					</div>
-				</div>
-			);
+            var image = this.props.image;
+            var zeditUrl = Config.zenphotoImageEditUrl(image.albumPath, image.filename);
+            var zviewUrl = Config.zenphotoImageViewUrl(image.path);
+            return (
+                <div>
+                    <div className='btn-group'>
+                        <button type='button' className='btn btn-default' onClick={this.edit}><Site.GlyphIcon glyph='pencil'/> Edit</button>
+                        <button type='button' className='btn btn-default dropdown-toggle' data-toggle='dropdown' aria-expanded='false'>
+                            <span className='caret'></span>
+                            <span className='sr-only'>Toggle Dropdown</span>
+                        </button>
+                        <ul className='dropdown-menu' role='menu'>
+                            <li><a href={zeditUrl} target='zen' title='Edit in Zenphoto'><Site.GlyphIcon glyph='new-window'/> Full Edit</a></li>
+                            <li><a href={zviewUrl} target='zen' title='View in Zenphoto'><Site.GlyphIcon glyph='eye-open'/> Full View</a></li>
+                        </ul>
+                    </div>
+                </div>
+            );
 		}
 	},
+
+    getInitialState: function() {
+        return {
+            step: ''
+        };
+    },
 
 	edit: function() {
         // will trigger the event listener in a parent component
@@ -382,14 +396,47 @@ var EditMenu = React.createClass({
 	},
 
     /**
+     * Save to server and then go to the next image
+     */
+    saveNext: function() {
+        this.save(true);
+    },
+
+    /**
 	 * Save to server
 	 */
-	save: function() {
-		var _this = this;
-		var title = $('.navbar-brand').text();
-		var description = $('.caption').html();
+	save: function(next) {
+        var titleInputElement = $('.titleInput');
+        if (!titleInputElement.length) {
+            alert('image save: could not find title input element');
+            return;
+        }
+        var descInputElement = $('.caption');
+        if (!descInputElement.length) {
+            alert('image save: could not find description input element');
+            return;
+        }
+
+		var title = titleInputElement.text().trim();
+		var description = descInputElement.contents();
+
+        debugger;
+
+        if (!title) {
+            alert('Title cannot be blank');
+            return;
+        }
+
+        // If there's no actual text, but maybe some <p> or <br>,
+        // set it to blank.
+        if (!descInputElement.text().trim()) {
+            description = '';
+        }
+
 		console.log('title', title);
 		console.log('desc', description);
+
+        this.setState({step: 'saving'});
 
 		var ajaxData = {
 			eip_context	: 'image',
@@ -405,12 +452,20 @@ var EditMenu = React.createClass({
 			data: ajaxData
 		})
 		.done(function( msg ) {
-			_this.props.image.title = title;
-			_this.props.image.description = description;
-		})
-		.fail(function(e) {
-			alert('error: ' + e);
-			console.log('error saving image: ', e);
-		});
+            // set the title and description on the image model
+			this.props.image.title = title;
+			this.props.image.description = description;
+            if (next) {
+                window.location.hash = this.props.image.nextImageHref;
+            }
+            else {
+                this.setState({step: 'saved'});
+            }
+		}.bind(this))
+		.fail(function(jqXHR, textStatus, errorThrown) {
+			console.log('error saving image: %s\n\tstatus: %s\n\txhr: %s', errorThrown, textStatus, jqXHR);
+            alert('Error saving: ' + errorThrown);
+            this.setState({step: ''});
+		}.bind(this));
 	}
 });

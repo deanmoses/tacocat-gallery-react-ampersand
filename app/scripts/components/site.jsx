@@ -21,9 +21,8 @@ Site.HeaderTitle = React.createClass({
     },
 	render: function() {
         var title = (this.props.editMode)
-            //? <input className='titleInput navbar-brand' value={this.state.title} onChange={this.titleChange} />
             ? <span className='titleInput navbar-brand' onChange={this.titleChange} contentEditable='true'>{this.state.title}</span>
-            : <a className='navbar-brand' href={this.props.href}>{this.props.title}</a>
+            : <a className='navbar-brand' href={this.props.href}>{this.props.title}</a>;
 
 		return (
 			<div>
