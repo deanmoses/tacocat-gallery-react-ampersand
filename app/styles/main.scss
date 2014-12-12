@@ -65,7 +65,7 @@ $titleColor: #fff;
 }
 
 .albumpage.yearalbumtype {
-	
+
 	.years {
 		color: $titleColor;
 
@@ -73,11 +73,11 @@ $titleColor: #fff;
    			content: " | ";
    			color: #666;
    		}
-   		
+
    		a:hover {
 	   		cursor: pointer;
    		}
-		
+
 		padding: 0.75em 1em;
 		background-color: #383c41;
 		border-bottom: 1px solid #1b1e21;
@@ -87,7 +87,7 @@ $titleColor: #fff;
 	.month {
 		display: block;
 		margin: 1em;
-		
+
 		& > h1 {
 			font-weight: bold;
 			font-size: 1.3em;
@@ -136,9 +136,8 @@ $titleColor: #fff;
     padding: 0.2em 0;
 }
 
-.modal textarea {
-	width: 100%;
-	min-height: 200px;
+.editStatusMsg {
+    padding-left: 1em;
 }
 
 /**
