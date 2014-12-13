@@ -148,7 +148,7 @@ gulp.task('clean', function (cb) {
 
 
 // Bundle
-gulp.task('bundle', ['styles', 'copyfonts', 'copyvendor', 'copyhtaccess', /*'manifest',*/ 'scripts'], function() {
+gulp.task('bundle', ['styles', 'copyfonts', 'copyhtaccess', /*'manifest',*/ 'scripts'], function() {
     return gulp.src('./app/*.html')
 		.pipe($.useref.assets())
 		.pipe($.useref.restore())

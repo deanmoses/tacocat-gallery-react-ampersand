@@ -418,9 +418,7 @@ var EditMenu = React.createClass({
         }
 
 		var title = titleInputElement.text().trim();
-		var description = descInputElement.contents();
-
-        debugger;
+		var description = descInputElement.html();
 
         if (!title) {
             alert('Title cannot be blank');
