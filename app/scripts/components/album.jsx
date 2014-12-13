@@ -197,7 +197,7 @@ var YearAlbumPage = React.createClass({
 			<div className='albumpage yearalbumtype container-fluid'>
 				<Site.HeaderTitle href='#' title={a.pageTitle} path={this.props.album.path}>
 					<Site.PrevButton href={a.nextAlbumHref} title={a.nextAlbumTitle} />
-					<Site.UpButton href='#' title='' />
+					<Site.UpButton href='#' title='All Years' />
 					<Site.NextButton href={a.prevAlbumHref} title={a.prevAlbumTitle}/>
 				</Site.HeaderTitle>
 				<FirstsAndThumbs album={a}/>
