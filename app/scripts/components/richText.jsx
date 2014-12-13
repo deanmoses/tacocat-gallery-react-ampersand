@@ -33,14 +33,16 @@ module.exports = RichTextEditor = React.createClass({
             }).done(function() {
                 // now that it's loaded, configure the editor
                 if (window.CKEDITOR) {
-                    console.log('CKEDITOR', window.CKEDITOR);
+                    //console.log('CKEDITOR', window.CKEDITOR);
                     CKEDITOR.inline('ckedtr', {
                         toolbar: [
                             ['Bold', 'Italic', 'Underline'],
                             ['BulletedList', 'NumberedList'],
-                            ['PasteText', '-', 'RemoveFormat']
+                            ['Link', 'Unlink']
                         ],
-                        removeButtons: null
+                        removeButtons: null,
+                        linkShowAdvancedTab: false,
+                        linkShowTargetTab: false
                     });
                 }
             });
