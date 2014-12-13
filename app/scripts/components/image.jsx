@@ -195,7 +195,7 @@ var ImagePageNotWaiting = React.createClass({
 			<div className='imagepage container-fluid'>
 				<Site.HeaderTitle href={album.href} title={image.title} editMode={this.props.user.editMode} />
 				<ImagePageBody album={album} image={image} editMode={this.props.user.editMode} />
-				<EditMenu image={image} allowEdit={this.props.user.isAdmin} editMode={this.props.user.editMode} />
+				<EditMenu album={album} image={image} allowEdit={this.props.user.isAdmin} editMode={this.props.user.editMode} />
 			</div>
 		);
 	}
@@ -338,6 +338,7 @@ var ImagePageBody = React.createClass({
  */
 var EditMenu = React.createClass({
     propTypes: {
+        album: React.PropTypes.object.isRequired,
         image: React.PropTypes.object.isRequired,
         allowEdit: React.PropTypes.bool.isRequired,
         editMode: React.PropTypes.bool.isRequired
@@ -470,7 +471,8 @@ var EditMenu = React.createClass({
 			this.props.image.title = title;
 			this.props.image.description = description;
             if (next) {
-                window.location.hash = this.props.image.nextImageHref;
+                // if no next image, go up to the album
+                window.location.hash = (this.props.image.nextImageHref) ? this.props.image.nextImageHref : this.props.album.href;
             }
             else {
                 this.setState({step: 'saved'});
