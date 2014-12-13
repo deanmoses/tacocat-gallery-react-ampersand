@@ -31,8 +31,6 @@ var ImagePage = React.createClass({
 	},
 
     render: function() {
-        // console.log('render ' + this.props.imagePath);
-
         var album = this.state.album;
         if (album) {
             var image = album.images.get(this.props.imagePath);
@@ -72,13 +70,22 @@ var ImagePage = React.createClass({
 		};
 	},
 
+    /**
+     * Invoked once, before component is mounted into the DOM, before initial rendering.
+     */
     componentWillMount: function() {
+        // Start listening for changes to the user model.
+
+        // When the user gets logged in, this triggers rerendering
+        // so the edit button gets drawn.
         User.currentUser().on('change:isAdmin', function() {
             if (this.isMounted()) {
                 this.setState({editAllowed: User.currentUser().isAdmin});
             }
         }, this);
 
+        // When the user clicks edit, edit mode on the user is set.
+        // Listen for that so we know to draw the edit controls.
         User.currentUser().on('change:editMode', function() {
             if (this.isMounted()) {
                 this.setState({editMode: User.currentUser().editMode});
@@ -86,7 +93,11 @@ var ImagePage = React.createClass({
         }, this);
     },
 
+    /**
+     * Invoked immediately before a component is unmounted from the DOM.
+     */
     componentWillUnmount: function() {
+        // Stop listening for changes to the User model
         User.currentUser().off('change:isAdmin');
         User.currentUser().off('change:editMode');
     },
@@ -101,18 +112,18 @@ var ImagePage = React.createClass({
 	 * This is the place to send AJAX requests.
 	 */
 	componentDidMount: function() {
-		// console.log('componentDidMount ' + this.props.imagePath);
-
 		// If getInitialState() didn't get the album Model from the
 		// client side cache, now's the time to fetch it from the server.
 		// This is Ampersand Collection.fetchById().
 		if (!this.state.album) {
 			AlbumStore.fetchById(this.state.albumPath, function (err, album) {
 				if (err) {
+                    // TODO: handle error better than an alert()
+                    alert('error getting album: ' + err);
 					console.log('error getting album', err);
 				}
 				else {
-					console.log('success getting album ' + album.path);
+					//console.log('success getting album ' + album.path);
 					if (this.isMounted()) {
 						this.setState({
 							album: album
@@ -245,8 +256,6 @@ var ImagePageBody = React.createClass({
 	 * Invoked once, immediately after the initial rendering occurs.
 	 * At this point in the lifecycle, the component has a DOM
 	 * representation which you can access via this.getDOMNode().
-	 *
-	 * This is the place to send AJAX requests.
 	 */
 	componentDidMount: function() {
 		// Hook up the image resizing
@@ -329,14 +338,18 @@ var ImagePageBody = React.createClass({
  */
 var EditMenu = React.createClass({
     propTypes: {
+        image: React.PropTypes.object.isRequired,
         allowEdit: React.PropTypes.bool.isRequired,
         editMode: React.PropTypes.bool.isRequired
     },
+
 	render: function() {
 
+        // if user isn't allowed to edit, render nothing
         if (!this.props.allowEdit) {
             return false;
         }
+        // else if we're in the middle of saving, say so and don't draw any buttons
         else if (this.state.step === 'saving') {
             return (
                 <div>
@@ -344,6 +357,7 @@ var EditMenu = React.createClass({
                 </div>
             );
         }
+        // else if we're in edit mode, give controls to save and cancel
 		else if (this.props.editMode) {
             var saveMessage = this.state.step === 'saved' ? <span className='editStatusMsg'>Saved.</span> : '';
             return (
@@ -357,6 +371,7 @@ var EditMenu = React.createClass({
                 </div>
             );
 		}
+        // else user is allowed to edit but isn't currently editing.  Give them an edit button.
 		else {
             var image = this.props.image;
             var zeditUrl = Config.zenphotoImageEditUrl(image.albumPath, image.filename);
@@ -414,6 +429,7 @@ var EditMenu = React.createClass({
         var descInputElement = $('.caption');
         if (!descInputElement.length) {
             alert('image save: could not find description input element');
+            this.setState({step: ''});
             return;
         }
 
