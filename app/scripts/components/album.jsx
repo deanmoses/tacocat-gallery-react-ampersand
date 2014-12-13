@@ -194,7 +194,7 @@ var YearAlbumPage = React.createClass({
 	render: function() {
 		var a = this.props.album;
 		return (
-			<div className={'albumpage yearalbumtype container-fluid y'+this.props.album.title}>
+			<div className='albumpage yearalbumtype container-fluid'>
 				<Site.HeaderTitle href='#' title={a.pageTitle} path={this.props.album.path}>
 					<Site.PrevButton href={a.nextAlbumHref} title={a.nextAlbumTitle} />
 					<Site.UpButton href='#' title='' />

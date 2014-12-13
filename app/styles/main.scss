@@ -64,39 +64,18 @@ $titleColor: #fff;
 	}
 }
 
-.albumpage.yearalbumtype {
+.month {
+    display: block;
+    margin: 1em;
 
-	.years {
-		color: $titleColor;
-
-		:not(:last-child):after {
-   			content: " | ";
-   			color: #666;
-   		}
-
-   		a:hover {
-	   		cursor: pointer;
-   		}
-
-		padding: 0.75em 1em;
-		background-color: #383c41;
-		border-bottom: 1px solid #1b1e21;
-		border-top: 1px solid black;
-	}
-
-	.month {
-		display: block;
-		margin: 1em;
-
-		& > h1 {
-			font-weight: bold;
-			font-size: 1.3em;
-			background: #EEE;
-			border-radius: 1em;
-			padding: 0.3em 1em;
-			width: 100%;
-		}
-	}
+    & > h1 {
+        font-weight: bold;
+        font-size: 1.3em;
+        background: #EEE;
+        border-radius: 1em;
+        padding: 0.3em 1em;
+        width: 100%;
+    }
 }
 
 .thumbnail {

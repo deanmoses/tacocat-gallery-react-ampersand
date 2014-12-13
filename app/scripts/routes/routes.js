@@ -61,6 +61,13 @@ module.exports = Router.extend({
 		}
 		//console.log('router path: "' + path + '"');
 
+        if (!path || path.indexOf('/') >=0) {
+            $('body').removeAttr('class');
+        }
+        else {
+            $('body').attr('class', 'y'+path);
+        }
+
 		// It's an album path if there's no '.' in the path.
 		// This is not robust, but it's safe enough because
 		// I know i've never created an album with a '.' in

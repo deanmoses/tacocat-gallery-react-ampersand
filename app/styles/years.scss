@@ -1,85 +1,327 @@
 //
 // colors for each year
 //
-.albumpage.yearalbumtype {
 
-	&.y2014 {
-		background-color: #b7c8a4;
+.y2014 {
+    background-color: #b7c8a4;
 
-		.firsts, .years, .month > h1 {
-		    background-color: #8a9e75;
-		}
-		.years {
-			border: none;
-		}
-	}
+    .firsts, .years, .month > h1 {
+        background-color: #8a9e75;
+    }
+    .years {
+        border: none;
+    }
+}
 
-	&.y2013 {
-		// top banner
-		.header {
-		    background-color: #b7c8a4;
-		}
+.y2013 {
+    // top banner
+    .header {
+        background-color: #b7c8a4;
+    }
 
-		// years
-		.years {
-			background-color: #8a9e75;
-		}
+    // years
+    .years {
+        background-color: #8a9e75;
+    }
 
-		// thumbnail area
-		#body {
-			background-color: #b1ceb3;
-		}
+    // thumbnail area
+    #body {
+        background-color: #b1ceb3;
+    }
 
-		// firsts column
-		.firsts {
-		    background-color: #8a9e75;
-		}
+    // firsts column
+    .firsts {
+        background-color: #8a9e75;
+    }
 
-		// links
-		a {
-			//color: #7e684a;
-		}
+    // links
+    a {
+        //color: #7e684a;
+    }
 
-		.years a {
-			//color: #685233;
-		}
-	}
+    .years a {
+        //color: #685233;
+    }
+}
 
-	&.y2012 {
-		// top banner
-		.header {
-		    background-color: #edb79c;
-		}
+.y2012 {
+    // top banner
+    .header {
+        background-color: #edb79c;
+    }
 
-		// thumbnail area
-		#body {
-			background-color: #973450;
-		}
+    // thumbnail area
+    #body {
+        background-color: #973450;
+    }
 
-		// firsts column
-		.firsts {
-			background-color: #e77f4b;
-		}
+    // firsts column
+    .firsts {
+        background-color: #e77f4b;
+    }
 
-		// links
-		a {
-			//color: #973450;
-		}
-	}
+    // links
+    a {
+        //color: #973450;
+    }
+}
 
-	&.y2001 {
-		background-color: #FF6600;
+.y2001 {
+    background-color: #FF6600;
 
-		.firsts, .years, .month > h1 {
-			border: 4px solid #FF99FF;
-		}
+    .firsts, .years, .month > h1 {
+        border: 4px solid #FF99FF;
+    }
 
-		.years, .month > h1 {
-			background-color: #FFCCFF;
-		}
+    .years, .month > h1 {
+        background-color: #FFCCFF;
+    }
 
-		.firsts {
-		    background-color: #fff;
-		}
-	}
+    .firsts {
+        background-color: #fff;
+    }
+}
+
+.y1988 {
+    background-color: lighten(#E7C983, 10%);
+
+    a.navbar-brand {
+        color: darken(#E7C983, 30%);
+        font-weight: bolder;
+        font-size: 35px;
+    }
+
+    .btn {
+        background-color: #FFFF8D;
+        border-color: darken(#FFDD51, 10%);
+    }
+
+    .firsts, .years, .month > h1 {
+        border: 4px solid darken(#CE5AFF, 20%);
+    }
+
+    .years, .month > h1 {
+        background-color: #FF56A2;
+    }
+
+    .firsts {
+        background-color: #CE5AFF;
+    }
+}
+
+
+.y1987 {
+    background-color: #DBDDE4;
+
+    a.navbar-brand {
+        color: darken(#5D5BEA, 30%);
+        font-weight: bolder;
+        font-size: 35px;
+    }
+
+    .btn {
+        background-color: #737CD1;
+        border-color: darken(#5D5BEA, 10%);
+    }
+
+    .firsts, .years, .month > h1 {
+        border: 4px solid #EA00B2;
+    }
+
+    .years, .month > h1 {
+        background-color: #00DBB7;
+    }
+
+    .firsts {
+        background-color: #00DBB7;
+    }
+}
+
+.y1979 {
+    background-color: #EAF7BE;
+
+    a.navbar-brand {
+        color: #769225;
+        font-weight: bolder;
+        font-size: 35px;
+    }
+
+    .btn {
+        background-color: #BAE8B1;
+        border-color: #2D7F1F;
+    }
+
+    .firsts, .years, .month > h1 {
+        border: 4px solid #9B9126;
+    }
+
+    .years, .month > h1 {
+        background-color: #E3D86B;
+    }
+
+    .firsts {
+        background-color: #FFFAC4;
+    }
+}
+
+.y1978 {
+    background-color: #B4C99B;
+
+    a.navbar-brand {
+        color: darken(#9EC392, 30%);
+        font-weight: bolder;
+        font-size: 35px;
+    }
+
+    .btn {
+        background-color: #AECB6D;
+        border-color: darken(#AECB6D, 10%);
+    }
+
+    .firsts, .years, .month > h1 {
+        border: 4px solid darken(#5FC4D0, 10%);
+    }
+
+    .years, .month > h1 {
+        background-color: #69C3DC;
+    }
+
+    .firsts {
+        background-color: #69C3DC;
+    }
+}
+
+.y1977 {
+    background-color: #A1C3B1;
+
+    a.navbar-brand {
+        color: darken(#6DBB96, 30%);
+        font-weight: bolder;
+        font-size: 35px;
+    }
+
+    .btn {
+        background-color: #CACEBC;
+        border-color: #80A795;
+    }
+
+    .firsts, .years, .month > h1 {
+        border: 4px solid #80A795;
+    }
+
+    .years, .month > h1 {
+        background-color: #CACEBC;
+    }
+
+    .firsts {
+        background-color: #CACEBC;
+    }
+}
+
+.y1976 {
+    background-color: #82A168;
+
+    a.navbar-brand {
+        color: darken(#82A168, 30%);
+        font-weight: bolder;
+        font-size: 35px;
+    }
+
+    .btn {
+        background-color: #A5C363;
+        border-color: #82A168;
+    }
+
+    .firsts, .years, .month > h1 {
+        border: 4px solid #DB5521;
+    }
+
+    .years, .month > h1 {
+        background-color: #E38D0A;
+    }
+
+    .firsts {
+        background-color: #E38D0A;
+    }
+}
+
+.y1975 {
+    background-color: #E1D451;
+
+    a.navbar-brand {
+        color: darken(#97BA53, 10%);
+        font-weight: bolder;
+        font-size: 35px;
+    }
+
+    .btn {
+        background-color: #A4C45B;
+        border-color: #97BA53;
+    }
+
+    .firsts, .years, .month > h1 {
+        border: 4px solid #ED9A0C;
+    }
+
+    .years, .month > h1 {
+        background-color: #EBD238;
+    }
+
+    .firsts {
+        background-color: #EBD238;
+    }
+}
+
+.y1974 {
+    background-color: #EEA338;
+
+    a.navbar-brand {
+        color: #80412a;
+        font-weight: bolder;
+        font-size: 35px;
+    }
+
+    .btn {
+        background-color: #EDD436;
+        border-color: #80412A;
+    }
+
+    .firsts, .years, .month > h1 {
+        border: 4px solid #80412A;
+    }
+
+    .years, .month > h1 {
+        background-color: #E67823;
+    }
+
+    .firsts {
+        background-color: #E67823;
+    }
+}
+
+.y1973 {
+    background-color: #FF6600;
+
+    a.navbar-brand {
+        color: #80412a;
+        font-weight: bolder;
+        font-size: 35px;
+    }
+
+    .btn {
+        background-color: #E53700;
+        border-color: #AB2D00;
+    }
+
+    .firsts, .years, .month > h1 {
+        border: 4px solid #AB2D00;
+    }
+
+    .years, .month > h1 {
+        background-color: #FFB400;
+    }
+
+    .firsts {
+        background-color: #FFB400;
+    }
 }
