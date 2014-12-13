@@ -6,10 +6,11 @@
 //
 
 var Config = require('../config.js');
-var Site = require('./site.jsx');
-var Thumb = require('./thumb.jsx');
 var User = require('../models/user.js');
 var AlbumStore = require('../models/album_store.js');
+var Site = require('./site.jsx');
+var Thumb = require('./thumb.jsx');
+var RichTextEditor = require('./richText.jsx');
 var $ = require('jquery');
 var React = require('react');
 
@@ -35,16 +36,48 @@ var AlbumPage = React.createClass({
 	 * The return value will be used as the initial value of this.state.
 	 */
 	getInitialState: function() {
-		// console.log('getInitialState ' + this.props.albumPath);
-
 		return {
 			// Get the album if it already exists client-side.
 			// Does NOT fetch it from server.
 			// No album: component will show a waiting... indicator.
 			// This is Ampersand Collection.get().
-			album: AlbumStore.get(this.props.albumPath)
+			album: AlbumStore.get(this.props.albumPath),
+            editMode: User.currentUser().editMode,
+            editAllowed: User.currentUser().isAdmin
 		};
 	},
+
+    /**
+     * Invoked once, before component is mounted into the DOM, before initial rendering.
+     */
+    componentWillMount: function() {
+        // Start listening for changes to the user model.
+
+        // When the user gets logged in, this triggers rerendering
+        // so the edit button gets drawn.
+        User.currentUser().on('change:isAdmin', function() {
+            if (this.isMounted()) {
+                this.setState({editAllowed: User.currentUser().isAdmin});
+            }
+        }, this);
+
+        // When the user clicks edit, edit mode on the user is set.
+        // Listen for that so we know to draw the edit controls.
+        User.currentUser().on('change:editMode', function() {
+            if (this.isMounted()) {
+                this.setState({editMode: User.currentUser().editMode});
+            }
+        }, this);
+    },
+
+    /**
+     * Invoked immediately before a component is unmounted from the DOM.
+     */
+    componentWillUnmount: function() {
+        // Stop listening for changes to the User model
+        User.currentUser().off('change:isAdmin');
+        User.currentUser().off('change:editMode');
+    },
 
 	/**
 	 * Invoked after the component is mounted into the DOM.
@@ -99,7 +132,7 @@ var AlbumPage = React.createClass({
 				);
 			case 'week':
 				return (
-					<WeekAlbumPage album={album}/>
+					<WeekAlbumPage album={album} user={User.currentUser()}/>
 				);
 			case 'loading':
 				return (
@@ -177,21 +210,30 @@ var YearAlbumPage = React.createClass({
  * Component that displays a week album (like 2014/12-31/)
  */
 var WeekAlbumPage = React.createClass({
+    propTypes: {
+        album: React.PropTypes.object.isRequired,
+        user: React.PropTypes.object.isRequired
+    },
+
 	render: function() {
 		var a = this.props.album;
+        var user = this.props.user;
+        var desc = (user.editMode)
+            ? <RichTextEditor valueToEdit={a.description}/>
+            : <span className='caption' dangerouslySetInnerHTML={{__html: a.description}}/>;
 		return (
 			<div className='albumpage weekalbumtype container'>
 				<Site.HeaderTitle href={'#'+a.parent_album.path} title={a.pageTitle}>
-					<Site.PrevButton href={a.nextAlbumHref} title={a.nextAlbumTitle} />
-					<Site.UpButton href={a.parentAlbumHref} title={a.parentAlbumTitle} />
+					<Site.PrevButton href={a.nextAlbumHref} title={a.nextAlbumTitle}/>
+					<Site.UpButton href={a.parentAlbumHref} title={a.parentAlbumTitle}/>
 					<Site.NextButton href={a.prevAlbumHref} title={a.prevAlbumTitle}/>
 				</Site.HeaderTitle>
-				<section className='caption'>
-					<h1 className='hidden'>Overview</h1>
-					<span className='caption' dangerouslySetInnerHTML={{__html: a.description}}/>
+				<section className='overview'>
+					<h2 className='hidden'>Overview</h2>
+                    {desc}
 				</section>
 				<Thumb.List items={a.images} isAlbum={false}/>
-                <EditMenu album={a}/>
+                <EditMenu album={a} allowEdit={user.isAdmin} editMode={user.editMode} />
 			</div>
 		);
 	}
@@ -211,6 +253,7 @@ var FirstsAndThumbs = React.createClass({
 				    <div className='firsts-text' dangerouslySetInnerHTML={{__html: a.description}}/>
 				</section>
 				<section className='col-md-9'>
+                    <h2 className='hidden'>Thumbnails</h2>
 					<MonthThumbs album={a}/>
 				</section>
 			</div>
@@ -261,12 +304,41 @@ var MonthThumb = React.createClass({
  * Component that renders the admin's image edit controls.
  */
 var EditMenu = React.createClass({
+    propTypes: {
+        album: React.PropTypes.object.isRequired,
+        allowEdit: React.PropTypes.bool.isRequired,
+        editMode: React.PropTypes.bool.isRequired
+    },
+
     render: function() {
-        var debug = false; // my localhost can't login to tacocat, so this is the kludge to test functionality
-        if (!this.state.isAdmin && !debug) {
+
+        // if user isn't allowed to edit, render nothing
+        if (!this.props.allowEdit) {
             return false;
         }
-        else if (!this.state.edit) {
+        // else if we're in the middle of saving, say so and don't draw any buttons
+        else if (this.state.step === 'saving') {
+            return (
+                <div>
+                Saving...
+                </div>
+            );
+        }
+        // else if we're in edit mode, give controls to save and cancel
+        else if (this.props.editMode) {
+            var saveMessage = this.state.step === 'saved' ? <span className='editStatusMsg'>Saved.</span> : '';
+            return (
+                <div>
+                    <div className='btn-group'>
+                        <button type='button' className='btn btn-default' onClick={this.cancel} title='Leave edit mode'><Site.GlyphIcon glyph='remove'/> Cancel</button>
+                        <button type='button' className='btn btn-primary' onClick={this.save} title='Save album description'><Site.GlyphIcon glyph='ok'/> Save</button>
+                    </div>
+                    {saveMessage}
+                </div>
+            );
+        }
+        // else user is allowed to edit but isn't currently editing.  Give them an edit button.
+        else  {
             var album = this.props.album;
             var zeditUrl = Config.zenphotoAlbumEditUrl(album.path);
             var zviewUrl = Config.zenphotoAlbumViewUrl(album.path);
@@ -288,87 +360,72 @@ var EditMenu = React.createClass({
                 </div>
             );
         }
-        else {
-            return (
-                <div>
-                    <div className='btn-group'>
-                        <button type='button' className='btn btn-default' onClick={this.cancel}><Site.GlyphIcon glyph='remove'/> Cancel</button>
-                        <button type='button' className='btn btn-primary' onClick={this.save}><Site.GlyphIcon glyph='ok'/> Save</button>
-                    </div>
-                </div>
-            );
-        }
+
     },
 
     getInitialState: function() {
         return {
-            edit: false,
-            isAdmin: User.currentUser().isAdmin
+            step: ''
         };
     },
 
-    componentWillMount: function(){
-        User.currentUser().on('change:isAdmin', function() {
-            this.setState({isAdmin: User.currentUser().isAdmin});
-        }, this);
-    },
-
     edit: function() {
-        this.toggleEdit(true);
+        // will trigger the event listener in a parent component
+        User.currentUser().editMode = true;
     },
 
     cancel: function() {
-        this.toggleEdit(false);
-    },
-
-    /**
-     * true: start edit mode
-     * false: end edit mode
-     */
-    toggleEdit: function(edit) {
-        if (this.isMounted()) {
-            this.setState({
-                edit: edit
-            });
-            $('.navbar-brand').attr('contentEditable', edit);
-            $('.caption').attr('contentEditable', edit);
-            if (edit) {
-                $('.navbar-brand').focus();
-            }
-        }
+        // will trigger the event listener in a parent component
+        User.currentUser().editMode = false;
     },
 
     /**
      * Save to server
      */
     save: function() {
-        var _this = this;
-        var title = $('.navbar-brand').text();
-        var description = $('.caption').html();
-        console.log('title', title);
+        var descInputElement = $('.caption');
+        if (!descInputElement.length) {
+            alert('image save: could not find description input element');
+            this.setState({step: ''});
+            return;
+        }
+
+        // If there's no actual text, but maybe some <p> or <br>,
+        // set it to blank.
+        var description;
+        if (!descInputElement.text().trim()) {
+            description = '';
+        }
+        // else set it to the full HTML of the caption area
+        else {
+            description = descInputElement.html();
+        }
+
         console.log('desc', description);
 
+        this.setState({step: 'saving'});
+
         var ajaxData = {
-            eip_context	: 'image',
-            title: title,
+            eip_context	: 'album',
             desc: description
         };
 
         $.ajax({
             type: "POST",
-            url: Config.zenphotoImageViewUrl(this.props.image.path),
+            url: Config.zenphotoAlbumViewUrl(this.props.album.path),
             cache: false,
             dataType: "text",
             data: ajaxData
         })
-            .done(function() {
-                _this.props.image.title = title;
-                _this.props.image.description = description;
-                _this.cancel();
-            })
-            .fail(function(e) {
-                alert('error: ' + e);
-                console.log('error saving image: ', e);
-            });
+        .done(function() {
+            // set the description on the album model
+            this.props.album.description = description;
+            this.setState({step: 'saved'});
+        }.bind(this))
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            console.log('error saving album: %s\n\tstatus: %s\n\txhr: %s', errorThrown, textStatus, jqXHR);
+            alert('Error saving: ' + errorThrown);
+            this.setState({step: ''});
+        }.bind(this));
     }
 });
