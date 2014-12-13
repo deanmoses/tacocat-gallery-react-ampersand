@@ -218,7 +218,7 @@ var ImagePageBody = React.createClass({
 
         var desc = (this.props.editMode)
             ? <RichTextEditor valueToEdit={image.description}/>
-            : <span className='caption' dangerouslySetInnerHTML={{__html: image.description}}/>
+            : <span className='caption' dangerouslySetInnerHTML={{__html: image.description}}/>;
 
 		return (
 			<div className='photo-body'>
@@ -449,7 +449,7 @@ var EditMenu = React.createClass({
 			dataType: "text",
 			data: ajaxData
 		})
-		.done(function( msg ) {
+		.done(function() {
             // set the title and description on the image model
 			this.props.image.title = title;
 			this.props.image.description = description;

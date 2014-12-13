@@ -62,14 +62,14 @@ module.exports = AmpersandState.extend({
 				return _.find(this.collection.models, function(img) {
 					if (foundMyself) {
 						return true; // returning true on the image AFTER me
-					} 
+					}
 					else if (img.path === myPath) {
 						foundMyself = true;
 					}
 				});
 			}
 		},
-		
+
 		// previous image
 		prev: {
             deps: ['path', 'collection'],
@@ -89,7 +89,7 @@ module.exports = AmpersandState.extend({
 				return prev;
 			}
 		},
-		
+
 		// URL to next image, including hash
 		// Blank if no next image
 		nextImageHref: {
@@ -98,7 +98,7 @@ module.exports = AmpersandState.extend({
 				return this.next ? this.next.href : '';
 			}
 		},
-		
+
 		// URL to previous image, including hash
 		// Blank if no previous image
 		prevImageHref: {
@@ -109,7 +109,3 @@ module.exports = AmpersandState.extend({
 		}
 	}
 });
-
-
-
-

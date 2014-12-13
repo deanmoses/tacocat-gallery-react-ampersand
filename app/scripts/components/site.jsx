@@ -7,6 +7,7 @@
 //
 
 var Config = require('../config.js');
+var $ = require('jquery');
 var React = require('react');
 
 // all the components in this file will be added to Site,
@@ -50,7 +51,7 @@ Site.HeaderTitle = React.createClass({
            $('.titleInput').focus();
         }
     },
-    componentDidUpdate: function(prevProps, prevState) {
+    componentDidUpdate: function(/*prevProps, prevState*/) {
         if (this.props.editMode) {
            $('.titleInput').focus();
         }

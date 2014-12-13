@@ -1,6 +1,8 @@
 /** @jsx React.DOM */
+/*global CKEDITOR */
 'use strict';
 
+var $ = require('jquery');
 var React = require('react');
 
 /**

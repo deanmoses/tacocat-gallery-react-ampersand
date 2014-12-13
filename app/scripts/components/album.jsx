@@ -8,9 +8,10 @@
 var Config = require('../config.js');
 var Site = require('./site.jsx');
 var Thumb = require('./thumb.jsx');
-var React = require('react');
 var User = require('../models/user.js');
 var AlbumStore = require('../models/album_store.js');
+var $ = require('jquery');
+var React = require('react');
 
 /**
  * The React.js component that renders an album.
@@ -197,20 +198,6 @@ var WeekAlbumPage = React.createClass({
 });
 
 /**
- * Component that displays the Album's description
- */
-var AlbumDescription = React.createClass({
-	render: function() {
-		return (
-			<section className='caption'>
-				<h1 className='hidden'>Overview</h1>
-				<span className='caption' dangerouslySetInnerHTML={{__html: this.props.description}}/>
-			</section>
-		);
-	}
-});
-
-/**
  * Component for year pages.
  * Displays the year's firsts and the child albums' thumbnails
  */
@@ -299,7 +286,7 @@ var EditMenu = React.createClass({
                         </ul>
                     </div>
                 </div>
-            )
+            );
         }
         else {
             return (
@@ -309,7 +296,7 @@ var EditMenu = React.createClass({
                         <button type='button' className='btn btn-primary' onClick={this.save}><Site.GlyphIcon glyph='ok'/> Save</button>
                     </div>
                 </div>
-            )
+            );
         }
     },
 
@@ -365,7 +352,7 @@ var EditMenu = React.createClass({
             eip_context	: 'image',
             title: title,
             desc: description
-        }
+        };
 
         $.ajax({
             type: "POST",
@@ -374,7 +361,7 @@ var EditMenu = React.createClass({
             dataType: "text",
             data: ajaxData
         })
-            .done(function( msg ) {
+            .done(function() {
                 _this.props.image.title = title;
                 _this.props.image.description = description;
                 _this.cancel();
