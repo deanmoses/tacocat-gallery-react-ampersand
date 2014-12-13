@@ -7,6 +7,9 @@ $titleColor: #fff;
 
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap";
 
+.btn.disabled {
+    color: #ccc;
+}
 
 .navbar {
 	margin-bottom: 14px;
