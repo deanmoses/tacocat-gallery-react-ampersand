@@ -6,8 +6,10 @@
 
 var _ = require('underscore');
 var DateUtils = require('../utils/date.js');
-var Model = require('ampersand-model');
 var Images = require('./images.js');
+var AlbumStore = require('./album_store');
+var Model = require('ampersand-model');
+
 module.exports = Model.extend({
 	idAttribute: 'path',
     props: {
@@ -19,11 +21,11 @@ module.exports = Model.extend({
 		thumb_size: 'integer', // a number like 200 denoting both edges of this album's thumbnails
 		date: 'date', // in seconds.  Needs to be * 1000 to convert to a Date object
 		thumb: 'string', // path to album's thumbnail, relative to album, like 'felix.jpg'.  null if no thumb set
-		parent_album: 'object',
+		parent_album: 'object', // just enough data about my parent to display a link to it
 		prev: 'object',
 		next: 'object',
 		latest: 'object', // most recent album.  Only supplied with the root album.
-		albums: 'array'
+		albums: 'array' // my child albums (just enough data to supply thumbnails, does not contain my subalbum's images)
     },
 	collections: {
 		// tells Ampersand to treat the images node in the JSON
@@ -194,7 +196,25 @@ module.exports = Model.extend({
 			}
 		}
 	},
-	// the URL of the JSON REST API from which to retrieve the album
+
+    /**
+     * The full Album object of my parent album, if it has already been
+     * retrieved.  Null if my parent album has not been retrieved.
+     */
+    getFullParentAlbum: function() {
+        return AlbumStore.get(this.parent_album.path);
+    },
+
+    /**
+     * The thumbnail version of a specific child album of mine.
+     */
+    getChildAlbumThumb: function(path) {
+        return _.findWhere(this.albums, {path: path});
+    },
+
+    /**
+     * URL of the JSON REST API from which to retrieve the album
+     */
 	url: function() {
 		return 'http://tacocat.com/zenphoto/'+this.path+'?api';
 	}

@@ -22,8 +22,13 @@ Thumb.List = React.createClass({
 		var isAlbum = this.props.isAlbum;
 		var sectionText = isAlbum ? 'Albums' : 'Photos';
         var thumbs = this.props.items.map(function (child) {
-            var selected = !!this.props.selectedItem && StringUtils.endsWith(child.path, this.props.selectedItem);
-            return <Thumb.Nail item={child} isAlbum={isAlbum} albumType={this.props.albumType} key={child.path} editMode={!!this.props.selectedItem} selected={selected} onSelect={this.onSelect} selectKey={child.path}/>;
+            if (this.props.editMode) {
+                var selected = this.props.editMode && !!this.props.selectedItem && StringUtils.endsWith(child.path, this.props.selectedItem);
+                return <Thumb.Nail item={child} isAlbum={isAlbum} albumType={this.props.albumType} key={child.path} editMode={this.props.editMode} selected={selected} onSelect={this.onSelect} />;
+            }
+            else {
+                return <Thumb.Nail item={child} isAlbum={isAlbum} albumType={this.props.albumType} key={child.path}/>
+            }
         }.bind(this));
 
         return (
@@ -70,13 +75,13 @@ Thumb.Nail = React.createClass({
         var style = {
             width: width
         };
-        var imgClass = (!this.props.editMode || !this.props.selected) ? '' : 'selected';
-        var selectButton = (!this.props.editMode || !!this.props.selected) ? '' : <Site.GlyphIcon glyph='star' onClick={this.onSelect}/>
+        var selectedClass = (!this.props.editMode || !this.props.selected) ? '' : ' selected';
+        var selectButton = (!this.props.editMode) ? '' : <Site.GlyphIcon glyph='star' onClick={this.onSelect}/>;
 		var thumbUrl = 'http://tacocat.com/' + item.urlThumb;
 		return(
-			<span className='thumbnail'>
+			<span className={'thumbnail' + selectedClass}>
 				<a href={'#'+item.path}>
-					<img src={thumbUrl} width={width} height={height} alt={title} className={imgClass}/>
+					<img src={thumbUrl} width={width} height={height} alt={title}/>
 				</a>
                 {selectButton}
 				<a href={'#'+item.path}>
@@ -87,9 +92,9 @@ Thumb.Nail = React.createClass({
 		);
 	},
 
-    onSelect: function(x) {
+    onSelect: function() {
         if (this.props.onSelect) {
-            this.props.onSelect(this.props.selectKey);
+            this.props.onSelect(this.props.key);
         }
     }
 });

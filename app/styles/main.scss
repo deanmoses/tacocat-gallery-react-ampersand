@@ -11,10 +11,6 @@ $titleColor: #fff;
     color: #ccc;
 }
 
-img.selected {
-    border: 3px dashed blue;
-}
-
 .navbar {
 	margin-bottom: 14px;
 }
@@ -113,7 +109,16 @@ img.selected {
     1px -1px 0 #000,
     -1px 1px 0 #000,
     1px 1px 0 #000;
+
+    &:hover {
+        color: yellow;
+    }
 }
+
+.thumbnail.selected .glyphicon {
+    color: yellow;
+}
+
 .photo-body {
 	margin-top: 20px;
 }

@@ -233,7 +233,7 @@ var WeekAlbumPage = React.createClass({
 					<h2 className='hidden'>Overview</h2>
                     {desc}
 				</section>
-				<Thumb.List items={a.images} isAlbum={false} selectedItem={selectedItem} onSelect={this.onThumbSelect}/>
+				<Thumb.List items={a.images} isAlbum={false} editMode={user.editMode} selectedItem={selectedItem} onSelect={this.onThumbSelect}/>
                 <EditMenu album={a} allowEdit={user.isAdmin} editMode={user.editMode} />
 			</div>
 		);
@@ -486,10 +486,20 @@ var EditMenu = React.createClass({
             dataType: "text",
             data: ajaxData
         })
-        .done(function() {
+        .done(function(ret) {
             // set the description on the album model
             this.props.album.description = description;
             this.props.album.unpublished = !published;
+            var parentAlbum = this.props.album.getFullParentAlbum();
+            if (parentAlbum) {
+                var me = parentAlbum.getChildAlbumThumb(this.path);
+                me.unpublished = this.props.album.unpublished;
+                // todo: have zenphoto return full URL of thumbnail image
+                if (ret.urlThumb) {
+                    me.urlThumb = ret.urlThumb;
+                }
+            }
+
             this.setState({step: 'saved'});
         }.bind(this))
         .fail(function(jqXHR, textStatus, errorThrown) {
