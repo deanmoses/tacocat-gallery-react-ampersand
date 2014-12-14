@@ -1,1 +1,1 @@
-rsync -r -a -v --delete dist/* tacocat.com:~/themosii.com/p2
+rsync -r -a -v --delete dist/* tacocat.com:~/themosii.com/p
