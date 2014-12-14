@@ -68,8 +68,7 @@ Thumb.Nail = React.createClass({
         else {
             title = item.title;
         }
-
-        var summary = item.summary;
+        var summary = !item.summary ? '' : <p className='thumb-summary' style={style}>{item.summary}</p>;
         width = width + 'px';
         height = height + 'px';
         var style = {
@@ -87,7 +86,7 @@ Thumb.Nail = React.createClass({
 				<a href={'#'+item.path}>
 					<span className='thumb-caption' style={style}>{title}</span>
 				</a>
-				{summary ? <p style={style}>{summary}</p> : ''}
+				{summary}
 			</span>
 		);
 	},
