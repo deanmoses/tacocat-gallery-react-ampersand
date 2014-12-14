@@ -385,11 +385,12 @@ var EditMenu = React.createClass({
         else if (this.props.editMode) {
             var saveMessage = this.state.step === 'saved' ? <span className='editStatusMsg'>Saved.</span> : '';
             return (
-                <div>
+                <div className='editControls'>
                     <div className='btn-group'>
                         <button type='button' className='btn btn-default' onClick={this.cancel} title='Leave edit mode'><Site.GlyphIcon glyph='remove'/> Cancel</button>
                         <button type='button' className='btn btn-primary' onClick={this.save} title='Save album description'><Site.GlyphIcon glyph='ok'/> Save</button>
                     </div>
+                    <input className='albumPublished' type='checkbox' defaultChecked={!this.props.album.unpublished}/> published
                     {saveMessage}
                 </div>
             );
@@ -442,7 +443,7 @@ var EditMenu = React.createClass({
     save: function() {
         var descInputElement = $('.caption');
         if (!descInputElement.length) {
-            alert('image save: could not find description input element');
+            alert('album save: could not find description input element');
             this.setState({step: ''});
             return;
         }
@@ -458,13 +459,24 @@ var EditMenu = React.createClass({
             description = descInputElement.html();
         }
 
+        var publishedCheckbox = $('input.albumPublished');
+        if (!publishedCheckbox.length) {
+            alert('album save: could not find published checkbox element');
+            this.setState({step: ''});
+            return;
+        }
+
+        var published = publishedCheckbox.prop('checked');
+
         console.log('desc', description);
+        console.log('published', published);
 
         this.setState({step: 'saving'});
 
         var ajaxData = {
             eip_context	: 'album',
-            desc: description
+            desc: description,
+            show: published
         };
 
         $.ajax({
@@ -477,6 +489,7 @@ var EditMenu = React.createClass({
         .done(function() {
             // set the description on the album model
             this.props.album.description = description;
+            this.props.album.unpublished = !published;
             this.setState({step: 'saved'});
         }.bind(this))
         .fail(function(jqXHR, textStatus, errorThrown) {
