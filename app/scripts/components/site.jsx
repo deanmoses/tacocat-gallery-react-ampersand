@@ -142,9 +142,14 @@ Site.SearchButton = React.createClass({
 Site.GlyphIcon = React.createClass({
 	render: function() {
 		return(
-			<span className={'glyphicon glyphicon-' + this.props.glyph}/>
+			<span className={'glyphicon glyphicon-' + this.props.glyph} onClick={this.click}/>
 		);
-	}
+	},
+    click: function(x) {
+        if (this.props.onClick) {
+            this.props.onClick(x);
+        }
+    }
 });
 
 module.exports = Site;

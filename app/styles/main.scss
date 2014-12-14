@@ -11,6 +11,10 @@ $titleColor: #fff;
     color: #ccc;
 }
 
+img.selected {
+    border: 3px dashed blue;
+}
+
 .navbar {
 	margin-bottom: 14px;
 }
@@ -54,10 +58,6 @@ $titleColor: #fff;
 	background-color: cornsilk;
 }
 
-.thumbnails {
-	/*display: inline-block;*/
-}
-
 .imagepage {
 	.btn-group > .btn:first-child {
 		border-bottom-left-radius: 0;
@@ -88,6 +88,11 @@ $titleColor: #fff;
 	vertical-align: top;
 	margin-bottom: 0;
 	background-color: transparent;
+    position: relative;
+}
+
+.thumbnail a {
+    text-decoration: none;
 }
 
 .thumbnail .thumb-caption {
@@ -98,10 +103,17 @@ $titleColor: #fff;
 	display: block;
 }
 
-.thumbnail a {
-	text-decoration: none;
+.thumbnail .glyphicon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #fff;
+    text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
 }
-
 .photo-body {
 	margin-top: 20px;
 }

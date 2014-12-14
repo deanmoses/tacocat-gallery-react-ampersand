@@ -11,14 +11,13 @@ var React = require('react');
 var RichTextEditor;
 module.exports = RichTextEditor = React.createClass({
     propTypes: {
-        valueToEdit: React.PropTypes.string.isRequired
+        valueToEdit: React.PropTypes.string
     },
 	render: function() {
 		return(
             <div id='ckedtr' contentEditable='true' className='caption' dangerouslySetInnerHTML={{__html: this.props.valueToEdit}}/>
 		);
 	},
-
     componentWillMount: function() {
         // if the CKEDITOR script exists...
         if (window.CKEDITOR) {

@@ -18,7 +18,7 @@ module.exports = Model.extend({
 		image_size: 'integer', // a number like 1024 denoting the largest edge of this album's images
 		thumb_size: 'integer', // a number like 200 denoting both edges of this album's thumbnails
 		date: 'date', // in seconds.  Needs to be * 1000 to convert to a Date object
-		thumb: 'object',
+		thumb: 'string', // path to album's thumbnail, relative to album, like 'felix.jpg'.  null if no thumb set
 		parent_album: 'object',
 		prev: 'object',
 		next: 'object',
@@ -26,7 +26,7 @@ module.exports = Model.extend({
 		albums: 'array'
     },
 	collections: {
-		// tells Ampersand to treat the images node in the JSON 
+		// tells Ampersand to treat the images node in the JSON
 		// response that populates as a collection of Img objects
 		images: Images
 	},
@@ -153,8 +153,8 @@ module.exports = Model.extend({
 					case 'year':
 						return DateUtils.year(this.date);
 					case 'week':
-						var month_names = new Array('January', 'February', 'March', 
-						'April', 'May', 'June', 'July', 'August', 'September', 
+						var month_names = new Array('January', 'February', 'March',
+						'April', 'May', 'June', 'July', 'August', 'September',
 						'October', 'November', 'December');
 
 						var d = new Date(this.date*1000);
@@ -170,7 +170,7 @@ module.exports = Model.extend({
 		childAlbumsByMonth: {
 			deps: ['albums'],
 			fn: function() {
-								
+
 				// Group the child week albums of the year album by month
 				var childAlbumsByMonth = _.groupBy(this.albums, function(childAlbum) {
 					// create Date object based on album's timestamp

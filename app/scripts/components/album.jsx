@@ -221,6 +221,7 @@ var WeekAlbumPage = React.createClass({
         var desc = (user.editMode)
             ? <RichTextEditor valueToEdit={a.description}/>
             : <span className='caption' dangerouslySetInnerHTML={{__html: a.description}}/>;
+        var selectedItem = user.editMode ? a.thumb : null;
 		return (
 			<div className='albumpage weekalbumtype container'>
 				<Site.HeaderTitle href={'#'+a.parent_album.path} title={a.pageTitle}>
@@ -232,11 +233,67 @@ var WeekAlbumPage = React.createClass({
 					<h2 className='hidden'>Overview</h2>
                     {desc}
 				</section>
-				<Thumb.List items={a.images} isAlbum={false}/>
+				<Thumb.List items={a.images} isAlbum={false} selectedItem={selectedItem} onSelect={this.onThumbSelect}/>
                 <EditMenu album={a} allowEdit={user.isAdmin} editMode={user.editMode} />
 			</div>
 		);
-	}
+	},
+
+    /**
+     * Invoked once, before component is mounted into the DOM, before initial rendering.
+     */
+    componentWillMount: function() {
+        this.props.album.on('change:thumb', function() {
+            if (this.isMounted()) {
+                this.setState({}); // just to trigger a rerender
+            }
+        }, this);
+    },
+
+    /**
+     * Invoked immediately before a component is unmounted from the DOM.
+     */
+    componentWillUnmount: function() {
+        this.props.album.off('change:thumb');
+    },
+
+    /**
+     * Set thumbnail for the album
+     * @param fullpath full path to image like 2001/12-23/felix.jpg
+     */
+    onThumbSelect: function(fullpath) {
+        var path = fullpath.split('/').pop(); // we just want 'felix.jpg'
+        if (!path) {
+            alert('set thumbnail: no image path');
+            this.setState({step: ''});
+            return;
+        }
+
+        this.setState({step: 'saving'});
+
+        var ajaxData = {
+            eip_context	: 'album',
+            thumb: path
+        };
+
+        $.ajax({
+            type: "POST",
+            url: Config.zenphotoAlbumViewUrl(this.props.album.path),
+            cache: false,
+            dataType: "text",
+            data: ajaxData
+        })
+            .done(function() {
+                // set the description on the album model
+                this.props.album.thumb = path;
+                this.setState({step: 'saved'});
+            }.bind(this))
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                console.log('error setting album thumbnail: %s\n\tstatus: %s\n\txhr: %s', errorThrown, textStatus, jqXHR);
+                alert('Error saving: ' + errorThrown);
+                this.setState({step: ''});
+            }.bind(this));
+    }
 });
 
 /**
