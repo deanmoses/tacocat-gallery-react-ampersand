@@ -93,8 +93,95 @@
     }
 }
 
-.y2001 {
+.y2006, .y2007 {
+    background-color: lighten(#FFE793, 10%);
+
+    a.navbar-brand {
+        color: #3F64EE;
+        font-weight: bolder;
+        font-size: 35px;
+    }
+
+    .btn {
+        background-color: #FFE793;
+        border-color: #FFD02D;
+    }
+
+    .firsts, .years, .month > h1 {
+        border: 4px solid #FFD02D;
+    }
+
+    .years, .month > h1 {
+        background-color: #FFE793;
+    }
+
+    .firsts {
+        background-color: #FFE793;
+    }
+}
+
+.y2005 {
+    background-color: lighten(#BDE6D8, 10%);
+
+    a.navbar-brand {
+        color: #743A7D;
+        font-weight: bolder;
+        font-size: 35px;
+    }
+
+    .btn {
+        background-color: #BDE6D8;
+        border-color: #69C7AF;
+    }
+
+    .firsts, .years, .month > h1 {
+        border: 4px solid #69C7AF;
+    }
+
+    .years, .month > h1 {
+        background-color: #BDE6D8;
+    }
+
+    .firsts {
+        background-color: #BDE6D8;
+    }
+}
+
+.y2003, .y2004 {
+    background-color: lighten(#E2F8B6, 10%);
+
+    a.navbar-brand {
+        color: darken(#99CC33, 25%);
+        font-weight: bolder;
+        font-size: 35px;
+    }
+
+    .btn {
+        background-color: #9DC6EF;
+        border-color: darken(#9DC6EF, 20%);
+    }
+
+    .firsts, .years, .month > h1 {
+        border: 4px solid #99CC33;
+    }
+
+    .years, .month > h1 {
+        background-color: #E2F8B6;
+    }
+
+    .firsts {
+        background-color: #E2F8B6;
+    }
+}
+
+.y2001, .y2002 {
     background-color: #FF6600;
+
+    a.navbar-brand {
+        color: darken(#FF6600, 25%);
+        font-weight: bolder;
+        font-size: 35px;
+    }
 
     .firsts, .years, .month > h1 {
         border: 4px solid #FF99FF;
