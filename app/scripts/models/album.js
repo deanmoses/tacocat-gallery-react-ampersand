@@ -7,7 +7,6 @@
 var _ = require('underscore');
 var DateUtils = require('../utils/date.js');
 var Images = require('./images.js');
-var AlbumStore = require('./album_store');
 var Model = require('ampersand-model');
 
 module.exports = Model.extend({
@@ -202,6 +201,7 @@ module.exports = Model.extend({
      * retrieved.  Null if my parent album has not been retrieved.
      */
     getFullParentAlbum: function() {
+        var AlbumStore = require('./album_store.js');
         return AlbumStore.get(this.parent_album.path);
     },
 

@@ -280,19 +280,52 @@ var WeekAlbumPage = React.createClass({
             type: "POST",
             url: Config.zenphotoAlbumViewUrl(this.props.album.path),
             cache: false,
-            dataType: "text",
+            dataType: "json",
             data: ajaxData
         })
-            .done(function() {
-                // set the description on the album model
-                this.props.album.thumb = path;
-                this.setState({step: 'saved'});
-            }.bind(this))
-            .fail(function(jqXHR, textStatus, errorThrown) {
-                console.log('error setting album thumbnail: %s\n\tstatus: %s\n\txhr: %s', errorThrown, textStatus, jqXHR);
-                alert('Error saving: ' + errorThrown);
-                this.setState({step: ''});
-            }.bind(this));
+        .done(function(result) {
+            if (!result.success) {
+                console.log('Error setting thumbnail: ', result);
+                alert('Error setting thumbnail: ', result);
+                return;
+            }
+
+            //console.log('Set thumbnail success. Server result: ', result);
+
+            // set the thumb on the album model
+            this.props.album.thumb = path;
+
+            // set the thumb on my parent's model, if it's been downloaded
+            //console.log('album to set thumb on: ', this.props.album);
+            var parentAlbum = this.props.album.getFullParentAlbum();
+            if (parentAlbum) {
+                //console.log('result: ', result);
+                if (result.urlThumb) {
+                    //console.log('Set thumbnail: setting URL of new thumb for album [%s] on parent album to [%s]', this.props.album.path, result.urlThumb);
+                    var me = parentAlbum.getChildAlbumThumb(this.props.album.path);
+                    if (me) {
+                        me.urlThumb = result.urlThumb;
+                        //console.log('Set thumbnail: successfully updated thumb on parent');
+                    }
+                    //else {
+                    //    console.log('Set thumbnail: did not find album thumb [%s] in parent', this.props.album.path);
+                    //}
+                }
+                //else {
+                //    console.log('Set thumbnail: server didn\'t return new thumb URL');
+                //}
+            }
+            //else {
+            //    console.log('Set thumbnail: parent album is not yet downloaded');
+            //}
+
+            this.setState({step: 'saved'});
+        }.bind(this))
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            console.log('error setting album thumbnail: %s\n\tstatus: %s\n\txhr: %s', errorThrown, textStatus, jqXHR);
+            alert('Error saving: ' + errorThrown);
+            this.setState({step: ''});
+        }.bind(this));
     }
 });
 
@@ -483,7 +516,7 @@ var EditMenu = React.createClass({
             type: "POST",
             url: Config.zenphotoAlbumViewUrl(this.props.album.path),
             cache: false,
-            dataType: "text",
+            dataType: "json",
             data: ajaxData
         })
         .done(function(ret) {
@@ -494,10 +527,6 @@ var EditMenu = React.createClass({
             if (parentAlbum) {
                 var me = parentAlbum.getChildAlbumThumb(this.path);
                 me.unpublished = this.props.album.unpublished;
-                // todo: have zenphoto return full URL of thumbnail image
-                if (ret.urlThumb) {
-                    me.urlThumb = ret.urlThumb;
-                }
             }
 
             this.setState({step: 'saved'});

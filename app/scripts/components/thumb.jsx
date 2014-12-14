@@ -7,7 +7,7 @@ var Site = require('./site.jsx');
 var React = require('react');
 
 // all the components in this file will be added to Thumb,
-// which will then be made available as a module
+// which will then be exported as a module
 var Thumb = {};
 
 /**
@@ -24,10 +24,10 @@ Thumb.List = React.createClass({
         var thumbs = this.props.items.map(function (child) {
             if (this.props.editMode) {
                 var selected = this.props.editMode && !!this.props.selectedItem && StringUtils.endsWith(child.path, this.props.selectedItem);
-                return <Thumb.Nail item={child} isAlbum={isAlbum} albumType={this.props.albumType} key={child.path} editMode={this.props.editMode} selected={selected} onSelect={this.onSelect} />;
+                return <Thumb.Nail item={child} isAlbum={isAlbum} albumType={this.props.albumType} key={child.path} editMode={this.props.editMode} selected={selected} onSelect={this.onSelect.bind(this, child.path)} />;
             }
             else {
-                return <Thumb.Nail item={child} isAlbum={isAlbum} albumType={this.props.albumType} key={child.path}/>
+                return <Thumb.Nail item={child} isAlbum={isAlbum} albumType={this.props.albumType} key={child.path}/>;
             }
         }.bind(this));
 
@@ -94,7 +94,7 @@ Thumb.Nail = React.createClass({
 
     onSelect: function() {
         if (this.props.onSelect) {
-            this.props.onSelect(this.props.key);
+            this.props.onSelect();
         }
     }
 });
