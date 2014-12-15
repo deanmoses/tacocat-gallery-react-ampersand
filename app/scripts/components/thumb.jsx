@@ -68,24 +68,24 @@ Thumb.Nail = React.createClass({
         else {
             title = item.title;
         }
-        var summary = !item.summary ? '' : <p className='thumb-summary' style={style}>{item.summary}</p>;
         width = width + 'px';
         height = height + 'px';
         var style = {
             width: width
         };
+        var imgLinkStyle = {
+            width: width,
+            height: height
+        };
+        var summary = !item.summary ? '' : <p className='thumb-summary' style={style}>{item.summary}</p>;
         var selectedClass = (!this.props.editMode || !this.props.selected) ? '' : ' selected';
         var selectButton = (!this.props.editMode) ? '' : <Site.GlyphIcon glyph='star' onClick={this.onSelect}/>;
 		var thumbUrl = 'http://tacocat.com/' + item.urlThumb;
 		return(
 			<span className={'thumbnail' + selectedClass}>
-				<a href={'#'+item.path}>
-					<img src={thumbUrl} width={width} height={height} alt={title}/>
-				</a>
+				<a href={'#'+item.path} className='thumb-link' style={imgLinkStyle}><img src={thumbUrl} width={width} height={height} alt={title}/></a>
                 {selectButton}
-				<a href={'#'+item.path}>
-					<span className='thumb-caption' style={style}>{title}</span>
-				</a>
+				<a href={'#'+item.path}><span className='thumb-caption' style={style}>{title}</span></a>
 				{summary}
 			</span>
 		);

@@ -91,6 +91,10 @@ $titleColor: #fff;
     text-decoration: none;
 }
 
+.thumbnail a.thumb-link {
+    display: block
+}
+
 .thumbnail .thumb-caption {
 	color: black;
 	text-decoration: none;
