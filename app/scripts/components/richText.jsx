@@ -48,5 +48,19 @@ module.exports = RichTextEditor = React.createClass({
                 }
             });
         }
+    },
+    componentDidMount: function() {
+        if (window.CKEDITOR) {
+            CKEDITOR.inline('ckedtr', {
+                toolbar: [
+                    ['Bold', 'Italic', 'Underline'],
+                    ['BulletedList', 'NumberedList'],
+                    ['Link', 'Unlink']
+                ],
+                removeButtons: null,
+                linkShowAdvancedTab: false,
+                linkShowTargetTab: false
+            });
+        }
     }
 });
