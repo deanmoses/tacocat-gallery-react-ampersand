@@ -14,7 +14,7 @@ var User = Model.extend({
 
 	// the URL of the JSON REST API from which to retrieve the album
 	url: function() {
-		return Config.zenphotoUserUrl();
+		return Config.jsonUserUrl();
 	}
 });
 

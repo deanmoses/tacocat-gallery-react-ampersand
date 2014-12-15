@@ -12,9 +12,10 @@ var Model = require('ampersand-model');
 module.exports = Model.extend({
 	idAttribute: 'path',
     props: {
-        path: 'string',
-        title: 'string',
+        path: 'string', // like 2001 or 2001/12-31
+        title: 'string', // not really used: title is synthesized from date now
 		description: 'string',
+        summary: 'string', // optional summary of album, like 'Thanksgiving'.  Consider it an optional secondary title.
 		unpublished: 'boolean', // true: album is NOT available to the public
 		image_size: 'integer', // a number like 1024 denoting the largest edge of this album's images
 		thumb_size: 'integer', // a number like 200 denoting both edges of this album's thumbnails

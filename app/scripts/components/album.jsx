@@ -423,6 +423,7 @@ var EditMenu = React.createClass({
                         <button type='button' className='btn btn-default' onClick={this.cancel} title='Leave edit mode'><Site.GlyphIcon glyph='remove'/> Cancel</button>
                         <button type='button' className='btn btn-primary' onClick={this.save} title='Save album description'><Site.GlyphIcon glyph='ok'/> Save</button>
                     </div>
+                    <input className='albumSummary' type='text' defaultValue={this.props.album.summary} placeholder='Summary'/>
                     <input className='albumPublished' type='checkbox' defaultChecked={!this.props.album.unpublished}/> published
                     {saveMessage}
                 </div>
@@ -492,16 +493,24 @@ var EditMenu = React.createClass({
             description = descInputElement.html();
         }
 
+        var summaryInput = $('input.albumSummary');
+        if (!summaryInput.length) {
+            alert('album save: could not find summary input element');
+            this.setState({step: ''});
+            return;
+        }
+        var summary = summaryInput.val();
+
         var publishedCheckbox = $('input.albumPublished');
         if (!publishedCheckbox.length) {
             alert('album save: could not find published checkbox element');
             this.setState({step: ''});
             return;
         }
-
         var published = publishedCheckbox.prop('checked');
 
         console.log('desc', description);
+        console.log('summary', summary);
         console.log('published', published);
 
         this.setState({step: 'saving'});
@@ -509,25 +518,43 @@ var EditMenu = React.createClass({
         var ajaxData = {
             eip_context	: 'album',
             desc: description,
+            summary: summary,
             show: published
         };
 
         $.ajax({
-            type: "POST",
-            url: Config.zenphotoAlbumViewUrl(this.props.album.path),
+            type: 'POST',
+            url: Config.jsonAlbumEditUrl(this.props.album.path),
             cache: false,
-            dataType: "json",
+            dataType: 'json',
             data: ajaxData
         })
-        .done(function(ret) {
+        .done(function(result) {
+            if (!result.success) {
+                console.log('Error saving album: ', result);
+                alert('Error saving album: ', result);
+                this.setState({step: ''});
+                return;
+            }
+
             // set the description on the album model
             this.props.album.description = description;
+            this.props.album.summary = summary;
             this.props.album.unpublished = !published;
             var parentAlbum = this.props.album.getFullParentAlbum();
             if (parentAlbum) {
-                var me = parentAlbum.getChildAlbumThumb(this.path);
-                me.unpublished = this.props.album.unpublished;
+                var me = parentAlbum.getChildAlbumThumb(this.props.album.path);
+                if (me) {
+                    me.summary = this.props.album.summary;
+                    me.unpublished = this.props.album.unpublished;
+                }
+                //else {
+                //    console.log('save: unable to find myself in parent album using path [%s]', this.props.album.path);
+                //}
             }
+            //else {
+            //    console.log('save: parent album not yet loaded');
+            //}
 
             this.setState({step: 'saved'});
         }.bind(this))

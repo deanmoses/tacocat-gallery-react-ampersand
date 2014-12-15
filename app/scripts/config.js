@@ -9,7 +9,7 @@ module.exports = {
 	site_title: 'Dean, Lucie, Felix and Milo Moses',
 
     dev: function() {
-      return (document.location.hostname.toLowerCase() == "localhost");
+      return (document.location.hostname.toLowerCase() === 'localhost');
     },
 
 	zenphotoBaseUrl: function() {
@@ -34,12 +34,20 @@ module.exports = {
     },
 
     zenphotoAlbumEditUrl: function(albumPath) {
-    return 'http://tacocat.com/zenphoto/zp-core/admin-edit.php?page=edit&album=' + encodeURIComponent(albumPath);
+        return 'http://tacocat.com/zenphoto/zp-core/admin-edit.php?page=edit&album=' + encodeURIComponent(albumPath);
     },
 
-    zenphotoUserUrl: function() {
+    mockBaseUrl: 'mockdata',
+
+    jsonAlbumEditUrl: function(albumPath) {
         return this.dev()
-            ? 'dev/json/user.json'
+            ? this.mockBaseUrl + '/album/save.json'
+            : this.zenphotoAlbumViewUrl(albumPath)
+    },
+
+    jsonUserUrl: function() {
+        return this.dev()
+            ? this.mockBaseUrl + '/user/read.json'
             : 'http://tacocat.com/zenphoto/?api&auth';
     },
 

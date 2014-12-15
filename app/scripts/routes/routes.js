@@ -2,6 +2,7 @@
 
 var React = require('react');
 
+var $ = require('jquery');
 var AlbumPage = React.createFactory(require('../components/album.jsx'));
 var ImagePage = React.createFactory(require('../components/image.jsx'));
 var SearchPage = null; // don't create component for the search screen until it's needed

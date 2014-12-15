@@ -24,15 +24,6 @@ var $ = require('gulp-load-plugins')();
 // true: production build: minify
 var prod = false;
 
-// configuration that changes on prod vs dev
-var config = {
-  userUrl: {
-      prod: 'http://tacocat.com/zenphoto/',
-      dev: 'app/json/user.json'
-  }
-};
-
-
 // Set production = true
 gulp.task('setprod', function() {
     prod = true;
@@ -105,28 +96,38 @@ gulp.task('images', function () {
         .pipe($.size());
 });
 
+
 // Copy .htaccess
 gulp.task('copyhtaccess', function() {
 	gulp.src(['app/.htaccess'])
 	.pipe(gulp.dest('dist'));
 });
 
-// Create an application cache manifest
-gulp.task('manifest', function(){
-	gulp.src(['dist/*','dist/scripts/**/*.js', 'dist/styles/**/*.css', 'dist/fonts/**/*.{ttf,woff,eof,svg}'], {base: 'dist'})
-	.pipe(manifest({
-		hash: true,
-		network: ['*'],
-		filename: 'a.appcache',
-		exclude: 'a.appcache'
-	}))
-	.pipe(gulp.dest('dist'));
-});
 
 // Copy fonts
 gulp.task('copyfonts', function() {
    gulp.src('app/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/**/*.{ttf,woff,eof,svg}')
    .pipe(gulp.dest('dist/fonts/bootstrap'));
+});
+
+
+// Copy mock JSON
+gulp.task('copymockdata', function() {
+    gulp.src('mockdata/**/*.*')
+        .pipe(gulp.dest('dist/mockdata'));
+});
+
+
+// Create an application cache manifest
+gulp.task('manifest', function(){
+    gulp.src(['dist/*','dist/scripts/**/*.js', 'dist/styles/**/*.css', 'dist/fonts/**/*.{ttf,woff,eof,svg}'], {base: 'dist'})
+        .pipe(manifest({
+            hash: true,
+            network: ['*'],
+            filename: 'a.appcache',
+            exclude: 'a.appcache'
+        }))
+        .pipe(gulp.dest('dist'));
 });
 
 
@@ -143,12 +144,12 @@ gulp.task('jest', function () {
 
 // Clean
 gulp.task('clean', function (cb) {
-    del(['dist/styles', 'dist/fonts', 'dist/scripts', 'dist/images'], cb);
+    del(['dist/styles', 'dist/fonts', 'dist/scripts', 'dist/images', 'dist/mockdata'], cb);
 });
 
 
 // Bundle
-gulp.task('bundle', ['styles', 'copyfonts', 'copyhtaccess', /*'manifest',*/ 'scripts'], function() {
+gulp.task('bundle', ['styles', 'copyfonts', 'copyhtaccess', 'copymockdata', /*'manifest',*/ 'scripts'], function() {
     return gulp.src('./app/*.html')
 		.pipe($.useref.assets())
 		.pipe($.useref.restore())
@@ -173,6 +174,9 @@ gulp.task('watch', ['html', 'bundle', 'serve'], function () {
 
     // Watch image files
     gulp.watch('app/images/**/*', ['images']);
+
+    // Watch mock JSON data
+    gulp.watch('mockdata/**/*', ['copymockdata']);
 });
 
 // Build
