@@ -41,7 +41,7 @@ var AlbumPage = React.createClass({
 			// Does NOT fetch it from server.
 			// No album: component will show a waiting... indicator.
 			// This is Ampersand Collection.get().
-			album: AlbumStore.get(this.props.albumPath),
+			album: AlbumStore.getAlbum(this.props.albumPath),
             editMode: User.currentUser().editMode,
             editAllowed: User.currentUser().isAdmin
 		};
@@ -95,7 +95,7 @@ var AlbumPage = React.createClass({
 		// client side cache, now's the time to fetch it from the server.
 		// This is Ampersand Collection.fetchById().
 		if (!this.state.album) {
-			AlbumStore.fetchById(this.props.albumPath, function (err, album) {
+			AlbumStore.fetchAlbum(this.props.albumPath, function (err, album) {
 				if (err) {
 					console.log('error getting album', err);
 				}
