@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * The singular global store of photo albums.
  *
