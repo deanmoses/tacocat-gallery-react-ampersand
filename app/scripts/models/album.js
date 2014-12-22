@@ -155,15 +155,7 @@ module.exports = Model.extend({
 					case 'year':
 						return DateUtils.year(this.date);
 					case 'week':
-						var month_names = new Array('January', 'February', 'March',
-						'April', 'May', 'June', 'July', 'August', 'September',
-						'October', 'November', 'December');
-
-						var d = new Date(this.date*1000);
-						var curr_day = d.getDate();
-						var curr_month = d.getMonth();
-						var curr_year = d.getFullYear();
-						return month_names[curr_month] + ' ' + curr_day + ', ' + curr_year;
+                        return DateUtils.longDate(this.date);
 					default:
 						throw 'no such type: ' + this.type;
 				 }

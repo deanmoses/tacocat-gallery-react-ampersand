@@ -61,6 +61,9 @@ Thumb.Nail = React.createClass({
             if (this.props.albumType === 'root') {
                 title = DateUtils.year(item.date);
             }
+            else if (this.props.albumType === 'latest') {
+                title = DateUtils.longDate(item.date);
+            }
             else {
                 title = DateUtils.shortDate(item.date);
             }

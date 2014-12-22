@@ -177,7 +177,7 @@ var RootAlbumPage = React.createClass({
 				<Site.HeaderTitle title={a.pageTitle} path=''/>
 				<section className='col-md-3 latest'>
 					<h2>Latest Album</h2>
-					<Thumb.Nail item={a.latest} isAlbum={true} albumType='root'/>
+					<Thumb.Nail item={a.latest} isAlbum={true} albumType='latest'/>
 				</section>
 				<section className='col-md-9'>
 					<Thumb.List items={a.albums} isAlbum={true} albumType='root'/>
