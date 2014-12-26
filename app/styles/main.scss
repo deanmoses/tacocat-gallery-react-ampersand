@@ -183,8 +183,13 @@ a.navbar-brand, .search-button a {
 }
 
 .thephoto {
+    @media all and (max-width: 768px) {
+        min-height: 150px;
+    }
+    @media all and (min-width: 768px) {
+        min-height: 250px;
+    }
     background-color: #c2ccd1;
-    min-height: 250px;
 }
 
 .caption {

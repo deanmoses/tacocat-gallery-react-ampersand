@@ -244,11 +244,15 @@ var ImagePageBody = React.createClass({
 						<Site.UpButton href={album.href} title={album.pageTitle} />
 						<Site.NextButton href={image.nextImageHref} />
 					</Site.HeaderButtons>
-					<a href={fullSizeUrl} target='zen'><img src={'http://tacocat.com' + image.urlSized} style={style} className={'thephoto ' + orientation}/></a>
+					<a href={fullSizeUrl} target='zen'><img src={'http://tacocat.com' + image.urlSized} style={style} className={'thephoto ' + orientation} onLoad={this.onImgLoad}/></a>
 				</section>
 			</div>
 		);
 	},
+
+    onImgLoad: function(e) {
+        $(e.target).css('min-height', '');
+    },
 
 	/**
 	 * Invoked after the component is mounted into the DOM.
