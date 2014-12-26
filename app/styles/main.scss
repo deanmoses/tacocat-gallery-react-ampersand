@@ -141,8 +141,18 @@ a.navbar-brand, .search-button a {
 	background-color: transparent;
     position: relative;
 
+    .latest & {
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
     a {
         text-decoration: none;
+        .latest & {
+            margin-right: auto;
+            margin-left: auto;
+        }
     }
 
     a.thumb-link {
@@ -156,10 +166,18 @@ a.navbar-brand, .search-button a {
         text-align: center;
         margin-top: 4px;
         display: block;
+        .latest & {
+            margin-right: auto;
+            margin-left: auto;
+        }
     }
 
     .thumb-summary {
         text-align: center;
+        .latest & {
+            margin-right: auto;
+            margin-left: auto;
+        }
     }
 
     .glyphicon {
