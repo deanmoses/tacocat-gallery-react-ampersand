@@ -31,10 +31,15 @@ Site.HeaderTitle = React.createClass({
                     <div className='navbar-header'>
                         {title}
                     </div>
-                    <div className='nav navbar-nav navbar-right'>
-                        <span className='navbar-text'><Site.SearchButton returnPath={this.props.path}/></span>
-                        <span className='navbar-text site-title'>{Config.site_title}</span>
-                    </div>
+                    {
+                        this.props.hideSiteTitle ? '' :
+                        <div className='nav navbar-nav navbar-right'>
+                            <span className='navbar-text site-title'>{Config.site_title}</span>
+                            <span className='navbar-text search-button'>
+                                <Site.SearchButton returnPath={this.props.path}/>
+                            </span>
+                        </div>
+                    }
 				</nav>
 				<Site.HeaderButtons>{this.props.children}</Site.HeaderButtons>
 			</div>

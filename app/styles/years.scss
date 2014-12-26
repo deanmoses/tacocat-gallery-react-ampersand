@@ -2,174 +2,179 @@
 // colors for each year
 //
 
-.y2014 {
-    background-color: #b7c8a4;
+.root, .y2014 {
+    background-color: #8d5f5f;
 
-    .firsts, .years, .month > h1 {
-        background-color: #8a9e75;
+    .header {
+        background-color: #e8ddc7;
     }
-    .years {
-        border: none;
+
+    .btn {
+        background-color: lighten(#e8ddc7, 10%);
+    }
+
+    .firsts, .latest, .month > h1 {
+        background-color: #cebfa1;
     }
 }
 
 .y2013 {
-    // top banner
+    background-color: #917d61;
+
     .header {
         background-color: #b7c8a4;
     }
 
-    // years
-    .years {
-        background-color: #8a9e75;
+    .btn {
+        background-color: lighten(#b7c8a4, 20%);
     }
 
-    // thumbnail area
-    #body {
-        background-color: #b1ceb3;
-    }
-
-    // firsts column
     .firsts {
         background-color: #8a9e75;
     }
 
-    // links
-    a {
-        //color: #7e684a;
-    }
-
-    .years a {
-        //color: #685233;
+    .month > h1 {
+        background-color: #b7c8a4;
     }
 }
 
 .y2012 {
+    background-color: #973450;
+
     // top banner
     .header {
         background-color: #edb79c;
     }
 
-    // thumbnail area
-    #body {
-        background-color: #973450;
+    .btn {
+        background-color: lighten(#edb79c, 20%);
     }
 
-    // firsts column
     .firsts {
         background-color: #e77f4b;
     }
 
-    // links
-    a {
-        //color: #973450;
+    .month > h1 {
+        background-color: #edb79c;
+    }
+}
+
+.y2011 {
+    background-color: #4d3087;
+
+    .header {
+        background-color: #e0ee83;
+    }
+
+    .btn {
+        background-color: lighten(#e0ee83, 20%);
+    }
+
+    .firsts {
+        background-color: #c2d543;
+    }
+
+    .month > h1 {
+        background-color: #e0ee83;
+    }
+}
+
+.y2010, .y2009 {
+    background-color: #3F64EE;
+
+    .header {
+        background-color: #FFE793;
+    }
+
+    .btn {
+        background-color: lighten(#FFE793, 10%);
+    }
+
+    .firsts {
+        background-color: #FFD02D;
+    }
+
+    .month > h1 {
+        background-color: #FFE793;
     }
 }
 
 .y2008 {
-    background-color: lighten(#869e59, 10%);
+    background-color: #869e59;
 
-    a.navbar-brand {
-        color: darken(#869e59, 40%);
-        font-weight: bolder;
-        font-size: 35px;
+    .header {
+        background-color: #d3e0f1;
     }
 
     .btn {
-        background-color: #D3E0F1;
-        border-color: #BBCBE0;
-    }
-
-    .firsts, .years, .month > h1 {
-        border: 4px solid #BBCBE0;
-    }
-
-    .years, .month > h1 {
-        background-color: #D3E0F1;
+        background-color: lighten(#d3e0f1, 10%);
     }
 
     .firsts {
-        background-color: #D3E0F1;
+        background-color: #bbcbe0;
+    }
+
+    .month > h1 {
+        background-color: #d3e0f1;
     }
 }
 
 .y2006, .y2007 {
-    background-color: lighten(#FFE793, 10%);
+    background-color: #3F64EE;
 
-    a.navbar-brand {
-        color: #3F64EE;
-        font-weight: bolder;
-        font-size: 35px;
+    .header {
+        background-color: #FFE793;
     }
 
     .btn {
-        background-color: #FFE793;
-        border-color: #FFD02D;
-    }
-
-    .firsts, .years, .month > h1 {
-        border: 4px solid #FFD02D;
-    }
-
-    .years, .month > h1 {
-        background-color: #FFE793;
+        background-color: lighten(#FFE793, 10%);
     }
 
     .firsts {
+        background-color: #FFD02D;
+    }
+
+    .month > h1 {
         background-color: #FFE793;
     }
 }
 
 .y2005 {
-    background-color: lighten(#BDE6D8, 10%);
+    background-color: #743a7d;
 
-    a.navbar-brand {
-        color: #743A7D;
-        font-weight: bolder;
-        font-size: 35px;
+    .header {
+        background-color: #bde6d8;
     }
 
     .btn {
-        background-color: #BDE6D8;
-        border-color: #69C7AF;
-    }
-
-    .firsts, .years, .month > h1 {
-        border: 4px solid #69C7AF;
-    }
-
-    .years, .month > h1 {
-        background-color: #BDE6D8;
+        background-color: lighten(#bde6d8, 10%);
     }
 
     .firsts {
-        background-color: #BDE6D8;
+        background-color: #69c7af;
+    }
+
+    .month > h1 {
+        background-color: #bde6d8;
     }
 }
 
 .y2003, .y2004 {
-    background-color: lighten(#E2F8B6, 10%);
+    background-color: #99cc33;
 
-    a.navbar-brand {
-        color: darken(#99CC33, 25%);
-        font-weight: bolder;
-        font-size: 35px;
-    }
-
-    .btn {
-        background-color: #9DC6EF;
-        border-color: darken(#9DC6EF, 20%);
-    }
-
-    .firsts, .years, .month > h1 {
-        border: 4px solid #99CC33;
-    }
-
-    .years, .month > h1 {
+    .header {
         background-color: #E2F8B6;
     }
 
+    .btn {
+        background-color: lighten(#E2F8B6, 10%);
+    }
+
     .firsts {
+        background-color: #9dc6ef;
+    }
+
+    .month > h1 {
         background-color: #E2F8B6;
     }
 }
@@ -177,22 +182,20 @@
 .y2001, .y2002 {
     background-color: #FF6600;
 
-    a.navbar-brand {
-        color: darken(#FF6600, 25%);
-        font-weight: bolder;
-        font-size: 35px;
+    .header {
+        background-color: #FBEFCE;
     }
 
-    .firsts, .years, .month > h1 {
-        border: 4px solid #FF99FF;
-    }
-
-    .years, .month > h1 {
-        background-color: #FFCCFF;
+    .btn {
+        background-color: lighten(#FBEFCE, 10%);
     }
 
     .firsts {
-        background-color: #fff;
+        background-color: #FF99FF;
+    }
+
+    .month > h1 {
+        background-color: #FFCCFF;
     }
 }
 

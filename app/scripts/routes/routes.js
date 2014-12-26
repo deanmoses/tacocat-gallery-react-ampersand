@@ -62,18 +62,30 @@ module.exports = Router.extend({
 		}
 		//console.log('router path: "' + path + '"');
 
-        if (!path || path.indexOf('/') >=0) {
-            $('body').removeAttr('class');
-        }
-        else {
-            $('body').attr('class', 'y'+path);
-        }
+        // It's an album path if there's no '.' in the path.
+        // This is not robust, but it's safe enough because
+        // I know i've never created an album with a '.' in
+        // the name.
+        var isAlbum =  path.indexOf('.') === -1;
 
-		// It's an album path if there's no '.' in the path.
-		// This is not robust, but it's safe enough because
-		// I know i've never created an album with a '.' in
-		// the name.
-		var isAlbum = path.indexOf('.') === -1;
+        // root album
+        if (!path) {
+            $('body').attr('class', 'root');
+        }
+        // individual photo
+        else if (!isAlbum) {
+            var year = path.split('/')[0];
+            $('body').attr('class', 'photo' + ' ' + 'y'+year);
+        }
+        // day album
+        else if (path.indexOf('/') >=0) {
+            var year = path.split('/')[0];
+            $('body').attr('class', 'day' + ' ' + 'y'+year);
+        }
+        // year album
+        else {
+            $('body').attr('class', 'year' + ' ' + 'y'+path);
+        }
 
 		// render album page
 		if (isAlbum) {

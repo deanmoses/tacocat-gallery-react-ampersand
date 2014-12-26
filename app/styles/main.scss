@@ -7,12 +7,58 @@ $titleColor: #fff;
 
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap";
 
+.btn {
+    border-radius: 0;
+}
+
 .btn.disabled {
     color: #ccc;
 }
 
+.container-fluid {
+    padding: 0;
+}
+
+#main {
+    margin: 10px;
+    background-color: white;
+    border: solid black 1px;
+}
+
+.search-button {
+    margin-right: 30px;
+}
+
+a.navbar-brand, .search-button a {
+    color: black;
+}
+
+.year, .day {
+    .btn-group > .btn:first-child, .btn-group > .btn:last-child {
+        border-left: 0;
+        border-right: 0;
+    }
+}
+
+.photo {
+    .navbar {
+        border-bottom: solid black 1px;
+    }
+}
+
+.root {
+    .header {
+        border-bottom: solid black 1px;
+    }
+
+    section.col-md-9 {
+        padding-top: 15px;
+    }
+}
+
 .navbar {
-	margin-bottom: 14px;
+    border-radius: 0;
+	margin-bottom: 0;
 }
 
 .navbar-brand {
@@ -20,7 +66,7 @@ $titleColor: #fff;
 	line-height: 32px;
 }
 
-.header.navbar, .navbar-right, .nav-button-label {
+.photo .header.navbar, .navbar-right, .nav-button-label {
 	/* portrait phones and below */
 	@media all and (max-width: 768px) {
 		display: none;
@@ -39,19 +85,22 @@ $titleColor: #fff;
 	display: inline-block;
 	width: 12em;
 	vertical-align: top;
-	border-top-right-radius: 1em;
-	border-bottom-right-radius: 1em;
-	margin-top: 1em;
 	margin-right: 1em;
 	padding: 1em;
 	background: #EEE;
+    border-right: solid black 1px;
 	@media (max-width: 992px) {
 		display: none;
 	}
 }
 
 .latest {
-	background-color: cornsilk;
+    border-right: solid black 1px;
+    h2 {
+        font-size: $font-size-base;
+        font-weight: bold;
+        text-align: center;
+    }
 }
 
 .imagepage {
@@ -70,9 +119,7 @@ $titleColor: #fff;
     & > h1 {
         font-weight: bold;
         font-size: 1.3em;
-        background: #EEE;
-        border-radius: 1em;
-        padding: 0.3em 1em;
+        padding: 0.3em 0.4em;
         width: 100%;
     }
 }
@@ -131,8 +178,25 @@ $titleColor: #fff;
 	margin-top: 20px;
 }
 
+.caption {
+    margin-bottom: .7em;
+}
+
+.weekalbumtype .caption {
+    max-width: 670px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.photo .caption {
+    // portrait phones and below
+    @media all and (max-width: 768px) {
+        padding-left: .7em;
+    }
+}
+
 .caption p {
-	margin-top: .7em;
+    margin-top: .7em;
 }
 
 /* For browsers that don't meet the requirements */

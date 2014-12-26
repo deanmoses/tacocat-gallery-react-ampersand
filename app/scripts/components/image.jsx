@@ -145,7 +145,7 @@ var ImagePageWaiting = React.createClass({
     render: function() {
         return (
             <div className='imagepage waiting container-fluid'>
-                <Site.HeaderTitle title='' />
+                <Site.HeaderTitle title='' hideSiteTitle={true}/>
                 <ImagePageBodyWaiting />
             </div>
         );
@@ -162,7 +162,7 @@ var ImagePageBodyWaiting = React.createClass({
             <div className='photo-body'>
                 <section className='col-md-3'>
                     <h2 className='hidden'>Caption</h2>
-                    <span className='caption'></span>
+                    <div className='caption'></div>
                 </section>
                 <section className='col-md-9'>
                     <h2 className='hidden'>Photo</h2>
@@ -193,9 +193,9 @@ var ImagePageNotWaiting = React.createClass({
 
 		return (
 			<div className='imagepage container-fluid'>
-				<Site.HeaderTitle href={album.href} title={image.title} editMode={this.props.user.editMode} />
-				<ImagePageBody album={album} image={image} editMode={this.props.user.editMode} />
-				<EditMenu album={album} image={image} allowEdit={this.props.user.isAdmin} editMode={this.props.user.editMode} />
+				<Site.HeaderTitle href={album.href} title={image.title} editMode={this.props.user.editMode} hideSiteTitle={true}/>
+				<ImagePageBody album={album} image={image} editMode={this.props.user.editMode}/>
+				<EditMenu album={album} image={image} allowEdit={this.props.user.isAdmin} editMode={this.props.user.editMode}/>
 			</div>
 		);
 	}
@@ -229,7 +229,7 @@ var ImagePageBody = React.createClass({
 
         var desc = (this.props.editMode)
             ? <RichTextEditor valueToEdit={image.description}/>
-            : <span className='caption' dangerouslySetInnerHTML={{__html: image.description}}/>;
+            : <div className='caption' dangerouslySetInnerHTML={{__html: image.description}}/>;
 
 		return (
 			<div className='photo-body'>

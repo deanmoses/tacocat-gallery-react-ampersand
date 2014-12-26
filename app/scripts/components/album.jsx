@@ -154,7 +154,7 @@ var LoadingAlbumPage = React.createClass({
 	render: function() {
 		var emptyThumbArray = [];
 		return (
-			<div className='albumpage loading container'>
+			<div className='albumpage loading container-fluid'>
 				<Site.HeaderTitle title=''>
 					<Site.PrevButton />
 					<Site.UpButton />
@@ -220,10 +220,10 @@ var WeekAlbumPage = React.createClass({
         var user = this.props.user;
         var desc = (user.editMode)
             ? <RichTextEditor valueToEdit={a.description}/>
-            : <span className='caption' dangerouslySetInnerHTML={{__html: a.description}}/>;
+            : <div className='caption' dangerouslySetInnerHTML={{__html: a.description}}/>;
         var selectedItem = user.editMode ? a.thumb : null;
 		return (
-			<div className='albumpage weekalbumtype container'>
+			<div className='albumpage weekalbumtype container-fluid'>
 				<Site.HeaderTitle href={'#'+a.parent_album.path} title={a.pageTitle}>
 					<Site.PrevButton href={a.nextAlbumHref} title={a.nextAlbumTitle}/>
 					<Site.UpButton href={a.parentAlbumHref} title={a.parentAlbumTitle}/>
