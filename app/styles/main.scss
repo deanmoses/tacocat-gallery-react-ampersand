@@ -63,7 +63,6 @@ a.navbar-brand, .search-button a {
 
 .navbar-brand {
 	font-size: 28px;
-	line-height: 32px;
 }
 
 .photo .header.navbar, .navbar-right, .nav-button-label {
@@ -124,6 +123,10 @@ a.navbar-brand, .search-button a {
     }
 }
 
+.thumbnails {
+    min-height: 300px;
+}
+
 .thumbnail {
 	display: inline-block;
 	border: 0 none;
@@ -132,41 +135,42 @@ a.navbar-brand, .search-button a {
 	margin-bottom: 0;
 	background-color: transparent;
     position: relative;
-}
 
-.thumbnail a {
-    text-decoration: none;
-}
+    a {
+        text-decoration: none;
+    }
 
-.thumbnail a.thumb-link {
-    display: block
-}
+    a.thumb-link {
+        display: block;
+        border: solid black 1px;
+    }
 
-.thumbnail .thumb-caption {
-	color: black;
-	text-decoration: none;
-	text-align: center;
-	margin-top: 4px;
-	display: block;
-}
+    .thumb-caption {
+        color: black;
+        text-decoration: none;
+        text-align: center;
+        margin-top: 4px;
+        display: block;
+    }
 
-.thumbnail .thumb-summary {
-    text-align: center;
-}
+    .thumb-summary {
+        text-align: center;
+    }
 
-.thumbnail .glyphicon {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    color: #fff;
-    text-shadow:
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-    1px 1px 0 #000;
+    .glyphicon {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        color: #fff;
+        text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
 
-    &:hover {
-        color: yellow;
+        &:hover {
+            color: yellow;
+        }
     }
 }
 
@@ -176,6 +180,11 @@ a.navbar-brand, .search-button a {
 
 .photo-body {
 	margin-top: 20px;
+}
+
+.thephoto {
+    background-color: #c2ccd1;
+    min-height: 250px;
 }
 
 .caption {

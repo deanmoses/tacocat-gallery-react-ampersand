@@ -13,8 +13,12 @@
         background-color: lighten(#e8ddc7, 10%);
     }
 
-    .firsts, .latest, .month > h1 {
+    .latest, .firsts {
         background-color: #cebfa1;
+    }
+
+    .month > h1 {
+        background-color: #e8ddc7;
     }
 }
 

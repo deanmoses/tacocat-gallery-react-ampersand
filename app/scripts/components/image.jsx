@@ -244,7 +244,7 @@ var ImagePageBody = React.createClass({
 						<Site.UpButton href={album.href} title={album.pageTitle} />
 						<Site.NextButton href={image.nextImageHref} />
 					</Site.HeaderButtons>
-					<a href={fullSizeUrl} target='zen'><img src={'http://tacocat.com' + image.urlSized} style={style} className={orientation}/></a>
+					<a href={fullSizeUrl} target='zen'><img src={'http://tacocat.com' + image.urlSized} style={style} className={'thephoto ' + orientation}/></a>
 				</section>
 			</div>
 		);
@@ -366,7 +366,7 @@ var EditMenu = React.createClass({
                     <div className='btn-group'>
                         <button type='button' className='btn btn-default' onClick={this.cancel} title='Leave edit mode'><Site.GlyphIcon glyph='remove'/> Cancel</button>
                         <button type='button' className='btn btn-default' onClick={this.save}><Site.GlyphIcon glyph='ok'/> Save</button>
-                        <button type='button' className='btn btn-primary' onClick={this.saveNext} title='Save and go to next image'><Site.GlyphIcon glyph='arrow-right'/> Next</button>
+                        <button type='button' className='btn btn-default' onClick={this.saveNext} title='Save and go to next image'><Site.GlyphIcon glyph='arrow-right'/> Next</button>
                     </div>
                     {saveMessage}
                 </div>

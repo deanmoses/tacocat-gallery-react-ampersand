@@ -421,7 +421,7 @@ var EditMenu = React.createClass({
                 <div className='editControls'>
                     <div className='btn-group'>
                         <button type='button' className='btn btn-default' onClick={this.cancel} title='Leave edit mode'><Site.GlyphIcon glyph='remove'/> Cancel</button>
-                        <button type='button' className='btn btn-primary' onClick={this.save} title='Save album description'><Site.GlyphIcon glyph='ok'/> Save</button>
+                        <button type='button' className='btn btn-default' onClick={this.save} title='Save album description'><Site.GlyphIcon glyph='ok'/> Save</button>
                     </div>
                     <input className='albumSummary' type='text' defaultValue={this.props.album.summary} placeholder='Summary'/>
                     <input className='albumPublished' type='checkbox' defaultChecked={!this.props.album.unpublished}/> published
