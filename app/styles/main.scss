@@ -177,10 +177,10 @@ a.navbar-brand, .search-button a {
             color: yellow;
         }
     }
-}
 
-.thumbnail.selected .glyphicon {
-    color: yellow;
+    &.selected .glyphicon {
+        color: yellow;
+    }
 }
 
 .photo-body {
