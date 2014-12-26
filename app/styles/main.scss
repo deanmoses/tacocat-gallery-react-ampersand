@@ -79,13 +79,18 @@ a.navbar-brand, .search-button a {
 		padding-right: 0;
 	}
 }
+.container-fluid {
+    position: relative;
+}
 
-.firsts {
-	display: inline-block;
-	width: 12em;
+.sidebar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
 	vertical-align: top;
-	margin-right: 1em;
-	padding: 1em;
+
+    padding-top: 1em;
 	background: #EEE;
     border-right: solid black 1px;
 	@media (max-width: 992px) {

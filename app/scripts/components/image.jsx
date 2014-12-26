@@ -144,7 +144,7 @@ module.exports = ImagePage;
 var ImagePageWaiting = React.createClass({
     render: function() {
         return (
-            <div className='imagepage waiting container-fluid'>
+            <div className='imagepage waiting'>
                 <Site.HeaderTitle title='' hideSiteTitle={true}/>
                 <ImagePageBodyWaiting />
             </div>
@@ -192,7 +192,7 @@ var ImagePageNotWaiting = React.createClass({
 		var image = this.props.image;
 
 		return (
-			<div className='imagepage container-fluid'>
+			<div className='imagepage'>
 				<Site.HeaderTitle href={album.href} title={image.title} editMode={this.props.user.editMode} hideSiteTitle={true}/>
 				<ImagePageBody album={album} image={image} editMode={this.props.user.editMode}/>
 				<EditMenu album={album} image={image} allowEdit={this.props.user.isAdmin} editMode={this.props.user.editMode}/>
@@ -232,7 +232,7 @@ var ImagePageBody = React.createClass({
             : <div className='caption' dangerouslySetInnerHTML={{__html: image.description}}/>;
 
 		return (
-			<div className='photo-body'>
+			<div className='photo-body container-fluid'>
 				<section className='col-md-3'>
 					<h2 className='hidden'>Caption</h2>
                     {desc}

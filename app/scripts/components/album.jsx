@@ -154,7 +154,7 @@ var LoadingAlbumPage = React.createClass({
 	render: function() {
 		var emptyThumbArray = [];
 		return (
-			<div className='albumpage loading container-fluid'>
+			<div className='albumpage loading'>
 				<Site.HeaderTitle title=''>
 					<Site.PrevButton />
 					<Site.UpButton />
@@ -173,15 +173,17 @@ var RootAlbumPage = React.createClass({
 	render: function() {
 		var a = this.props.album;
 		return (
-			<div className='albumpage rootalbumtype container-fluid'>
+			<div className='albumpage rootalbumtype'>
 				<Site.HeaderTitle title={a.pageTitle} path=''/>
-				<section className='col-md-3 latest'>
-					<h2>Latest Album</h2>
-					<Thumb.Nail item={a.latest} isAlbum={true} albumType='latest'/>
-				</section>
-				<section className='col-md-9'>
-					<Thumb.List items={a.albums} isAlbum={true} albumType='root'/>
-				</section>
+                <div className='container-fluid'>
+                    <section className='col-md-3 sidebar latest'>
+                        <h2>Latest Album</h2>
+                        <Thumb.Nail item={a.latest} isAlbum={true} albumType='latest'/>
+                    </section>
+                    <section className='col-md-9 col-md-offset-3'>
+                        <Thumb.List items={a.albums} isAlbum={true} albumType='root'/>
+                    </section>
+                </div>
 			</div>
 		);
 	}
@@ -194,7 +196,7 @@ var YearAlbumPage = React.createClass({
 	render: function() {
 		var a = this.props.album;
 		return (
-			<div className='albumpage yearalbumtype container-fluid'>
+			<div className='albumpage yearalbumtype'>
 				<Site.HeaderTitle href='#' title={a.pageTitle} path={this.props.album.path}>
 					<Site.PrevButton href={a.nextAlbumHref} title={a.nextAlbumTitle} />
 					<Site.UpButton href='#' title='All Years' />
@@ -223,7 +225,7 @@ var WeekAlbumPage = React.createClass({
             : <div className='caption' dangerouslySetInnerHTML={{__html: a.description}}/>;
         var selectedItem = user.editMode ? a.thumb : null;
 		return (
-			<div className='albumpage weekalbumtype container-fluid'>
+			<div className='albumpage weekalbumtype'>
 				<Site.HeaderTitle href={'#'+a.parent_album.path} title={a.pageTitle}>
 					<Site.PrevButton href={a.nextAlbumHref} title={a.nextAlbumTitle}/>
 					<Site.UpButton href={a.parentAlbumHref} title={a.parentAlbumTitle}/>
@@ -337,12 +339,12 @@ var FirstsAndThumbs = React.createClass({
 	render: function() {
 		var a = this.props.album;
 		return (
-			<div>
-				<section className='col-md-3 firsts'>
+			<div className='container-fluid'>
+				<section className='col-md-3 firsts sidebar'>
 					<h2 className='hidden'>Firsts</h2>
 				    <div className='firsts-text' dangerouslySetInnerHTML={{__html: a.description}}/>
 				</section>
-				<section className='col-md-9'>
+				<section className='col-md-9 col-md-offset-3'>
                     <h2 className='hidden'>Thumbnails</h2>
 					<MonthThumbs album={a}/>
 				</section>
