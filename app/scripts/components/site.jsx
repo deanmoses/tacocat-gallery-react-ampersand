@@ -39,6 +39,7 @@ Site.Page = React.createClass({
 Site.HeaderTitle = React.createClass({
     propTypes: {
         title: React.PropTypes.string,
+        shortTitle: React.PropTypes.string, // alternate title to use when screen is very narrow
         href: React.PropTypes.string,
         editMode: React.PropTypes.bool,
         noTitleLink: React.PropTypes.bool,
@@ -51,7 +52,12 @@ Site.HeaderTitle = React.createClass({
             title = <span className='titleInput navbar-brand' onChange={this.titleChange} contentEditable='true'>{this.state.title}</span>;
         }
         else if (this.props.noTitleLink) {
-            title = <span className='titleInput navbar-brand'>{this.state.title}</span>;
+            if (this.props.shortTitle) {
+                title = <span><span className='titleInput navbar-brand hidden-xs'>{this.state.title}</span><span className='titleInput navbar-brand visible-xs'>{this.props.shortTitle}</span></span>;
+            }
+            else {
+                title = <span className='titleInput navbar-brand'>{this.state.title}</span>;
+            }
         }
         else {
             title = <a className='navbar-brand' href={this.props.href}>{this.props.title}</a>;
@@ -63,9 +69,9 @@ Site.HeaderTitle = React.createClass({
                     <div className='navbar-header'>
                         {title}
                     </div>
-                    <div className='nav navbar-nav navbar-right'>
-                        {(!!this.props.hideSiteTitle) ? '' : <span className='navbar-text site-title'>{Config.site_title}</span>}
-                        {(!!this.props.hideSearch) ? '' : <span className='navbar-text search-button'><Site.SearchButton returnPath={this.props.path}/></span>}
+                    <div className='header-controls hidden-xxs'>
+                        {(!!this.props.hideSiteTitle) ? '' : <span className='hidden-xs site-title'>{Config.site_title}</span>}
+                        {(!!this.props.hideSearch) ? '' : <span className='search-button'><Site.SearchButton returnPath={this.props.path}/></span>}
                     </div>
 				</nav>
 				<Site.HeaderButtons>{this.props.children}</Site.HeaderButtons>

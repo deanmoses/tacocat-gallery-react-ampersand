@@ -78,13 +78,11 @@ module.exports = SearchPage = React.createClass({
                     <div className='navbar-header'>
                         <a className='navbar-brand' href={'#'+returnUrl}><Site.GlyphIcon glyph='circle-arrow-left'/></a>
                     </div>
-                    <div className='nav navbar-nav navbar-right'>
-                        <span className='navbar-text search-form'>
-                            <form onSubmit={this.handleSearch} className=''>
-                                <input type='text' placeholder='search' defaultValue={this.props.searchTerms} ref='searchBox' autoFocus/>
-                                <button type='submit' className='btn btn-default btn-sm'>Search</button>
-                            </form>
-                        </span>
+                    <div className='header-controls search-form'>
+                        <form onSubmit={this.handleSearch} className=''>
+                            <input type='text' placeholder='search' defaultValue={this.props.searchTerms} ref='searchBox' autoFocus/>
+                            <button type='submit' className='btn btn-default btn-sm'>Search</button>
+                        </form>
                     </div>
 
                 </nav>

@@ -29,12 +29,18 @@ $titleColor: #fff;
     padding: 0 10px 10px 10px;
 }
 
-.search-button {
-    margin-right: 30px;
-}
-
 a.navbar-brand, .search-button a {
     color: black;
+}
+
+.header-controls {
+    position: absolute;
+    right: 10px;
+    bottom: 8px;
+
+    .site-title {
+        margin-right: 10px;
+    }
 }
 
 .year, .day {
@@ -69,11 +75,17 @@ a.navbar-brand, .search-button a {
 	font-size: 28px;
 }
 
-.photo .header.navbar, .navbar-right, .nav-button-label {
-	/* portrait phones and below */
-	@media all and (max-width: 768px) {
-		display: none;
-	}
+.photo .header.navbar, .nav-button-label {
+    /* portrait phones and below */
+    @media all and (max-width: 767px) {
+        display: none;
+    }
+}
+
+@media (max-width: 320px) {
+    .hidden-xxs {
+        display: none !important;
+    }
 }
 
 .container, .container-fluid, .col-md-3, .col-md-9 {
@@ -83,6 +95,7 @@ a.navbar-brand, .search-button a {
 		padding-right: 0;
 	}
 }
+
 .container-fluid {
     position: relative;
 }
@@ -254,10 +267,6 @@ a.navbar-brand, .search-button a {
 
 .editStatusMsg,  .editControls input {
     margin-left: 1em;
-}
-
-.search-form {
-    padding-right: 10px;
 }
 
 .noresults {

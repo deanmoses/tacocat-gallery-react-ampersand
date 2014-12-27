@@ -8,6 +8,8 @@ module.exports = {
 
 	site_title: 'Dean, Lucie, Felix and Milo Moses',
 
+    site_title_short: 'The Moses Family',
+
     dev: function() {
       return (document.location.hostname.toLowerCase() === 'localhost');
     },

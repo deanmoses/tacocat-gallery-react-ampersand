@@ -174,7 +174,7 @@ var RootAlbumPage = React.createClass({
 		var a = this.props.album;
 		return (
 			<Site.Page className='albumpage rootalbumtype'>
-                <Site.HeaderTitle title={Config.site_title} noTitleLink={true} hideSiteTitle={true} path=''/>
+                <Site.HeaderTitle title={Config.site_title} shortTitle={Config.site_title_short} noTitleLink={true} hideSiteTitle={true} path=''/>
                 <div className='container-fluid'>
                     <section className='col-md-3 sidebar latest'>
                         <h2>Latest Album</h2>

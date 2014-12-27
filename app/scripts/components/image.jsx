@@ -181,7 +181,7 @@ var ImagePageNotWaiting = React.createClass({
 
 		return (
 			<Site.Page className='imagepage'>
-				<Site.HeaderTitle href={album.href} title={image.title} editMode={this.props.user.editMode} hideSiteTitle={true}/>
+				<Site.HeaderTitle href={album.href} title={image.title} editMode={this.props.user.editMode} hideSiteTitle={true} hideSearch={true}/>
 				<ImagePageBody album={album} image={image} editMode={this.props.user.editMode}/>
 				<EditMenu album={album} image={image} allowEdit={this.props.user.isAdmin} editMode={this.props.user.editMode}/>
 			</Site.Page>
