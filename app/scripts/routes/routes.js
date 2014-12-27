@@ -43,6 +43,8 @@ module.exports = Router.extend({
 	},
 
 	search: function(searchTerms, returnPath) {
+        $('body').attr('class', 'search');
+
 		if (!searchTerms) {
 			searchTerms = '';
 		}

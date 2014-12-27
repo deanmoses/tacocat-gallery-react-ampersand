@@ -438,7 +438,7 @@ var EditMenu = React.createClass({
             var zviewUrl = Config.zenphotoAlbumViewUrl(album.path);
             var tacocatUrl = Config.staticAlbumUrl(album.path);
             return (
-                <div>
+                <div className='editControls'>
                     <div className='btn-group'>
                         <button type='button' className='btn btn-default' onClick={this.edit}><Site.GlyphIcon glyph='pencil'/> Edit</button>
                         <button type='button' className='btn btn-default dropdown-toggle' data-toggle='dropdown' aria-expanded='false'>

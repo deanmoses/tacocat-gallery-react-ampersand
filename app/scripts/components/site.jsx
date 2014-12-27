@@ -21,9 +21,13 @@ Site.Page = React.createClass({
         hideFooter: React.PropTypes.bool
     },
     render: function() {
+        var classes = 'pagecontents';
+        if (this.props.className) {
+            classes += ' ' + this.props.className;
+        }
         return (
             <div>
-                <div className={'pagecontents ' + this.props.className}>
+                <div className={classes}>
                     {this.props.children}
                 </div>
                 {!!this.props.hideFooter ? '' : <div className='footer hidden-xs hidden-sm'><img src='images/tacocat-logo.png' width='102px' height='19px'/></div>}

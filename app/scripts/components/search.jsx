@@ -70,53 +70,39 @@ module.exports = SearchPage = React.createClass({
 		}
 		var returnUrl = (this.props.returnPath) ? encodeURIComponent(this.props.returnPath) : '';
 		return (
-			<div>
-				<a href={'#'+returnUrl}><Site.GlyphIcon glyph='circle-arrow-left'/></a>
-				<SearchBox searchTerms={this.props.searchTerms} returnPath={this.props.returnPath} />
+            <Site.Page hideFooter={true}>
+                <nav className='header navbar'>
+                    <div className='navbar-header'>
+                        <a className='navbar-brand' href={'#'+returnUrl}><Site.GlyphIcon glyph='circle-arrow-left'/></a>
+                    </div>
+                    <div className='nav navbar-nav navbar-right'>
+                        <span className='navbar-text search-form'>
+                            <form onSubmit={this.handleSearch} className=''>
+                                <input type='text' placeholder='search' defaultValue={this.props.searchTerms} ref='searchBox'/>
+                                <button type='submit' className='btn btn-default'>Search</button>
+                            </form>
+                        </span>
+                    </div>
+
+                </nav>
 				{images}
 				{albums}
 				{noResults}
-			</div>
-		);
-	}
-});
-
-
-/**
- * Component that renders the search box
- * and handles retrieving user input from it.
- */
-var SearchBox = React.createClass({
-
-	/**
-	 * Declare the properties that this component takes
-	 */
-	propTypes: {
-		// search terms like 'cat dog puppy'
-	    searchTerms: React.PropTypes.string,
-		// URL to return to, like when clicking back button
-		returnPath: React.PropTypes.string
-	},
-
-	render: function() {
-		return (
-			<form onSubmit={this.handleSearch}>
-				<input type='text' placeholder='search' defaultValue={this.props.searchTerms} ref='searchBox'/>
-			</form>
+            </Site.Page>
 		);
 	},
 
-	/**
-	 * Handle the user submitting the search form
-	 * by setting the new search terms on the URL.
-	 *
-	 * The actual searching will be done when the
-	 * component is re-rendered because of the URL change.
-	 */
-	handleSearch: function(e) {
-		e.preventDefault();
-		var search = 'search:' + encodeURIComponent(this.refs.searchBox.getDOMNode().value.trim());
-		var returnPath = (this.props.returnPath) ? '&return:' + encodeURIComponent(this.props.returnPath) : '';
-		window.location.hash = search + returnPath;
-	}
+    /**
+     * Handle the user submitting the search form
+     * by setting the new search terms on the URL.
+     *
+     * The actual searching will be done when the
+     * component is re-rendered because of the URL change.
+     */
+    handleSearch: function(e) {
+        e.preventDefault();
+        var search = 'search:' + encodeURIComponent(this.refs.searchBox.getDOMNode().value.trim());
+        var returnPath = (this.props.returnPath) ? '&return:' + encodeURIComponent(this.props.returnPath) : '';
+        window.location.hash = search + returnPath;
+    }
 });
