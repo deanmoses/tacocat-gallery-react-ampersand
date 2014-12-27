@@ -59,10 +59,10 @@ module.exports = SearchPage = React.createClass({
 		var noResults = '';
 		if (this.state && this.state.results) {
 			if (this.state.results.images) {
-				images = <Thumb.List items={this.state.results.images}/>;
+				images = <Thumb.List items={this.state.results.images} useLongDateAsSummary={true}/>;
 			}
 			if (this.state.results.albums) {
-				albums = <Thumb.List items={this.state.results.albums}/>;
+				albums = <Thumb.List items={this.state.results.albums} useLongDateAsTitle={true}/>;
 			}
 		}
 		if (this.props.searchTerms && this.state && !images && !albums) {
@@ -79,7 +79,7 @@ module.exports = SearchPage = React.createClass({
                         <span className='navbar-text search-form'>
                             <form onSubmit={this.handleSearch} className=''>
                                 <input type='text' placeholder='search' defaultValue={this.props.searchTerms} ref='searchBox'/>
-                                <button type='submit' className='btn btn-default'>Search</button>
+                                <button type='submit' className='btn btn-default btn-sm'>Search</button>
                             </form>
                         </span>
                     </div>

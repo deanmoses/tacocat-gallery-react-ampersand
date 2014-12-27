@@ -27,7 +27,7 @@ Thumb.List = React.createClass({
                 return <Thumb.Nail item={child} isAlbum={isAlbum} albumType={this.props.albumType} key={child.path} editMode={this.props.editMode} selected={selected} onSelect={this.onSelect.bind(this, child.path)} />;
             }
             else {
-                return <Thumb.Nail item={child} isAlbum={isAlbum} albumType={this.props.albumType} key={child.path}/>;
+                return <Thumb.Nail item={child} isAlbum={isAlbum} albumType={this.props.albumType} key={child.path} useLongDateAsSummary={this.props.useLongDateAsSummary} useLongDateAsTitle={this.props.useLongDateAsTitle}/>;
             }
         }.bind(this));
 
@@ -68,6 +68,9 @@ Thumb.Nail = React.createClass({
                 title = DateUtils.shortDate(item.date);
             }
         }
+        else if (this.props.useLongDateAsTitle) {
+            title = DateUtils.longDate(item.date);
+        }
         else {
             title = item.title;
         }
@@ -80,7 +83,12 @@ Thumb.Nail = React.createClass({
             width: width,
             height: height
         };
-        var summary = !item.summary ? '' : <p className='thumb-summary' style={style}>{item.summary}</p>;
+        var summary = item.summary;
+        if (!summary && this.props.useLongDateAsSummary) {
+            summary = DateUtils.longDate(item.date);
+        }
+        summary = !summary ? '' : <p className='thumb-summary' style={style}>{summary}</p>;
+
         var selectedClass = (!this.props.editMode || !this.props.selected) ? '' : ' selected';
         var selectButton = (!this.props.editMode) ? '' : <Site.GlyphIcon glyph='star' onClick={this.onSelect}/>;
 		var thumbUrl = 'http://tacocat.com/' + item.urlThumb;
