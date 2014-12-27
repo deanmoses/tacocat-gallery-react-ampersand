@@ -393,11 +393,17 @@ var EditMenu = React.createClass({
         };
     },
 
+    /**
+     * Enter edit mode
+     */
 	edit: function() {
         // will trigger the event listener in a parent component
         User.currentUser().editMode = true;
 	},
 
+    /**
+     * Cancel edit mode
+     */
 	cancel: function() {
         // will trigger the event listener in a parent component
         User.currentUser().editMode = false;
@@ -462,7 +468,7 @@ var EditMenu = React.createClass({
             // set the title and description on the image model
 			this.props.image.title = title;
 			this.props.image.description = description;
-            if (next) {
+            if (next === true) {
                 // if no next image, go up to the album
                 window.location.hash = (this.props.image.nextImageHref) ? this.props.image.nextImageHref : this.props.album.href;
             }
