@@ -145,7 +145,7 @@ var ImagePageWaiting = React.createClass({
     render: function() {
         return (
             <Site.Page className='imagepage waiting' hideFooter={true}>
-                <Site.HeaderTitle title='' hideSiteTitle={true}/>
+                <Site.HeaderTitle title='' hideSiteTitle={true} hideSearch={true}/>
                 <div className='photo-body'>
                     <section className='col-md-3'>
                         <h2 className='hidden'>Caption</h2>

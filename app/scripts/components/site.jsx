@@ -37,7 +37,9 @@ Site.HeaderTitle = React.createClass({
         title: React.PropTypes.string,
         href: React.PropTypes.string,
         editMode: React.PropTypes.bool,
-        noTitleLink: React.PropTypes.bool
+        noTitleLink: React.PropTypes.bool,
+        hideSiteTitle: React.PropTypes.bool,
+        hideSearch: React.PropTypes.bool
     },
 	render: function() {
         var title;
@@ -57,15 +59,10 @@ Site.HeaderTitle = React.createClass({
                     <div className='navbar-header'>
                         {title}
                     </div>
-                    {
-                        this.props.hideSiteTitle ? '' :
-                        <div className='nav navbar-nav navbar-right'>
-                            {(!!this.props.hideSiteTitle) ? '' : <span className='navbar-text site-title'>{Config.site_title}</span>}
-                            <span className='navbar-text search-button'>
-                                <Site.SearchButton returnPath={this.props.path}/>
-                            </span>
-                        </div>
-                    }
+                    <div className='nav navbar-nav navbar-right'>
+                        {(!!this.props.hideSiteTitle) ? '' : <span className='navbar-text site-title'>{Config.site_title}</span>}
+                        {(!!this.props.hideSearch) ? '' : <span className='navbar-text search-button'><Site.SearchButton returnPath={this.props.path}/></span>}
+                    </div>
 				</nav>
 				<Site.HeaderButtons>{this.props.children}</Site.HeaderButtons>
 			</div>

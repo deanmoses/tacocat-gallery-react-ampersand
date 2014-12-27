@@ -155,7 +155,7 @@ var LoadingAlbumPage = React.createClass({
 		var emptyThumbArray = [];
 		return (
 			<Site.Page className='albumpage loading' hideFooter={true}>
-				<Site.HeaderTitle title='' hideSiteTitle={true}>
+				<Site.HeaderTitle hideSiteTitle={true} hideSearch={true}>
 					<Site.PrevButton />
 					<Site.UpButton />
 					<Site.NextButton />
