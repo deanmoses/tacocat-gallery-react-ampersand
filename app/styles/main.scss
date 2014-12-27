@@ -134,6 +134,10 @@ a.navbar-brand, .search-button a {
 
 .thumbnails {
     min-height: 300px;
+
+    .search & {
+        border-top: solid black 1px;
+    }
 }
 
 .thumbnail {

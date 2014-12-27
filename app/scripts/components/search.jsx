@@ -78,7 +78,7 @@ module.exports = SearchPage = React.createClass({
                     <div className='nav navbar-nav navbar-right'>
                         <span className='navbar-text search-form'>
                             <form onSubmit={this.handleSearch} className=''>
-                                <input type='text' placeholder='search' defaultValue={this.props.searchTerms} ref='searchBox'/>
+                                <input type='search' placeholder='search' defaultValue={this.props.searchTerms} ref='searchBox' autoFocus/>
                                 <button type='submit' className='btn btn-default btn-sm'>Search</button>
                             </form>
                         </span>
