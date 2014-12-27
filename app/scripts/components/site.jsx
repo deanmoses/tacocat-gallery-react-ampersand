@@ -14,16 +14,42 @@ var React = require('react');
 // which will then be made available as a module
 var Site = {};
 
+
+Site.Page = React.createClass({
+    propTypes: {
+        className: React.PropTypes.string,
+        hideFooter: React.PropTypes.bool
+    },
+    render: function() {
+        return (
+            <div>
+                <div className={'pagecontents ' + this.props.className}>
+                    {this.props.children}
+                </div>
+                {!!this.props.hideFooter ? '' : <div className='footer hidden-xs hidden-sm'><img src='images/tacocat-logo.png' width='102px' height='19px'/></div>}
+            </div>
+        );
+    }
+});
+
 Site.HeaderTitle = React.createClass({
     propTypes: {
         title: React.PropTypes.string,
         href: React.PropTypes.string,
-        editMode: React.PropTypes.bool
+        editMode: React.PropTypes.bool,
+        noTitleLink: React.PropTypes.bool
     },
 	render: function() {
-        var title = (this.props.editMode)
-            ? <span className='titleInput navbar-brand' onChange={this.titleChange} contentEditable='true'>{this.state.title}</span>
-            : <a className='navbar-brand' href={this.props.href}>{this.props.title}</a>;
+        var title;
+        if (this.props.editMode) {
+            title = <span className='titleInput navbar-brand' onChange={this.titleChange} contentEditable='true'>{this.state.title}</span>;
+        }
+        else if (this.props.noTitleLink) {
+            title = <span className='titleInput navbar-brand'>{this.state.title}</span>;
+        }
+        else {
+            title = <a className='navbar-brand' href={this.props.href}>{this.props.title}</a>;
+        }
 
 		return (
 			<div>
@@ -34,7 +60,7 @@ Site.HeaderTitle = React.createClass({
                     {
                         this.props.hideSiteTitle ? '' :
                         <div className='nav navbar-nav navbar-right'>
-                            <span className='navbar-text site-title'>{Config.site_title}</span>
+                            {(!!this.props.hideSiteTitle) ? '' : <span className='navbar-text site-title'>{Config.site_title}</span>}
                             <span className='navbar-text search-button'>
                                 <Site.SearchButton returnPath={this.props.path}/>
                             </span>

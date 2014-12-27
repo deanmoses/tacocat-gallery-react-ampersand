@@ -154,14 +154,14 @@ var LoadingAlbumPage = React.createClass({
 	render: function() {
 		var emptyThumbArray = [];
 		return (
-			<div className='albumpage loading'>
-				<Site.HeaderTitle title=''>
+			<Site.Page className='albumpage loading' hideFooter={true}>
+				<Site.HeaderTitle title='' hideSiteTitle={true}>
 					<Site.PrevButton />
 					<Site.UpButton />
 					<Site.NextButton />
 				</Site.HeaderTitle>
 				<Thumb.List items={emptyThumbArray} isAlbum={true} />
-			</div>
+			</Site.Page>
 		);
 	}
 });
@@ -173,8 +173,8 @@ var RootAlbumPage = React.createClass({
 	render: function() {
 		var a = this.props.album;
 		return (
-			<div className='albumpage rootalbumtype'>
-				<Site.HeaderTitle title={a.pageTitle} path=''/>
+			<Site.Page className='albumpage rootalbumtype'>
+                <Site.HeaderTitle title={Config.site_title} noTitleLink={true} hideSiteTitle={true} path=''/>
                 <div className='container-fluid'>
                     <section className='col-md-3 sidebar latest'>
                         <h2>Latest Album</h2>
@@ -184,7 +184,7 @@ var RootAlbumPage = React.createClass({
                         <Thumb.List items={a.albums} isAlbum={true} albumType='root'/>
                     </section>
                 </div>
-			</div>
+            </Site.Page>
 		);
 	}
 });
@@ -196,14 +196,14 @@ var YearAlbumPage = React.createClass({
 	render: function() {
 		var a = this.props.album;
 		return (
-			<div className='albumpage yearalbumtype'>
+			<Site.Page className='albumpage yearalbumtype'>
 				<Site.HeaderTitle href='#' title={a.pageTitle} path={this.props.album.path}>
 					<Site.PrevButton href={a.nextAlbumHref} title={a.nextAlbumTitle} />
 					<Site.UpButton href='#' title='All Years' />
 					<Site.NextButton href={a.prevAlbumHref} title={a.prevAlbumTitle}/>
 				</Site.HeaderTitle>
 				<FirstsAndThumbs album={a}/>
-			</div>
+			</Site.Page>
 		);
 	}
 });
@@ -225,7 +225,7 @@ var WeekAlbumPage = React.createClass({
             : <div className='caption' dangerouslySetInnerHTML={{__html: a.description}}/>;
         var selectedItem = user.editMode ? a.thumb : null;
 		return (
-			<div className='albumpage weekalbumtype'>
+			<Site.Page className='albumpage weekalbumtype'>
 				<Site.HeaderTitle href={'#'+a.parent_album.path} title={a.pageTitle}>
 					<Site.PrevButton href={a.nextAlbumHref} title={a.nextAlbumTitle}/>
 					<Site.UpButton href={a.parentAlbumHref} title={a.parentAlbumTitle}/>
@@ -237,7 +237,7 @@ var WeekAlbumPage = React.createClass({
 				</section>
 				<Thumb.List items={a.images} isAlbum={false} editMode={user.editMode} selectedItem={selectedItem} onSelect={this.onThumbSelect}/>
                 <EditMenu album={a} allowEdit={user.isAdmin} editMode={user.editMode} />
-			</div>
+			</Site.Page>
 		);
 	},
 

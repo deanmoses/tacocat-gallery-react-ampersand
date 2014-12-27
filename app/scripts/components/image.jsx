@@ -144,35 +144,23 @@ module.exports = ImagePage;
 var ImagePageWaiting = React.createClass({
     render: function() {
         return (
-            <div className='imagepage waiting'>
+            <Site.Page className='imagepage waiting' hideFooter={true}>
                 <Site.HeaderTitle title='' hideSiteTitle={true}/>
-                <ImagePageBodyWaiting />
-            </div>
-        );
-    }
-});
-
-/**
- * Component that displays an empty image body, for use while the album is
- * being loaded from the server.
- */
-var ImagePageBodyWaiting = React.createClass({
-    render: function() {
-        return (
-            <div className='photo-body'>
-                <section className='col-md-3'>
-                    <h2 className='hidden'>Caption</h2>
-                    <div className='caption'></div>
-                </section>
-                <section className='col-md-9'>
-                    <h2 className='hidden'>Photo</h2>
-                    <Site.HeaderButtons>
-                        <Site.PrevButton />
-                        <Site.UpButton />
-                        <Site.NextButton/>
-                    </Site.HeaderButtons>
-                </section>
-            </div>
+                <div className='photo-body'>
+                    <section className='col-md-3'>
+                        <h2 className='hidden'>Caption</h2>
+                        <div className='caption'></div>
+                    </section>
+                    <section className='col-md-9'>
+                        <h2 className='hidden'>Photo</h2>
+                        <Site.HeaderButtons>
+                            <Site.PrevButton />
+                            <Site.UpButton />
+                            <Site.NextButton/>
+                        </Site.HeaderButtons>
+                    </section>
+                </div>
+            </Site.Page>
         );
     }
 });
@@ -192,11 +180,11 @@ var ImagePageNotWaiting = React.createClass({
 		var image = this.props.image;
 
 		return (
-			<div className='imagepage'>
+			<Site.Page className='imagepage'>
 				<Site.HeaderTitle href={album.href} title={image.title} editMode={this.props.user.editMode} hideSiteTitle={true}/>
 				<ImagePageBody album={album} image={image} editMode={this.props.user.editMode}/>
 				<EditMenu album={album} image={image} allowEdit={this.props.user.isAdmin} editMode={this.props.user.editMode}/>
-			</div>
+			</Site.Page>
 		);
 	}
 });
