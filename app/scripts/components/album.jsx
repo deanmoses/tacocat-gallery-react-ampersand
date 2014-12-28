@@ -226,7 +226,7 @@ var WeekAlbumPage = React.createClass({
         var selectedItem = user.editMode ? a.thumb : null;
 		return (
 			<Site.Page className='albumpage weekalbumtype'>
-				<Site.HeaderTitle href={'#'+a.parent_album.path} title={a.pageTitle}>
+				<Site.HeaderTitle href={'#'+a.parent_album.path} title={a.pageTitle} path={a.path}>
 					<Site.PrevButton href={a.nextAlbumHref} title={a.nextAlbumTitle}/>
 					<Site.UpButton href={a.parentAlbumHref} title={a.parentAlbumTitle}/>
 					<Site.NextButton href={a.prevAlbumHref} title={a.prevAlbumTitle}/>
