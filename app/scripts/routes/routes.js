@@ -1,4 +1,5 @@
 'use strict';
+/*jslint browser: true*/
 
 var React = require('react');
 
@@ -18,8 +19,7 @@ var mountNode = document.getElementById('main');
  */
 var Router = require('ampersand-router');
 module.exports = Router.extend({
-
-	/*global console*/
+    /*global ga */
 
 	/**
 	 * Define the application's routes.
@@ -56,6 +56,7 @@ module.exports = Router.extend({
 			SearchPage = React.createFactory(require('../components/search.jsx'));
 		}
 		React.render(SearchPage({searchTerms: searchTerms, returnPath: returnPath, key: searchTerms}), mountNode);
+        this.track('search?'+searchTerms);
 	},
 
 	albumOrImage: function(path) {
@@ -69,6 +70,7 @@ module.exports = Router.extend({
         // I know i've never created an album with a '.' in
         // the name.
         var isAlbum =  path.indexOf('.') === -1;
+        var year;
 
         // root album
         if (!path) {
@@ -76,12 +78,12 @@ module.exports = Router.extend({
         }
         // individual photo
         else if (!isAlbum) {
-            var year = path.split('/')[0];
+            year = path.split('/')[0];
             $('body').attr('class', 'photo' + ' ' + 'y'+year);
         }
         // day album
         else if (path.indexOf('/') >=0) {
-            var year = path.split('/')[0];
+            year = path.split('/')[0];
             $('body').attr('class', 'day' + ' ' + 'y'+year);
         }
         // year album
@@ -105,6 +107,11 @@ module.exports = Router.extend({
 			// and thus the new album won't be set and retrieved.
 			React.render(ImagePage({imagePath: path, key: path}), mountNode);
 		}
-	}
+        this.track(path);
+	},
+
+    track(path) {
+        ga('send', 'pageview', 'p/'+path);
+    }
 
 });
