@@ -42,15 +42,11 @@ module.exports = {
     mockBaseUrl: 'mockdata',
 
     jsonAlbumEditUrl: function(albumPath) {
-        return this.dev()
-            ? this.mockBaseUrl + '/album/save.json'
-            : this.zenphotoAlbumViewUrl(albumPath)
+        return this.dev() ? this.mockBaseUrl + '/album/save.json' : this.zenphotoAlbumViewUrl(albumPath);
     },
 
     jsonUserUrl: function() {
-        return this.dev()
-            ? this.mockBaseUrl + '/user/read.json'
-            : 'http://tacocat.com/zenphoto/?api&auth';
+        return this.dev() ? this.mockBaseUrl + '/user/read.json' : 'http://tacocat.com/zenphoto/?api&auth';
     },
 
     staticAlbumUrl: function(albumPath) {
