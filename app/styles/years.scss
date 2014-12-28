@@ -2,7 +2,40 @@
 // colors for each year
 //
 
-.root, .search, .y2014 {
+// default for years with no styling
+body {
+    background-color: #3F64EE;
+
+    .header, .month > h1 {
+        background-color: #FFE793;
+    }
+
+    .btn {
+        background-color: lighten(#FFE793, 10%);
+    }
+
+    .sidebar {
+        background-color: #FFD02D;
+    }
+}
+
+.root, .search, .y2015 { // each year, root and search should move to the latest year
+    background-color: #692F55;
+
+    .header, .month > h1 {
+        background-color: #C56D69;
+    }
+
+    .btn {
+        background-color: #E2B6B4;
+    }
+
+    .sidebar {
+        background-color: #837D54;
+    }
+}
+
+.y2014 {
     background-color: #8d5f5f;
 
     .header, .month > h1 {
@@ -98,22 +131,6 @@
     }
 }
 
-.y2006, .y2007 {
-    background-color: #3F64EE;
-
-    .header, .month > h1 {
-        background-color: #FFE793;
-    }
-
-    .btn {
-        background-color: lighten(#FFE793, 10%);
-    }
-
-    .sidebar {
-        background-color: #FFD02D;
-    }
-}
-
 .y2005 {
     background-color: #743a7d;
 
@@ -166,155 +183,70 @@
     }
 }
 
-.y1988 {
-    background-color: #CE5AFF;
-
-    .header, .month > h1 {
-        background-color: #FFDD51;
-    }
-
-    .btn {
-        background-color: #FF56A2;
-    }
-
-    .sidebar {
-        background-color: #E7C983;
-    }
-}
-
-.y1987 {
-    background-color: #737CD1;
-
-    .header, .month > h1 {
-        background-color: #EA00B2;
-    }
-
-    .btn {
-        background-color: #737CD1;
-    }
-
-    .sidebar {
-        background-color: #00DBB7;
-    }
-}
-
-.y1979 {
-    background-color: #769225;
-
-    .header, .month > h1 {
-        background-color: #EAF7BE;
-    }
-
-    .btn {
-        background-color: #E3D86B;
-    }
-
-    .sidebar {
-        background-color: #FFFAC4;
-    }
-}
-
-.y1978 {
-    background-color: #9EC392;
-
-    .header, .month > h1 {
-        background-color: #B4C99B;
-    }
-
-    .btn {
-        background-color: #69C3DC;
-    }
-
-    .sidebar {
-        background-color: #5FC4D0;
-    }
-}
-
-.y1977 {
-    background-color: #6DBB96;
-
-    .header, .month > h1 {
-        background-color: #A1C3B1;
-    }
-
-    .btn {
-        background-color: #CACEBC;
-    }
-
-    .sidebar {
-        background-color: #80A795;
-    }
-}
-
-.y1976 {
-    background-color: #DB5521;
-
-    .header, .month > h1 {
-        background-color: #E38D0A;
-    }
-
-    .btn {
-        background-color: #A5C363;
-    }
-
-    .sidebar {
-        background-color: #82A168;
-    }
-}
-
-.y1975 {
-    background-color: #ED9A0C;
-
-    .header, .month > h1 {
-        background-color: #E1D451;
-    }
-
-    .btn {
-        background-color: #A4C45B;
-    }
-
-    .sidebar {
-        background-color: #97BA53;
-    }
-}
-
-.y1974 {
-    background-color: #E67823;
+.y1981,.y1983,.y1985,.y1987,.y1989 {
+    background-color: #3A3A3C;
 
     .header {
-
-        background-color: #EDD436;
+        background-color: #E82E79;
     }
 
     .month > h1 {
-        background-color: #E67823;
+        background-color: #6BD4DB;
     }
 
     .btn {
-        background-color: #FF6600;
+        background-color: #F497BC;
     }
 
     .sidebar {
-        background-color: #EEA338;
+        background-color: #BBBBBB;
     }
 }
 
-.y1973 {
-    background-color: #80412a;
+.y1980,.y1982,.y1984,.y1986,.y1988 {
+    background-color: #4E337A;
 
-    .header {
-        background-color: #FF6600;
-    }
-
-    .month > h1 {
-        background-color: #FFB400;
+    .header, .month > h1 {
+        background-color: #B1A6D0;
     }
 
     .btn {
-        background-color: #FFB400;
+        background-color: #D8D3E8;
     }
 
     .sidebar {
-        background-color: #E53700;
+        background-color: #EDE7D5;
+    }
+}
+
+.y1971,.y1973,.y1975,.y1977,.y1979 {
+    background-color: #503200;
+
+    .header, .month > h1 {
+        background-color: #E7B62A;
+    }
+
+    .btn {
+        background-color: #F3DB95;
+    }
+
+    .sidebar {
+        background-color: #DE8B31;
+    }
+}
+
+.y1970,.y1972,.y1974,.y1976,.y1978 {
+    background-color: #434210;
+
+    .header, .month > h1 {
+        background-color: #A2A22C;
+    }
+
+    .btn {
+        background-color: #D1D196;
+    }
+
+    .sidebar {
+        background-color: #F6C54C;
     }
 }
