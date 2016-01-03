@@ -19,7 +19,24 @@ body {
     }
 }
 
-.root, .search, .y2015 { // each year, root and search should move to the latest year
+
+.root, .search, .y2016 { // each year, root and search should move to the latest year
+    background-color: #034f84;
+
+    .header, .month > h1 {
+        background-color: #98ddde;
+    }
+
+    .btn {
+        background-color: #c6f7f7;
+    }
+
+    .sidebar {
+        background-color: #91a8d0;
+    }
+}
+
+.y2015 {
     background-color: #692F55;
 
     .header, .month > h1 {
