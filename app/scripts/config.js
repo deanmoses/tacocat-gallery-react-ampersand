@@ -32,7 +32,11 @@ module.exports = {
 	},
 
     zenphotoAlbumViewUrl: function(albumPath) {
-        return 'http://tacocat.com/zenphoto/' + albumPath;
+        // Not having the final slash messes up POSTing to the edit URL, 
+        // because as of late 2016 zenphoto started redirecting 
+        // to the version with the slash.
+        var finalSlash = albumPath.endsWith('/') ? '' : '/';
+        return 'http://tacocat.com/zenphoto/' + albumPath + finalSlash;
     },
 
     zenphotoAlbumEditUrl: function(albumPath) {
