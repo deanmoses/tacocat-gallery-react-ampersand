@@ -127,6 +127,14 @@ module.exports = Model.extend({
 				return this.parent_album ? this.parent_album.title : '';
 			}
 		},
+		// Path of parent album
+		// Blank if no parent album
+		parentAlbumPath: {
+            deps: ['parent_album'],
+            fn: function () {
+				return this.parent_album ? this.parent_album.path : '';
+			}
+		},
 		// Type of album:  root, year or week
 		type: {
             deps: ['path'],
@@ -209,6 +217,14 @@ module.exports = Model.extend({
      * URL of the JSON REST API from which to retrieve the album
      */
 	url: function() {
-		return 'http://tacocat.com/zenphoto/'+this.path+'?api';
+		if (this.path.length === 0) {
+			return 'http://tacocat.com/p_json/root.json';
+		}
+		else if (this.path.length === 4) {
+			return 'http://tacocat.com/p_json/'+this.path+'.json';
+		}
+		else {
+			return 'http://tacocat.com/zenphoto/'+this.path+'?api';
+		}
 	}
 });

@@ -539,6 +539,20 @@ var EditMenu = React.createClass({
                 return;
             }
 
+            // hit the PHP that triggers refreshing
+            // the parent album's cache on the server
+            var ajaxData = {
+                album: this.props.album.parentAlbumPath
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: 'http://tacocat.com/p_json/refresh.php',
+                cache: false,
+                dataType: 'json',
+                data: ajaxData
+            });
+
             // set the description on the album model
             this.props.album.description = description;
             this.props.album.summary = summary;
