@@ -92,7 +92,7 @@ Thumb.Nail = React.createClass({
 
         var selectedClass = (!this.props.editMode || !this.props.selected) ? '' : ' selected';
         var selectButton = (!this.props.editMode) ? '' : <Site.GlyphIcon glyph='star' onClick={this.onSelect}/>;
-		var thumbUrl = 'http://tacocat.com/' + item.urlThumb;
+		var thumbUrl = 'https://tacocat.com/' + item.urlThumb;
 		return(
 			<span className={'thumbnail' + selectedClass}>
 				<a href={'#'+item.path} className='thumb-link' style={imgLinkStyle}><img src={thumbUrl} width={width} height={height} alt={title}/></a>

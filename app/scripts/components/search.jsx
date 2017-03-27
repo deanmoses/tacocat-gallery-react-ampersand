@@ -38,7 +38,7 @@ module.exports = SearchPage = React.createClass({
 	componentDidMount: function() {
 		// if the component was created with search terms, ask server to search
 		if (this.props.searchTerms) {
-			var url = 'http://tacocat.com/zenphoto/page/search?words=' + encodeURIComponent(this.props.searchTerms) +'&api';
+			var url = 'https://tacocat.com/zenphoto/page/search?words=' + encodeURIComponent(this.props.searchTerms) +'&api';
 			$.getJSON(url)
 			.done(function(results) {
 				//console.log('results: ', results);

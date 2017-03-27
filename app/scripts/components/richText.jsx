@@ -29,7 +29,7 @@ module.exports = RichTextEditor = React.createClass({
         // else load CKEDITOR
         else {
             $.ajax({
-                url: 'http://cdn.ckeditor.com/4.4.6/standard/ckeditor.js',
+                url: '//cdn.ckeditor.com/4.4.6/standard/ckeditor.js',
                 dataType: 'script',
                 cache: true
             }).done(function() {

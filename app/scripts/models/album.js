@@ -218,13 +218,13 @@ module.exports = Model.extend({
      */
 	url: function() {
 		if (this.path.length === 0) {
-			return 'http://tacocat.com/p_json/root.json';
+			return 'https://tacocat.com/p_json/root.json';
 		}
 		else if (this.path.length === 4) {
-			return 'http://tacocat.com/p_json/'+this.path+'.json';
+			return 'https://tacocat.com/p_json/'+this.path+'.json';
 		}
 		else {
-			return 'http://tacocat.com/zenphoto/'+this.path+'?api';
+			return 'https://tacocat.com/zenphoto/'+this.path+'?api';
 		}
 	}
 });

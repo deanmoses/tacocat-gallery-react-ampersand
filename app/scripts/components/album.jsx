@@ -548,7 +548,7 @@ var EditMenu = React.createClass({
 
             $.ajax({
                 type: 'POST',
-                url: 'http://tacocat.com/p_json/refresh.php',
+                url: 'https://tacocat.com/p_json/refresh.php',
                 cache: false,
                 dataType: 'json',
                 data: ajaxData
