@@ -13,9 +13,9 @@ module.exports = AmpersandState.extend({
         path: 'string', // like "2014/11-16/alex1b.jpg"
         title: 'string', // like "Alex Jumps"
 		description: 'string',
-		date: 'integer', // in seconds.  Needs to be * 1000 to convert to a Date object
-		width: 'integer', // width of full size image
-		height: 'integer', // height of full size image
+		date: 'number', // in seconds.  Needs to be * 1000 to convert to a Date object
+		width: 'number', // width of full size image
+		height: 'number', // height of full size image
 		urlFull: 'string', // like "/zenphoto/albums/2014/11-16/alex1b.jpg"
 		urlSized: 'string', // like "/zenphoto/cache/2014/11-16/alex1b_1024.jpg"
 		urlThumb: 'string' // like "/zenphoto/cache/2014/11-16/alex1b_200_cw200_ch200_thumb.jpg"

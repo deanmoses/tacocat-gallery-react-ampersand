@@ -13,6 +13,7 @@ var Thumb = require('./thumb.jsx');
 var RichTextEditor = require('./richText.jsx');
 var $ = require('jquery');
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 /**
  * The React.js component that renders an album.

@@ -17,8 +17,8 @@ module.exports = Model.extend({
 		description: 'string',
         summary: 'string', // optional summary of album, like 'Thanksgiving'.  Consider it an optional secondary title.
 		unpublished: 'boolean', // true: album is NOT available to the public
-		image_size: 'integer', // a number like 1024 denoting the largest edge of this album's images
-		thumb_size: 'integer', // a number like 200 denoting both edges of this album's thumbnails
+		image_size: 'number', // a number like 1024 denoting the largest edge of this album's images
+		thumb_size: 'number', // a number like 200 denoting both edges of this album's thumbnails
 		date: 'date', // in seconds.  Needs to be * 1000 to convert to a Date object
 		thumb: 'string', // path to album's thumbnail, relative to album, like 'felix.jpg'.  null if no thumb set
 		parent_album: 'object', // just enough data about my parent to display a link to it

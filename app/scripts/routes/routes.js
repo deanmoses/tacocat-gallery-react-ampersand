@@ -2,6 +2,7 @@
 /*jslint browser: true*/
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var $ = require('jquery');
 var AlbumPage = React.createFactory(require('../components/album.jsx'));
@@ -55,7 +56,7 @@ module.exports = Router.extend({
 		if (SearchPage === null) {
 			SearchPage = React.createFactory(require('../components/search.jsx'));
 		}
-		React.render(SearchPage({searchTerms: searchTerms, returnPath: returnPath, key: searchTerms}), mountNode);
+		ReactDOM.render(SearchPage({searchTerms: searchTerms, returnPath: returnPath, key: searchTerms}), mountNode);
         this.track('search?'+searchTerms);
 	},
 
@@ -97,7 +98,7 @@ module.exports = Router.extend({
 			// Otherwise, it'll treat it as an existing component and won't
 			// call the component's getInitialState() and componentDidMount(),
 			// and thus the new album won't be set and retrieved.
-			React.render(AlbumPage({albumPath: path, key: path}), mountNode);
+			ReactDOM.render(AlbumPage({albumPath: path, key: path}), mountNode);
 		}
 		// else render photo page
 		else {
@@ -105,7 +106,7 @@ module.exports = Router.extend({
 			// Otherwise, it'll treat it as an existing component and won't
 			// call the component's getInitialState() and componentDidMount(),
 			// and thus the new album won't be set and retrieved.
-			React.render(ImagePage({imagePath: path, key: path}), mountNode);
+			ReactDOM.render(ImagePage({imagePath: path, key: path}), mountNode);
 		}
         this.track(path);
 	},

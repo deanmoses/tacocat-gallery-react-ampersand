@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require('gulp');
+var sass = require('gulp-ruby-sass');
 var del = require('del');
 var path = require('path');
 var jshint = require('gulp-jshint');
@@ -8,11 +9,12 @@ var stylish = require('jshint-stylish');
 var react = require('gulp-react');
 var uglify = require('gulp-uglify');
 var gulpif = require('gulp-if');
-var minifyCss = require('gulp-minify-css');
+var cleanCss = require('gulp-clean-css');
 var minifyHtml = require('gulp-minify-html');
 var filesize = require('gulp-filesize');
 var buffer = require('gulp-buffer');
 var rsync = require('gulp-rsync');
+var useref = require('gulp-useref');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var transform = require('vinyl-transform');
@@ -27,21 +29,21 @@ var prod = false;
 // Set production = true
 gulp.task('setprod', function() {
     prod = true;
+    process.env.NODE_ENV = 'production'; // Needed to build the prod version of React, they say it's much faster
 });
 
 
 // Compile SASS stylesheets
 gulp.task('styles', function () {
-    return gulp.src('app/styles/main.scss')
-        .pipe($.rubySass({
-            style: 'expanded',
-            precision: 10,
-            loadPath: ['app/bower_components']
-        }))
-        .pipe($.autoprefixer('last 1 version'))
-		.pipe(gulpif(prod, minifyCss()))
-        .pipe(gulp.dest('dist/styles'))
-        .pipe($.size());
+    return sass('app/styles/main.scss', {
+        style: 'expanded',
+        precision: 10,
+        loadPath: ['app/bower_components']
+    })
+    .pipe($.autoprefixer('last 1 version'))
+	.pipe(gulpif(prod, cleanCss({compatibility: 'ie8'})))
+    .pipe(gulp.dest('dist/styles'))
+    .pipe($.size());
 });
 
 
@@ -150,12 +152,11 @@ gulp.task('clean', function (cb) {
 
 // Bundle
 gulp.task('bundle', ['styles', 'copyfonts', 'copyhtaccess', 'copymockdata', /*'manifest',*/ 'scripts'], function() {
-    return gulp.src('./app/*.html')
-		.pipe($.useref.assets())
-		.pipe($.useref.restore())
-		.pipe($.useref())
-		.pipe(gulp.dest('dist'));
+    return gulp.src('app/*.html')
+        .pipe(useref())
+        .pipe(gulp.dest('dist'));
 });
+
 
 // Watch
 gulp.task('watch', ['html', 'bundle', 'serve'], function () {

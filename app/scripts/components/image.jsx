@@ -13,6 +13,7 @@ var User = require('../models/user.js');
 var RichTextEditor = require('./richText.jsx');
 var Site = require('./site.jsx'); // other React.js components these components depend on
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 /**
  * The React.js component that renders the photo detail screen.
@@ -271,7 +272,7 @@ var ImagePageBody = React.createClass({
 		var container = $(containerExpression);
 		var _this = this;
 
-		image.load(function(){
+		image.on('load', function() {
 			//console.log('imageUtil.resizeImage(): img loaded');
 			_this.resizeImageOnce(image, container);
 		});  // on initial image load (won't be called if it's already loaded)
