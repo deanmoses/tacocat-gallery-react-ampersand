@@ -4,7 +4,6 @@
 var Site = require('./site.jsx');
 var Thumb = require('./thumb.jsx');
 var React = require('react');
-var ReactDOM = require('react-dom');
 var $ = require('jquery');
 
 /**

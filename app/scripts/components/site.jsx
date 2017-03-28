@@ -9,7 +9,6 @@
 var Config = require('../config.js');
 var $ = require('jquery');
 var React = require('react');
-var ReactDOM = require('react-dom');
 
 // all the components in this file will be added to Site,
 // which will then be made available as a module

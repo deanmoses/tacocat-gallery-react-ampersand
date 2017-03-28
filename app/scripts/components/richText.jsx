@@ -4,7 +4,6 @@
 
 var $ = require('jquery');
 var React = require('react');
-var ReactDOM = require('react-dom');
 
 /**
  * React.js component that displays a CKEDITOR-powered rich text editor.

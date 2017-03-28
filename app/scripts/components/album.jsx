@@ -13,7 +13,6 @@ var Thumb = require('./thumb.jsx');
 var RichTextEditor = require('./richText.jsx');
 var $ = require('jquery');
 var React = require('react');
-var ReactDOM = require('react-dom');
 
 /**
  * The React.js component that renders an album.
@@ -278,7 +277,7 @@ var WeekAlbumPage = React.createClass({
     onThumbSelect: function(fullpath) {
         var path = fullpath.split('/').pop(); // we just want 'felix.jpg'
         if (!path) {
-            alert('set thumbnail: no image path');
+            window.alert('set thumbnail: no image path');
             this.setState({step: ''});
             return;
         }
@@ -300,7 +299,7 @@ var WeekAlbumPage = React.createClass({
         .done(function(result) {
             if (!result.success) {
                 console.log('Error setting thumbnail: ', result);
-                alert('Error setting thumbnail: ', result);
+                window.alert('Error setting thumbnail: ', result);
                 return;
             }
 
@@ -337,7 +336,7 @@ var WeekAlbumPage = React.createClass({
         }.bind(this))
         .fail(function(jqXHR, textStatus, errorThrown) {
             console.log('error setting album thumbnail: %s\n\tstatus: %s\n\txhr: %s', errorThrown, textStatus, jqXHR);
-            alert('Error saving: ' + errorThrown);
+            window.alert('Error saving: ' + errorThrown);
             this.setState({step: ''});
         }.bind(this));
     }
@@ -426,6 +425,8 @@ var EditMenu = React.createClass({
     },
 
     render: function() {
+        var a = this.props.album;
+
         // if user isn't allowed to edit, render nothing
         if (!this.props.allowEdit) {
             return false;
@@ -440,9 +441,8 @@ var EditMenu = React.createClass({
         }
         // else if we're in edit mode, give controls to save and cancel
         else if (this.props.editMode) {
-            var a = this.props.album;
-            var summaryControl = (a.type === 'year') ? '' : <input className='albumSummary' type='text' defaultValue={this.props.album.summary} placeholder='Summary'/>;
-            var publishControl = (a.type === 'year') ? '' : <span><input className='albumPublished' type='checkbox' defaultChecked={!this.props.album.unpublished}/> published</span>;
+            var summaryControl = (a.type === 'year') ? '' : <input className='albumSummary' type='text' defaultValue={a.summary} placeholder='Summary'/>;
+            var publishControl = (a.type === 'year') ? '' : <span><input className='albumPublished' type='checkbox' defaultChecked={!a.unpublished}/> published</span>;
             var saveMessage = this.state.step === 'saved' ? <span className='editStatusMsg'>Saved.</span> : '';
             return (
                 <div className='editControls'>
@@ -456,12 +456,12 @@ var EditMenu = React.createClass({
                 </div>
             );
         }
-        // else user is allowed to edit but isn't currently editing.  Give them an edit button.
+        // else user is allowed to edit but isn't currently editing.  Give them an edit button and a dropdown of other options
         else  {
-            var album = this.props.album;
-            var zeditUrl = Config.zenphotoAlbumEditUrl(album.path);
-            var zviewUrl = Config.zenphotoAlbumViewUrl(album.path);
-            var refreshUrl = Config.refreshAlbumCacheUrl(album.path);
+            var zeditUrl = Config.zenphotoAlbumEditUrl(a.path);
+            var zviewUrl = Config.zenphotoAlbumViewUrl(a.path);
+            var refreshUrl = Config.refreshAlbumCacheUrl(a.path);
+            var refreshControl = (a.type !== 'year') ? '' : <li><a href={refreshUrl} target='zenedit' title='Refresh Cache'><Site.GlyphIcon glyph='refresh'/> Refresh Cache</a></li>;
             return (
                 <div className='editControls'>
                     <div className='btn-group'>
@@ -473,7 +473,7 @@ var EditMenu = React.createClass({
                         <ul className='dropdown-menu' role='menu'>
                             <li><a href={zeditUrl} target='zenedit' title='Edit in Zenphoto'><Site.GlyphIcon glyph='new-window'/> Edit in Zenphoto</a></li>
                             <li><a href={zviewUrl} target='zenedit' title='View in Zenphoto'><Site.GlyphIcon glyph='eye-open'/> View in Zenphoto</a></li>
-                            <li><a href={refreshUrl} target='zenedit' title='Refresh Cache'><Site.GlyphIcon glyph='refresh'/> Refresh Cache</a></li>
+                            {refreshControl}
                         </ul>
                     </div>
                 </div>
@@ -507,7 +507,7 @@ var EditMenu = React.createClass({
 
         var descInputElement = $('.caption');
         if (!descInputElement.length) {
-            alert('album save: could not find description input element');
+            window.alert('album save: could not find description input element');
             this.setState({step: ''});
             return;
         }
@@ -523,24 +523,26 @@ var EditMenu = React.createClass({
             description = descInputElement.html();
         }
 
+        var summary;
         if (!isYearAlbum) {
             var summaryInput = $('input.albumSummary');
             if (!summaryInput.length) {
-                alert('album save: could not find summary input element');
+                window.alert('album save: could not find summary input element');
                 this.setState({step: ''});
                 return;
             }
-            var summary = summaryInput.val();
+            summary = summaryInput.val();
         }
 
+        var published;
         if (!isYearAlbum) {
             var publishedCheckbox = $('input.albumPublished');
             if (!publishedCheckbox.length) {
-                alert('album save: could not find published checkbox element');
+                window.alert('album save: could not find published checkbox element');
                 this.setState({step: ''});
                 return;
             }
-            var published = publishedCheckbox.prop('checked');
+            published = publishedCheckbox.prop('checked');
         }
 
         console.log('desc', description);
@@ -571,7 +573,7 @@ var EditMenu = React.createClass({
         .done(function(result) {
             if (!result.success) {
                 console.log('Error saving album: ', result);
-                alert('Error saving album: ', result);
+                window.alert('Error saving album: ', result);
                 this.setState({step: ''});
                 return;
             }
@@ -613,7 +615,7 @@ var EditMenu = React.createClass({
         }.bind(this))
         .fail(function(jqXHR, textStatus, errorThrown) {
             console.log('error saving album: %s\n\tstatus: %s\n\txhr: %s', errorThrown, textStatus, jqXHR);
-            alert('Error saving: ' + errorThrown);
+            window.alert('Error saving: ' + errorThrown);
             this.setState({step: ''});
         }.bind(this));
     }

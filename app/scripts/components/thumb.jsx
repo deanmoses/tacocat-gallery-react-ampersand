@@ -6,7 +6,6 @@ var StringUtils = require('../utils/string.js');
 var Site = require('./site.jsx');
 var Config = require('../config.js');
 var React = require('react');
-var ReactDOM = require('react-dom');
 
 // all the components in this file will be added to Thumb,
 // which will then be exported as a module

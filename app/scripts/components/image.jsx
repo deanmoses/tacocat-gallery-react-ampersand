@@ -13,7 +13,6 @@ var User = require('../models/user.js');
 var RichTextEditor = require('./richText.jsx');
 var Site = require('./site.jsx'); // other React.js components these components depend on
 var React = require('react');
-var ReactDOM = require('react-dom');
 
 /**
  * The React.js component that renders the photo detail screen.
@@ -120,7 +119,7 @@ var ImagePage = React.createClass({
 			AlbumStore.fetchById(this.state.albumPath, function (err, album) {
 				if (err) {
                     // TODO: handle error better than an alert()
-                    alert('error getting album: ' + err);
+                    window.alert('error getting album: ' + err);
 					console.log('error getting album', err);
 				}
 				else {
@@ -423,12 +422,12 @@ var EditMenu = React.createClass({
 	save: function(next) {
         var titleInputElement = $('.titleInput');
         if (!titleInputElement.length) {
-            alert('image save: could not find title input element');
+            window.alert('image save: could not find title input element');
             return;
         }
         var descInputElement = $('.caption');
         if (!descInputElement.length) {
-            alert('image save: could not find description input element');
+            window.alert('image save: could not find description input element');
             this.setState({step: ''});
             return;
         }
@@ -437,7 +436,7 @@ var EditMenu = React.createClass({
 		var description = descInputElement.html();
 
         if (!title) {
-            alert('Title cannot be blank');
+            window.alert('Title cannot be blank');
             return;
         }
 
@@ -479,7 +478,7 @@ var EditMenu = React.createClass({
 		}.bind(this))
 		.fail(function(jqXHR, textStatus, errorThrown) {
 			console.log('error saving image: %s\n\tstatus: %s\n\txhr: %s', errorThrown, textStatus, jqXHR);
-            alert('Error saving: ' + errorThrown);
+            window.alert('Error saving: ' + errorThrown);
             this.setState({step: ''});
 		}.bind(this));
 	}
