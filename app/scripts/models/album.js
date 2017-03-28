@@ -6,6 +6,7 @@
 
 var _ = require('underscore');
 var DateUtils = require('../utils/date.js');
+var Config = require('../config.js');
 var Images = require('./images.js');
 var Model = require('ampersand-model');
 
@@ -203,7 +204,9 @@ module.exports = Model.extend({
      */
     getFullParentAlbum: function() {
         var AlbumStore = require('./album_store.js');
-        return AlbumStore.get(this.parent_album.path);
+        // if parent_album is undefined it means that we're on a year album and the parent is the root
+        var parentPath = (!this.parent_album) ? '' : this.parent_album.path;
+        return AlbumStore.get(parentPath);
     },
 
     /**
@@ -218,10 +221,10 @@ module.exports = Model.extend({
      */
 	url: function() {
 		if (this.path.length === 0) {
-			return 'https://tacocat.com/p_json/root.json';
+			return Config.cdnHost() + '/p_json/root.json';
 		}
 		else if (this.path.length === 4) {
-			return 'https://tacocat.com/p_json/'+this.path+'.json';
+			return Config.cdnHost() + '/p_json/'+this.path+'.json';
 		}
 		else {
 			return 'https://tacocat.com/zenphoto/'+this.path+'?api';

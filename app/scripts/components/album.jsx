@@ -125,11 +125,11 @@ var AlbumPage = React.createClass({
 		switch (type) {
 			case 'root':
 				return (
-					<RootAlbumPage album={album}/>
+					<RootAlbumPage album={album} user={User.currentUser()}/>
 				);
 			case 'year':
 				return (
-					<YearAlbumPage album={album}/>
+					<YearAlbumPage album={album} user={User.currentUser()}/>
 				);
 			case 'week':
 				return (
@@ -171,6 +171,11 @@ var LoadingAlbumPage = React.createClass({
  * Component that displays the root album (i.e., displays each year as a thumbnail)
  */
 var RootAlbumPage = React.createClass({
+    propTypes: {
+        album: React.PropTypes.object.isRequired,
+        user: React.PropTypes.object.isRequired
+    },
+
 	render: function() {
 		var a = this.props.album;
 		return (
@@ -194,8 +199,14 @@ var RootAlbumPage = React.createClass({
  * Component that displays a year album (like 2014)
  */
 var YearAlbumPage = React.createClass({
+    propTypes: {
+        album: React.PropTypes.object.isRequired,
+        user: React.PropTypes.object.isRequired
+    },
+
 	render: function() {
 		var a = this.props.album;
+        var user = this.props.user;
 		return (
 			<Site.Page className='albumpage yearalbumtype'>
 				<Site.HeaderTitle href='#' title={a.pageTitle} path={this.props.album.path}>
@@ -203,7 +214,7 @@ var YearAlbumPage = React.createClass({
 					<Site.UpButton href='#' title='All Years' />
 					<Site.NextButton href={a.prevAlbumHref} title={a.prevAlbumTitle}/>
 				</Site.HeaderTitle>
-				<FirstsAndThumbs album={a}/>
+				<FirstsAndThumbs album={a} user={user}/>
 			</Site.Page>
 		);
 	}
@@ -337,13 +348,24 @@ var WeekAlbumPage = React.createClass({
  * Displays the year's firsts and the child albums' thumbnails
  */
 var FirstsAndThumbs = React.createClass({
+    propTypes: {
+        album: React.PropTypes.object.isRequired,
+        user: React.PropTypes.object.isRequired
+    },
+
 	render: function() {
 		var a = this.props.album;
+        var user = this.props.user;
+        var desc = (user.editMode)
+            ? <RichTextEditor valueToEdit={a.description}/>
+            : <div className='firsts-text' dangerouslySetInnerHTML={{__html: a.description}}/>;
+
 		return (
 			<div className='container-fluid'>
 				<section className='col-md-3 firsts sidebar'>
 					<h2 className='hidden'>Firsts</h2>
-				    <div className='firsts-text' dangerouslySetInnerHTML={{__html: a.description}}/>
+				    {desc}
+                    <EditMenu album={a} allowEdit={user.isAdmin} editMode={user.editMode} />
 				</section>
 				<section className='col-md-9 col-md-offset-3'>
                     <h2 className='hidden'>Thumbnails</h2>
@@ -394,7 +416,7 @@ var MonthThumb = React.createClass({
 });
 
 /**
- * Component that renders the admin's image edit controls.
+ * Component that renders the admin's album edit controls.
  */
 var EditMenu = React.createClass({
     propTypes: {
@@ -404,7 +426,6 @@ var EditMenu = React.createClass({
     },
 
     render: function() {
-
         // if user isn't allowed to edit, render nothing
         if (!this.props.allowEdit) {
             return false;
@@ -419,6 +440,9 @@ var EditMenu = React.createClass({
         }
         // else if we're in edit mode, give controls to save and cancel
         else if (this.props.editMode) {
+            var a = this.props.album;
+            var summaryControl = (a.type === 'year') ? '' : <input className='albumSummary' type='text' defaultValue={this.props.album.summary} placeholder='Summary'/>;
+            var publishControl = (a.type === 'year') ? '' : <span><input className='albumPublished' type='checkbox' defaultChecked={!this.props.album.unpublished}/> published</span>;
             var saveMessage = this.state.step === 'saved' ? <span className='editStatusMsg'>Saved.</span> : '';
             return (
                 <div className='editControls'>
@@ -426,8 +450,8 @@ var EditMenu = React.createClass({
                         <button type='button' className='btn btn-default' onClick={this.cancel} title='Leave edit mode'><Site.GlyphIcon glyph='remove'/> Cancel</button>
                         <button type='button' className='btn btn-default' onClick={this.save} title='Save album description'><Site.GlyphIcon glyph='ok'/> Save</button>
                     </div>
-                    <input className='albumSummary' type='text' defaultValue={this.props.album.summary} placeholder='Summary'/>
-                    <input className='albumPublished' type='checkbox' defaultChecked={!this.props.album.unpublished}/> published
+                    {summaryControl}
+                    {publishControl}
                     {saveMessage}
                 </div>
             );
@@ -437,7 +461,7 @@ var EditMenu = React.createClass({
             var album = this.props.album;
             var zeditUrl = Config.zenphotoAlbumEditUrl(album.path);
             var zviewUrl = Config.zenphotoAlbumViewUrl(album.path);
-            var tacocatUrl = Config.staticAlbumUrl(album.path);
+            var refreshUrl = Config.refreshAlbumCacheUrl(album.path);
             return (
                 <div className='editControls'>
                     <div className='btn-group'>
@@ -447,9 +471,9 @@ var EditMenu = React.createClass({
                             <span className='sr-only'>Toggle Dropdown</span>
                         </button>
                         <ul className='dropdown-menu' role='menu'>
-                            <li><a href={zeditUrl} target='zenedit' title='Edit in Zenphoto'><Site.GlyphIcon glyph='new-window'/> Full Edit</a></li>
-                            <li><a href={zviewUrl} target='zenedit' title='View in Zenphoto'><Site.GlyphIcon glyph='eye-open'/> Full View</a></li>
-                            <li><a href={tacocatUrl} target='zenedit' title="View on old tacocat"><Site.GlyphIcon glyph='road'/> View in Tacocat</a></li>
+                            <li><a href={zeditUrl} target='zenedit' title='Edit in Zenphoto'><Site.GlyphIcon glyph='new-window'/> Edit in Zenphoto</a></li>
+                            <li><a href={zviewUrl} target='zenedit' title='View in Zenphoto'><Site.GlyphIcon glyph='eye-open'/> View in Zenphoto</a></li>
+                            <li><a href={refreshUrl} target='zenedit' title='Refresh Cache'><Site.GlyphIcon glyph='refresh'/> Refresh Cache</a></li>
                         </ul>
                     </div>
                 </div>
@@ -478,6 +502,9 @@ var EditMenu = React.createClass({
      * Save to server
      */
     save: function() {
+        var a = this.props.album;
+        var isYearAlbum = (a.type === 'year');
+
         var descInputElement = $('.caption');
         if (!descInputElement.length) {
             alert('album save: could not find description input element');
@@ -496,34 +523,43 @@ var EditMenu = React.createClass({
             description = descInputElement.html();
         }
 
-        var summaryInput = $('input.albumSummary');
-        if (!summaryInput.length) {
-            alert('album save: could not find summary input element');
-            this.setState({step: ''});
-            return;
+        if (!isYearAlbum) {
+            var summaryInput = $('input.albumSummary');
+            if (!summaryInput.length) {
+                alert('album save: could not find summary input element');
+                this.setState({step: ''});
+                return;
+            }
+            var summary = summaryInput.val();
         }
-        var summary = summaryInput.val();
 
-        var publishedCheckbox = $('input.albumPublished');
-        if (!publishedCheckbox.length) {
-            alert('album save: could not find published checkbox element');
-            this.setState({step: ''});
-            return;
+        if (!isYearAlbum) {
+            var publishedCheckbox = $('input.albumPublished');
+            if (!publishedCheckbox.length) {
+                alert('album save: could not find published checkbox element');
+                this.setState({step: ''});
+                return;
+            }
+            var published = publishedCheckbox.prop('checked');
         }
-        var published = publishedCheckbox.prop('checked');
 
         console.log('desc', description);
-        console.log('summary', summary);
-        console.log('published', published);
+        if (!isYearAlbum) {
+            console.log('summary', summary);
+            console.log('published', published);
+        }
 
         this.setState({step: 'saving'});
 
         var ajaxData = {
             eip_context	: 'album',
-            desc: description,
-            summary: summary,
-            show: published
+            desc: description
         };
+
+        if (!isYearAlbum) {
+            ajaxData.summary = summary;
+            ajaxData.show = published;
+        }
 
         $.ajax({
             type: 'POST',

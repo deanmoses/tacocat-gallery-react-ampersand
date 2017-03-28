@@ -11,7 +11,24 @@ module.exports = {
     site_title_short: 'The Moses Family',
 
     dev: function() {
-      return (document.location.hostname.toLowerCase() === 'localhost');
+        return (document.location.hostname.toLowerCase() === 'localhost');
+    },
+
+    // Base host of the webserver, probably the thing that serves both images and ajax
+    liveHost: function() {
+        return 'https://tacocat.com';
+    },
+
+    // Base host of CDN-servable stuff.  Could be a CDN or may be the actual webserver.
+    cdnHost: function() {
+        return this.liveHost();
+    },
+
+    // URL you can hit to update the JSON cache of a specific album
+    refreshAlbumCacheUrl: function(albumPath) {
+        // strip the '/' off if it exists
+        var slashlessAlbumPath = albumPath.replace('/', '');
+        return this.liveHost() + '/p_json/refresh.php?album=' + slashlessAlbumPath;
     },
 
 	zenphotoBaseUrl: function() {

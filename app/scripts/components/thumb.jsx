@@ -4,6 +4,7 @@
 var DateUtils = require('../utils/date.js');
 var StringUtils = require('../utils/string.js');
 var Site = require('./site.jsx');
+var Config = require('../config.js');
 var React = require('react');
 var ReactDOM = require('react-dom');
 
@@ -92,7 +93,7 @@ Thumb.Nail = React.createClass({
 
         var selectedClass = (!this.props.editMode || !this.props.selected) ? '' : ' selected';
         var selectButton = (!this.props.editMode) ? '' : <Site.GlyphIcon glyph='star' onClick={this.onSelect}/>;
-		var thumbUrl = 'https://tacocat.com/' + item.urlThumb;
+		var thumbUrl = Config.cdnHost() + item.urlThumb;
 		return(
 			<span className={'thumbnail' + selectedClass}>
 				<a href={'#'+item.path} className='thumb-link' style={imgLinkStyle}><img src={thumbUrl} width={width} height={height} alt={title}/></a>
