@@ -621,6 +621,18 @@ var EditMenu = React.createClass({
                 return;
             }
 
+            // If it's a year album, hit the PHP that triggers refreshing the album's cache on the server. 
+            // Don't bother looking at response; there's nothing we can do if it fails.
+            $.ajax({
+                type: 'POST',
+                url: 'https://tacocat.com/p_json/refresh.php',
+                cache: false,
+                dataType: 'json',
+                data: {
+                    album: this.props.album.path
+                }
+            });
+
             // Hit the PHP that triggers refreshing the parent album's cache on the server.
             // Don't bother looking at response; there's nothing we can do if it fails.
             $.ajax({
