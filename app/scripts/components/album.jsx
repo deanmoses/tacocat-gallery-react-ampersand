@@ -51,7 +51,7 @@ var AlbumPage = React.createClass({
      * Invoked once, before component is mounted into the DOM, before initial rendering.
      */
     componentWillMount: function() {
-        // Start listening for changes to the user model.
+        // Start listening for user changes that would require rerending
 
         // When the user gets logged in, this triggers rerendering
         // so the edit button gets drawn.
@@ -77,6 +77,9 @@ var AlbumPage = React.createClass({
         // Stop listening for changes to the User model
         User.currentUser().off('change:isAdmin');
         User.currentUser().off('change:editMode');
+        if (this.state.album) {
+            this.state.album.off('change');
+        }
     },
 
 	/**
@@ -105,6 +108,15 @@ var AlbumPage = React.createClass({
 						this.setState({
 							album: album
 						});
+
+                        // If the admin updates the cache for this album, this triggers 
+                        // rerendering so that the new album info gets drawn.
+                        album.on('change', function (model, val) {
+                            console.log('Album has changed.');
+                            if (this.isMounted()) {
+                                this.setState({album: model});
+                            }
+                        }, this);
 					}
 				}
 			}.bind(this));
@@ -460,8 +472,7 @@ var EditMenu = React.createClass({
         else  {
             var zeditUrl = Config.zenphotoAlbumEditUrl(a.path);
             var zviewUrl = Config.zenphotoAlbumViewUrl(a.path);
-            var refreshUrl = Config.refreshAlbumCacheUrl(a.path);
-            var refreshControl = (a.type !== 'year') ? '' : <li><a href={refreshUrl} target='zenedit' title='Refresh Cache'><Site.GlyphIcon glyph='refresh'/> Refresh Cache</a></li>;
+            var refreshControl = (a.type !== 'year') ? '' : <li><a href='javascript:void(0);' onClick={this.refresh} title='Refresh Cache'><Site.GlyphIcon glyph='refresh'/> Refresh Cache</a></li>;
             return (
                 <div className='editControls'>
                     <div className='btn-group'>
@@ -471,7 +482,7 @@ var EditMenu = React.createClass({
                             <span className='sr-only'>Toggle Dropdown</span>
                         </button>
                         <ul className='dropdown-menu' role='menu'>
-                            <li><a href={zeditUrl} target='zenedit' title='Edit in Zenphoto'><Site.GlyphIcon glyph='new-window'/> Edit in Zenphoto</a></li>
+                            <li><a href={zeditUrl} target='zenedit' title='Edit in Zenphoto'><Site.GlyphIcon glyph='wrench'/> Edit in Zenphoto</a></li>
                             <li><a href={zviewUrl} target='zenedit' title='View in Zenphoto'><Site.GlyphIcon glyph='eye-open'/> View in Zenphoto</a></li>
                             {refreshControl}
                         </ul>
@@ -479,7 +490,6 @@ var EditMenu = React.createClass({
                 </div>
             );
         }
-
     },
 
     getInitialState: function() {
@@ -496,6 +506,39 @@ var EditMenu = React.createClass({
     cancel: function() {
         // will trigger the event listener in a parent component
         User.currentUser().editMode = false;
+    },
+
+    refresh: function() {
+        // hit the PHP endpoint that refreshes the cache
+        $.ajax({
+            type: 'GET',
+            url: Config.refreshAlbumCacheUrl(this.props.album.path),
+            cache: false,
+            dataType: 'json',
+        })
+        .done(function(result) {
+            // the PHP returns its status in JSON format
+            if (result.status !== 'success') {
+                console.log('Error refreshing cache of album: ', result);
+                window.alert('Error refreshing cache of album: ' + result);
+                return;
+            }
+            // fetch album from server.  Gets it from the cache we just updated.
+            this.props.album.fetch({
+                success: function(model, response, options) {
+                    console.log('Successfully fetched album');
+                    //window.alert('Successfully refreshed album cache.  Do you see your changes now?');
+                },
+                error: function(model, response, options) {
+                    console.log('Error fetching album: ', response);
+                    window.alert('Error fetching album: ' + response);
+                }
+            });
+        }.bind(this))
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            console.log('error refreshing cache of album: %s\n\tstatus: %s\n\txhr: %s', errorThrown, textStatus, jqXHR);
+            window.alert('Error refreshing cache of album: ' + errorThrown);
+        }.bind(this));
     },
 
     /**
@@ -578,18 +621,16 @@ var EditMenu = React.createClass({
                 return;
             }
 
-            // hit the PHP that triggers refreshing
-            // the parent album's cache on the server
-            var ajaxData = {
-                album: this.props.album.parentAlbumPath
-            };
-
+            // Hit the PHP that triggers refreshing the parent album's cache on the server.
+            // Don't bother looking at response; there's nothing we can do if it fails.
             $.ajax({
                 type: 'POST',
                 url: 'https://tacocat.com/p_json/refresh.php',
                 cache: false,
                 dataType: 'json',
-                data: ajaxData
+                data: {
+                    album: this.props.album.parentAlbumPath
+                }
             });
 
             // set the description on the album model
@@ -603,13 +644,7 @@ var EditMenu = React.createClass({
                     me.summary = this.props.album.summary;
                     me.unpublished = this.props.album.unpublished;
                 }
-                //else {
-                //    console.log('save: unable to find myself in parent album using path [%s]', this.props.album.path);
-                //}
             }
-            //else {
-            //    console.log('save: parent album not yet loaded');
-            //}
 
             this.setState({step: 'saved'});
         }.bind(this))
