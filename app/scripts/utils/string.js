@@ -5,6 +5,6 @@
 //
 module.exports = {
     endsWith: function(s, suffix) {
-        return !!s && s.indexOf(suffix, this.length - suffix.length) !== -1;
+    	return !!s &&  s.slice(-suffix.length) === suffix;
     }
 };

@@ -5,6 +5,7 @@
 //
 
 var _ = require('underscore');
+var StringUtils = require('../utils/string.js');
 var DateUtils = require('../utils/date.js');
 var Config = require('../config.js');
 var Images = require('./images.js');
@@ -224,10 +225,20 @@ module.exports = Model.extend({
 			return Config.cdnHost() + '/p_json/root.json';
 		}
 		else if (this.path.length === 4) {
-			return Config.cdnHost() + '/p_json/'+this.path+'.json';
+			return Config.cdnHost() + '/p_json/' + this.path + '.json';
 		}
 		else {
-			return 'https://tacocat.com/zenphoto/'+this.path+'?api';
+			/*
+				For JSON requests to zenphoto, always end with a / or else suffer the cost of a redirect.
+				Zenphoto has a stupid redirect in its .htaccess that redirects you to the / version of
+				an album.
+				Request THIS:
+				https://tacocat.com/zenphoto/2005/11-20/?api
+				Not THIS:
+				https://tacocat.com/zenphoto/2005/11-20?api
+			*/
+			var trailingSlash = StringUtils.endsWith(this.path, '/') ? '' : '/';
+			return Config.liveHost() + '/zenphoto/' + this.path + trailingSlash + '?api';
 		}
 	}
 });
