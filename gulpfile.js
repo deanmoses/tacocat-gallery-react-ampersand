@@ -55,6 +55,7 @@ gulp.task('jshint', function() {
 	.pipe(jshint.reporter('fail'))
 });
 
+
 // Check jsx for code style
 gulp.task('jsxhint', function() {
   return gulp.src('./app/scripts/**/*.jsx')
@@ -63,6 +64,7 @@ gulp.task('jsxhint', function() {
 	.pipe(jshint.reporter(stylish))
 	.pipe(jshint.reporter('fail'))
 });
+
 
 // Scripts
 gulp.task('scripts', function () {
@@ -86,6 +88,7 @@ gulp.task('html', function () {
         .pipe($.size());
 });
 
+
 // Images
 gulp.task('images', function () {
     return gulp.src('app/images/**/*')
@@ -99,9 +102,9 @@ gulp.task('images', function () {
 });
 
 
-// Copy .htaccess
-gulp.task('copyhtaccess', function() {
-	gulp.src(['app/.htaccess'])
+// Copy files at the root of the app
+gulp.task('copyrootfiles', function() {
+	gulp.src(['app/.htaccess','app/manifest.json','app/browserconfig.xml','app/robots.txt'])
 	.pipe(gulp.dest('dist'));
 });
 
@@ -122,7 +125,7 @@ gulp.task('copymockdata', function() {
 
 // Create an application cache manifest
 gulp.task('manifest', function(){
-    gulp.src(['dist/*','dist/scripts/**/*.js', 'dist/styles/**/*.css', 'dist/fonts/**/*.{ttf,woff,eof,svg}'], {base: 'dist'})
+    gulp.src(['dist/*','dist/scripts/**/*.js', 'dist/styles/**/*.css', 'dist/fonts/**/*.{ttf,woff,woff2,eof,svg}'], {base: 'dist'})
         .pipe(manifest({
             hash: true,
             network: ['*'],
@@ -151,7 +154,7 @@ gulp.task('clean', function (cb) {
 
 
 // Bundle
-gulp.task('bundle', ['styles', 'copyfonts', 'copyhtaccess', 'copymockdata', /*'manifest',*/ 'scripts'], function() {
+gulp.task('bundle', ['styles', 'copyfonts', 'copyrootfiles', 'copymockdata', /*'manifest',*/ 'scripts'], function() {
     return gulp.src('app/*.html')
         .pipe(useref())
         .pipe(gulp.dest('dist'));
