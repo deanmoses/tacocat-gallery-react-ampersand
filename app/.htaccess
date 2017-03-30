@@ -4,9 +4,10 @@
 
 # Add app cache manifest type so its caching can be controlled below
 AddType text/cache-manifest .appcache
+AddType font/woff2 .woff2
 
 <IfModule mod_expires.c>
-    Header set cache-control: public
+    Header set Cache-Control: "public"
     # Enable expirations
     ExpiresActive On
     # Disable caching of app cache manifest
@@ -14,8 +15,11 @@ AddType text/cache-manifest .appcache
     # Fonts
     ExpiresByType font/ttf      "access plus 1 year"
     ExpiresByType font/woff     "access plus 1 year"
+    ExpiresByType font/woff2    "access plus 1 year"
     ExpiresByType application/x-font-woff     "access plus 1 year"
+    ExpiresByType application/x-font-woff2     "access plus 1 year"
     # Images
+    ExpiresByType image/ico "access plus 1 year"
     ExpiresByType image/gif "access plus 1 year"
     ExpiresByType image/png "access plus 1 year"
     ExpiresByType image/jpg "access plus 1 year"
