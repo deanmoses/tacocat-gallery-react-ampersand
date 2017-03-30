@@ -1,0 +1,4 @@
+# The robots.txt file must be at the root of the domain.
+# I put it here because this directory is sometimes made available as the root of pix.tacocat.com.
+User-agent: *
+Disallow: /
