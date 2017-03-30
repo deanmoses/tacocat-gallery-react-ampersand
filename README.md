@@ -6,7 +6,7 @@ Uses the following technologies:
 * [React.js](http://facebook.github.io/react/):  A component-based Javascript View layer that I'm madly in love with.  *So* much easier than Backbone views.  And so fast.
 * [Ampersand.js](http://ampersandjs.com/):  Very similiar to Backbone.js but fully embraces tiny modules, npm, and browserify.  I use it for its Models and Routing, not its Views.
 * [Browserify](http://browserify.org/):  The first javascript dependency management system that I can actually get working and KEEP working without having to think too hard.  I *hate* Require.js and AMD.  Browserify does its business using NPM and Node.js and I love it.
-* [Gulp.js](http://gulpjs.com/):  A javascript build system that replaces Grunt.js.  Newer, faster, easier to use.
+* [Gulp.js](http://gulpjs.com/):  A javascript build system that replaces Grunt.js.  Faster, easier to use.
 
 Retrieves album data from tacocat's [ZenPhoto](http://www.zenphoto.org/) installation.  Depends on this prototype JSON REST backend ([github](https://github.com/deanmoses/tacocat-gallery-zenphoto-rest-api)).
 
