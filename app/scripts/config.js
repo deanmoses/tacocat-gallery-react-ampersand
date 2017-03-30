@@ -14,13 +14,18 @@ module.exports = {
         return (document.location.hostname.toLowerCase() === 'localhost');
     },
 
-    // Base host of the webserver, probably the thing that serves both images and ajax
+    // Base host of the live non-CDN webserver.  The origin server.
     liveHost: function() {
         return 'https://tacocat.com';
     },
 
-    // Base host of CDN-servable stuff.  Could be a CDN or may be the actual webserver.
+    // Base host of CDN-servable stuff. Could be a CDN or may be the actual webserver.
     cdnHost: function() {
+        return 'https://cdn.tacocat.com';
+    },
+
+    // Base host for AJAX read requests. Could be a CDN or may be the actual webserver.
+    ajaxReadHost: function() {
         return this.liveHost();
     },
 

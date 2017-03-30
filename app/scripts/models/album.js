@@ -222,10 +222,10 @@ module.exports = Model.extend({
      */
 	url: function() {
 		if (this.path.length === 0) {
-			return Config.cdnHost() + '/p_json/root.json';
+			return Config.ajaxReadHost() + '/p_json/root.json';
 		}
 		else if (this.path.length === 4) {
-			return Config.cdnHost() + '/p_json/' + this.path + '.json';
+			return Config.ajaxReadHost() + '/p_json/' + this.path + '.json';
 		}
 		else {
 			/*
@@ -238,7 +238,7 @@ module.exports = Model.extend({
 				https://tacocat.com/zenphoto/2005/11-20?api
 			*/
 			var trailingSlash = StringUtils.endsWith(this.path, '/') ? '' : '/';
-			return Config.liveHost() + '/zenphoto/' + this.path + trailingSlash + '?api';
+			return Config.ajaxReadHost() + '/zenphoto/' + this.path + trailingSlash + '?api';
 		}
 	}
 });
