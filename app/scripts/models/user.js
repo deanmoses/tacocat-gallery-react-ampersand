@@ -8,14 +8,27 @@ var Config = require('../config.js');
 var Model = require('ampersand-model');
 var User = Model.extend({
     props: {
-		isAdmin: ['boolean', true, false], // required attribute, defaulted to false
-        editMode: ['boolean', false, false] // never sent from server, defaulted to false
+		isAdmin: ['boolean', true /*required*/, false /*defaulted to false*/],
+        editMode: ['boolean', false /*never sent from server*/, false /*defaulted to false*/]
 	},
 
-	// the URL of the JSON REST API from which to retrieve the album
+	// URL of the JSON REST API from which to retrieve the album
 	url: function() {
 		return Config.jsonUserUrl();
-	}
+	},
+
+	// ajaxConfig: fields to set directly on the XHR request object
+	// withCredentials: send cross domain requests with authorization headers/cookies. 
+	// Useful if you're making cross sub-domain requests with a root-domain auth cookie,
+	// such as when the app is served from cdn.tacocat.com but the ajax requests are
+	// going to tacocat.com.
+	ajaxConfig: function () {
+        return {
+            xhrFields: {
+                'withCredentials': true
+            }
+        };
+    }
 });
 
 var UserStore = {
