@@ -8,6 +8,7 @@ var $ = require('jquery');
 var AlbumPage = React.createFactory(require('../components/album.jsx'));
 var ImagePage = React.createFactory(require('../components/image.jsx'));
 var SearchPage = null; // don't create component for the search screen until it's needed
+var NotFoundPage = null; // don't create component for the search screen until it's needed
 
 // the DOM element into which the React.js components are mounted
 /*global document*/
@@ -36,23 +37,77 @@ module.exports = Router.extend({
 		// #search:cat
 		'search:*searchTerms': 'search',
 
-		// #2014
-		// #2014/12-31
-		// #2014/12-31/someSubAlbum
-		// #2014/12-31/felix.jpg
-		'*path': 'albumOrImage'
+		// everything caught by this is a 404
+		'*path': 'invalidSyntax'
+	},
+
+	/**
+	 * Routes that are regular expressions must be defined
+	 * via the initialize() function.
+	 */
+	initialize: function(options) {
+		// matches ''
+		this.route(/^\/?$/g, 'root');
+
+		// matches 2000
+		this.route(/^\/?(\d\d\d\d)\/?$/, 'year');
+
+		// matches 2000/12-31
+		this.route(/^\/?((\d\d\d\d)\/\d\d-\d\d)\/?$/, 'month');
+
+		// matches 2001/12-31/some.jpg
+		this.route(/^\/?((\d\d\d\d)\/\d\d-\d\d\/[\w\d\-_]+.(jpg|gif|png))\/?$/i, 'photo');
+	},
+
+	root: function() {
+		let path = '';
+		$('body').attr('class', 'root');
+		// The key is so that React knows that this is a new component.
+		// Otherwise, it'll treat it as an existing component and won't
+		// call the component's constructor and componentDidMount(),
+		// and thus the new album won't be set and retrieved.
+		ReactDOM.render(AlbumPage({albumPath: path, key: path}), mountNode);
+		this.track(path);
+	},
+
+	year: function(path) {
+		$('body').attr('class', 'year' + ' ' + 'y'+path);
+		// The key is so that React knows that this is a new component.
+		// Otherwise, it'll treat it as an existing component and won't
+		// call the component's constructor and componentDidMount(),
+		// and thus the new album won't be set and retrieved.
+		ReactDOM.render(AlbumPage({albumPath: path, key: path}), mountNode);
+		this.track(path);
+	},
+
+	month: function(path, year) {
+		$('body').attr('class', 'day' + ' ' + 'y'+year);
+		// The key is so that React knows that this is a new component.
+		// Otherwise, it'll treat it as an existing component and won't
+		// call the component's constructor and componentDidMount(),
+		// and thus the new album won't be set and retrieved.
+		ReactDOM.render(AlbumPage({albumPath: path, key: path}), mountNode);
+		this.track(path);
+	},
+
+	photo: function(path, year) {
+		$('body').attr('class', 'photo' + ' ' + 'y'+year);
+		// The key is so that React knows that this is a new component.
+		// Otherwise, it'll treat it as an existing component and won't
+		// call the component's constructor and componentDidMount(),
+		// and thus the new album won't be set and retrieved.
+		ReactDOM.render(ImagePage({imagePath: path, key: path}), mountNode);
+        this.track(path);
 	},
 
 	search: function(searchTerms, returnPath) {
         $('body').attr('class', 'search');
-
 		if (!searchTerms) {
 			searchTerms = '';
 		}
 		if (!returnPath) {
 			returnPath = '';
 		}
-		//console.log('router search: "' + searchTerms + '"  "' + returnPath + '"');
 		if (SearchPage === null) {
 			SearchPage = React.createFactory(require('../components/search.jsx'));
 		}
@@ -60,54 +115,12 @@ module.exports = Router.extend({
         this.track('search?'+searchTerms);
 	},
 
-	albumOrImage: function(path) {
-		if (!path) {
-			path = '';
+	invalidSyntax(path) {
+		$('body').attr('class', 'search');
+		if (NotFoundPage === null) {
+			NotFoundPage = React.createFactory(require('../components/notFound.jsx'));
 		}
-		//console.log('router path: "' + path + '"');
-
-        // It's an album path if there's no '.' in the path.
-        // This is not robust, but it's safe enough because
-        // I know i've never created an album with a '.' in
-        // the name.
-        var isAlbum =  path.indexOf('.') === -1;
-        var year;
-
-        // root album
-        if (!path) {
-            $('body').attr('class', 'root');
-        }
-        // individual photo
-        else if (!isAlbum) {
-            year = path.split('/')[0];
-            $('body').attr('class', 'photo' + ' ' + 'y'+year);
-        }
-        // day album
-        else if (path.indexOf('/') >=0) {
-            year = path.split('/')[0];
-            $('body').attr('class', 'day' + ' ' + 'y'+year);
-        }
-        // year album
-        else {
-            $('body').attr('class', 'year' + ' ' + 'y'+path);
-        }
-
-		// render album page
-		if (isAlbum) {
-			// The key is so that React knows that this is a new component.
-			// Otherwise, it'll treat it as an existing component and won't
-			// call the component's constructor and componentDidMount(),
-			// and thus the new album won't be set and retrieved.
-			ReactDOM.render(AlbumPage({albumPath: path, key: path}), mountNode);
-		}
-		// else render photo page
-		else {
-			// The key is so that React knows that this is a new component.
-			// Otherwise, it'll treat it as an existing component and won't
-			// call the component's constructor and componentDidMount(),
-			// and thus the new album won't be set and retrieved.
-			ReactDOM.render(ImagePage({imagePath: path, key: path}), mountNode);
-		}
+		ReactDOM.render(NotFoundPage({path: path, key: path}), mountNode);
         this.track(path);
 	},
 
