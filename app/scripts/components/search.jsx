@@ -169,6 +169,7 @@ class WaitingPage extends React.Component {
 			<SearchPageShell searchTerms={this.props.searchTerms} returnPath={this.props.returnPath}>
 				<div className='fullPageMessage'>
 					<p>Searching...</p>
+					<p><Site.WaitingSpinner /></p>
 				</div>
 			</SearchPageShell>
 		);

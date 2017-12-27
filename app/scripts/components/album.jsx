@@ -167,7 +167,9 @@ class LoadingAlbumPage extends React.Component {
 					<Site.UpButton />
 					<Site.NextButton />
 				</Site.HeaderTitle>
-				<Thumb.List items={emptyThumbArray} isAlbum={true} />
+				<div className='fullPageMessage'>
+                    <p><Site.WaitingSpinner /></p>
+                </div>
 			</Site.Page>
 		);
 	}
