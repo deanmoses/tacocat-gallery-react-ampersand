@@ -220,7 +220,34 @@ Site.GlyphIcon = GlyphIcon;
  * Waiting spinner, while pages load
  */
 class WaitingSpinner extends React.Component {
+
+	/**
+     * Constructor is invoked once, before the component is mounted
+     */
+	constructor(props) {
+		super(props);
+
+		// Don't show spinner immediately;
+		// that's annoying on fast page transitions.
+		this.state = {showSpinner: false};
+
+		// Set timer to show spinner after a while
+		this.state.timeout = setTimeout(() => {
+			this.setState({ showSpinner: true });
+		}, 200);
+	}
+	  
+	componentWillUnmount() {
+		if (this.state.timeout) {
+			clearTimeout(this.state.timeout);
+		}
+	}
+
 	render() {
+		if (this.state && !this.state.showSpinner) {
+			return null;
+		}
+
 		return (
 			<svg className="lds-camera" width="200px"  height="200px"  xmlns="http://www.w3.org/2000/svg" 
 			xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" 
