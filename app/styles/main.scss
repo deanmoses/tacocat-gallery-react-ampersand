@@ -268,8 +268,11 @@ a.navbar-brand, .search-button a {
     margin-left: 1em;
 }
 
-.noresults {
+.fullPageMessage {
     padding: 2em;
+    p {
+        text-align: center;
+    }
 }
 
 /**

@@ -181,19 +181,11 @@ class ImagePageWaiting extends React.Component {
 class ErrorImagePage extends React.Component {
     render() {
 		var album = this.props.album;
-        var divStyle = {
-            textAlign: 'center'
-        };
-        var pStyle = {
-            paddingTop : '2em'
-        };
         return (
 			<Site.Page className='imagepage'>
 				<Site.HeaderTitle href={album.href} title={'Image Not Found'} editMode={false} hideSiteTitle={true} hideSearch={true}/>
-				<div className='noresults' style={divStyle}>
-					<p style={pStyle}>
-                        <a href='#'>Go back <Site.GlyphIcon glyph='home'/>?</a>
-                    </p>
+				<div className='fullPageMessage'>
+					<p><a href='#'>Go back <Site.GlyphIcon glyph='home'/>?</a></p>
 				</div>
 			</Site.Page>
         );
@@ -208,19 +200,11 @@ ErrorImagePage.propTypes = {
  */
 class ErrorAlbumImagePage extends React.Component {
     render() {
-		var divStyle = {
-            textAlign: 'center'
-        };
-        var pStyle = {
-            paddingTop : '2em'
-        };
         return (
 			<Site.Page className='imagepage'>
 				<Site.HeaderTitle title={'Album Not Found'} editMode={false} hideSiteTitle={true} hideSearch={true}/>
-				<div className='noresults' style={divStyle}>
-					<p style={pStyle}>
-                        <a href='#'>Go back <Site.GlyphIcon glyph='home'/>?</a>
-                    </p>
+				<div className='fullPageMessage'>
+					<p><a href='#'>Go back <Site.GlyphIcon glyph='home'/>?</a></p>
 				</div>
 			</Site.Page>
         );

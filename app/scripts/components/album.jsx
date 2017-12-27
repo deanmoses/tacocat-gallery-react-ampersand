@@ -178,20 +178,12 @@ class LoadingAlbumPage extends React.Component {
  */
 class ErrorAlbumPage extends React.Component {
     render() {
-        var divStyle = {
-            textAlign: 'center'
-        };
-        var pStyle = {
-            paddingTop : '2em'
-        };
         return (
             <Site.Page className='albumpage rootalbumtype'>
                 <Site.HeaderTitle title={Config.site_title} shortTitle={Config.site_title_short} noTitleLink={true} hideSiteTitle={true} path=''/>
-                <div className='noresults' style={divStyle}>
-                    Album not found.
-                    <p style={pStyle}>
-                        <a href='#'>Go back <Site.GlyphIcon glyph='home'/>?</a>
-                    </p>
+                <div className='fullPageMessage'>
+                    <p>Album not found.</p>
+                    <p><a href='#'>Go back <Site.GlyphIcon glyph='home'/>?</a></p>
                 </div>
             </Site.Page>
         );

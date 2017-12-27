@@ -1,12 +1,15 @@
 /** @jsx React.DOM */
 'use strict';
 
+/**
+ * React.js components to handle Search
+ */
+
 var Site = require('./site.jsx');
 var Thumb = require('./thumb.jsx');
 var React = require('react');
-var PropTypes = require('prop-types');
 var ReactDOM = require('react-dom');
-
+var PropTypes = require('prop-types');
 var $ = require('jquery');
 
 /**
@@ -17,17 +20,6 @@ var $ = require('jquery');
  */
 class SearchPage extends React.Component {
 
-	/**
-     * Constructor is invoked once, before the component is mounted
-     */
-    constructor(props) {
-        super(props);
-
-		// The following line is needed so the 'this' is scoped to this 
-		// class when the user clicks and handleSearch() is invoked.
-		this.handleSearch = this.handleSearch.bind(this);
-    }
-	
 	/**
 	 * Invoked after the component is mounted into the DOM.
 	 *
@@ -47,30 +39,87 @@ class SearchPage extends React.Component {
 					results: results
 				});
 			}.bind(this))
-			.fail(function(x) {
-				console.log('error retrieving search: ', x);
-			});
+			.fail(function(err) {
+				this.setState({
+					err: err
+				});
+			}.bind(this));
 		}
 	}
 
 	render() {
-		var images = '';
-		var albums = '';
-		var noResults = '';
-		if (this.state && this.state.results) {
-			if (this.state.results.images) {
-				images = <Thumb.List items={this.state.results.images} useLongDateAsSummary={true}/>;
+		// No state = no search results
+		if (!this.state) {
+			// Tabula rasa: search screen, ready to type a search query into
+			if (!this.props.searchTerms) {
+				return (
+					<SearchPageShell searchTerms={this.props.searchTerms} returnPath={this.props.returnPath} />
+				);
 			}
-			if (this.state.results.albums) {
-				albums = <Thumb.List items={this.state.results.albums} useLongDateAsTitle={true}/>;
+			// Else search terms have been typed in.  Show waiting page
+			else {
+				return (
+					<WaitingPage searchTerms={this.props.searchTerms} returnPath={this.props.returnPath} />
+				);
 			}
 		}
-		if (this.props.searchTerms && this.state && !images && !albums) {
-			noResults = <div className='noresults'>No results</div>;
+		// Else there's state, meaning a search has been done
+		else {
+			// Error result
+			if (this.state.err) {
+				return (
+					<ErrorPage searchTerms={this.props.searchTerms} returnPath={this.props.returnPath} err={this.state.err} />
+				);
+			}
+			// Else if successful results
+			else if (this.state.results) {
+				// No images or albums in results: show no search results page
+				if (!this.state.results.images && !this.state.results.albums) {
+					return(
+						<NoResultsPage searchTerms={this.props.searchTerms} returnPath={this.props.returnPath} />
+					);
+				}
+				else {
+					var images = '';
+					var albums = '';
+					if (this.state.results.images) {
+						images = <Thumb.List items={this.state.results.images} useLongDateAsSummary={true}/>;
+					}
+					if (this.state.results.albums) {
+						albums = <Thumb.List items={this.state.results.albums} useLongDateAsTitle={true}/>;
+					}
+					return (
+						<ResultsPage searchTerms={this.props.searchTerms} returnPath={this.props.returnPath} images={images} albums={albums} />
+					);
+				}
+			}
 		}
-        var waiting = (this.props.searchTerms && !this.state) ? <div className='noresults'>Searching...</div> : '';
+	}
+}
+SearchPage.propTypes = {
+   // search terms like 'cat dog puppy'
+   searchTerms: PropTypes.string,
+   // URL to return to, like when clicking back button
+   returnPath: PropTypes.string
+};
+module.exports = SearchPage;
 
+/**
+ * The React.js component that renders the shell of the search screen.
+ */
+class SearchPageShell extends React.Component {
+	/**
+     * Constructor is invoked once, before the component is mounted
+     */
+    constructor(props) {
+        super(props);
 
+		// The following line is needed so the 'this' is scoped to this 
+		// class when the user clicks and handleSearch() is invoked.
+		this.handleSearch = this.handleSearch.bind(this);
+	}
+	
+	render() {
 		var returnUrl = (this.props.returnPath) ? encodeURIComponent(this.props.returnPath) : '';
 		return (
             <Site.Page hideFooter={true}>
@@ -84,17 +133,13 @@ class SearchPage extends React.Component {
                             <button type='submit' className='btn btn-default btn-sm'>Search</button>
                         </form>
                     </div>
-
                 </nav>
-				{images}
-				{albums}
-				{noResults}
-                {waiting}
+				{this.props.children}
             </Site.Page>
 		);
 	}
 
-    /**
+	/**
      * Handle the user submitting the search form
      * by setting the new search terms on the URL.
      *
@@ -108,14 +153,97 @@ class SearchPage extends React.Component {
         window.location.hash = search + returnPath;
     }
 }
-/**
- * Declare the properties that this component takes
- */
-SearchPage.propTypes = {
-   // search terms like 'cat dog puppy'
-   searchTerms: PropTypes.string,
-   // URL to return to, like when clicking back button
-   returnPath: PropTypes.string
+SearchPageShell.propTypes = {
+	// Search terms like 'cat dog puppy'
+	searchTerms: PropTypes.string,
+	// Path to return to, like when clicking back button
+	returnPath: PropTypes.string
 };
 
-module.exports = SearchPage;
+/**
+ * The React.js component to render while waiting for the search results
+ */
+class WaitingPage extends React.Component {
+	render() {
+		return (
+			<SearchPageShell searchTerms={this.props.searchTerms} returnPath={this.props.returnPath}>
+				<div className='fullPageMessage'>
+					<p>Searching...</p>
+				</div>
+			</SearchPageShell>
+		);
+	}
+}
+SearchPageShell.propTypes = {
+	// Search terms like 'cat dog puppy'
+	searchTerms: PropTypes.string,
+	// Path to return to, like when clicking back button
+	returnPath: PropTypes.string
+};
+
+/**
+ * The React.js component Search Error page
+ */
+class ErrorPage extends React.Component {
+	render() {
+		return (
+			<SearchPageShell searchTerms={this.props.searchTerms} returnPath={this.props.returnPath}>
+				<div className='fullPageMessage'>
+					<p>There was an error searching.</p>
+					<p>Reload the page and try again.</p>
+				</div>
+			</SearchPageShell>
+		);
+	}
+}
+ErrorPage.propTypes = {
+	// Search terms like 'cat dog puppy'
+	searchTerms: PropTypes.string,
+	// Path to return to, like when clicking back button
+	returnPath: PropTypes.string,
+	// The error object
+	err: PropTypes.object.isRequired
+};
+
+/**
+ * The React.js component that renders the 'No Results' page
+ */
+class NoResultsPage extends React.Component {
+	render() {
+		return (
+			<SearchPageShell searchTerms={this.props.searchTerms} returnPath={this.props.returnPath}>
+				<div className='fullPageMessage'>
+					<p>Didn't find anything matching '{this.props.searchTerms}'</p>
+				</div>
+			</SearchPageShell>
+		);
+	}
+}
+NoResultsPage.propTypes = {
+	// Search terms like 'cat dog puppy'
+	searchTerms: PropTypes.string,
+	// Path to return to, like when clicking back button
+	returnPath: PropTypes.string
+};
+
+ /**
+ * The React.js component that renders the search results page
+ */
+class ResultsPage extends React.Component {
+	render() {
+		return (
+			<SearchPageShell searchTerms={this.props.searchTerms} returnPath={this.props.returnPath}>
+				{this.props.images}
+				{this.props.albums}
+			</SearchPageShell>
+		);
+	}
+}
+ResultsPage.propTypes = {
+	// Search terms like 'cat dog puppy'
+	searchTerms: PropTypes.string,
+	// Path to return to, like when clicking back button
+	returnPath: PropTypes.string,
+	images: PropTypes.element,
+	albums: PropTypes.element
+};
