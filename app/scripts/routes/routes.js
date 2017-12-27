@@ -20,7 +20,7 @@ var mountNode = document.getElementById('main');
  */
 var Router = require('ampersand-router');
 module.exports = Router.extend({
-    /*global ga */
+    /*global gtag */
 
 	/**
 	 * Define the application's routes.
@@ -111,8 +111,13 @@ module.exports = Router.extend({
         this.track(path);
 	},
 
+	/**
+	 * Send path to Google Analytics
+	 */
     track(path) {
-        ga('send', 'pageview', 'p/'+path);
+		gtag('event', 'screen_view', { 
+			'screen_name': path
+		});
     }
 
 });
