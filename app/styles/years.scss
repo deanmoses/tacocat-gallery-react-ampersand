@@ -20,7 +20,28 @@ body {
 }
 
 // each year, root and search should move to the latest year
-.root, .search, .y2017 {
+.root, .search, .y2018 {
+
+    .titleInput, .navbar-brand, .month > h1 {
+        //color: white;
+    }
+
+    background-color: #676559;
+
+    .header, .month > h1 {
+        background-color: #6d5b97;
+    }
+
+    .btn {
+        background-color: #a1b9bd;
+    }
+
+    .sidebar {
+        background-color: #879099;
+    }
+}
+
+.y2017 {
     background-color: #5c7148;
 
     .header, .month > h1 {
