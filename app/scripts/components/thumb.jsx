@@ -6,6 +6,7 @@ var StringUtils = require('../utils/string.js');
 var Site = require('./site.jsx');
 var Config = require('../config.js');
 var React = require('react');
+var PropTypes = require('prop-types');
 
 // all the components in this file will be added to Thumb,
 // which will then be exported as a module
@@ -15,8 +16,8 @@ var Thumb = {};
  * Component that displays a list of thumbnails.
  * The list could be of either albums or images.
  */
-Thumb.List = React.createClass({
-    render: function () {
+class List extends React.Component {
+    render() {
 		if (!this.props.items) {
 			return false;
 		}
@@ -38,19 +39,21 @@ Thumb.List = React.createClass({
 				{thumbs}
 			</section>
         );
-    },
-    onSelect: function(selectKey) {
+    }
+
+    onSelect(selectKey) {
         if (this.props.onSelect) {
             this.props.onSelect(selectKey);
         }
     }
-});
+};
+Thumb.List = List;
 
 /**
  * Component that displays a thumbnail of either an album or an image.
  */
-Thumb.Nail = React.createClass({
-	render: function() {
+class Nail extends React.Component {
+	render() {
         var item = this.props.item;
         if (!item) {
             return false;
@@ -101,13 +104,14 @@ Thumb.Nail = React.createClass({
 				{summary}
 			</span>
 		);
-	},
+	}
 
-    onSelect: function() {
+    onSelect() {
         if (this.props.onSelect) {
             this.props.onSelect();
         }
     }
-});
+};
+Thumb.Nail = Nail;
 
 module.exports = Thumb;

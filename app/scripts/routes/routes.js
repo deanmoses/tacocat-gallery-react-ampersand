@@ -96,7 +96,7 @@ module.exports = Router.extend({
 		if (isAlbum) {
 			// The key is so that React knows that this is a new component.
 			// Otherwise, it'll treat it as an existing component and won't
-			// call the component's getInitialState() and componentDidMount(),
+			// call the component's constructor and componentDidMount(),
 			// and thus the new album won't be set and retrieved.
 			ReactDOM.render(AlbumPage({albumPath: path, key: path}), mountNode);
 		}
@@ -104,7 +104,7 @@ module.exports = Router.extend({
 		else {
 			// The key is so that React knows that this is a new component.
 			// Otherwise, it'll treat it as an existing component and won't
-			// call the component's getInitialState() and componentDidMount(),
+			// call the component's constructor and componentDidMount(),
 			// and thus the new album won't be set and retrieved.
 			ReactDOM.render(ImagePage({imagePath: path, key: path}), mountNode);
 		}

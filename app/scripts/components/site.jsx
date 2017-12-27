@@ -2,25 +2,21 @@
 'use strict';
 
 //
-// React.js components that render the photo gallery site shell
+// These React.js components render the photo gallery site shell
 // These just wrap stuff in Bootstrap HTML and classes
 //
 
 var Config = require('../config.js');
 var $ = require('jquery');
 var React = require('react');
+var PropTypes = require('prop-types');
 
 // all the components in this file will be added to Site,
 // which will then be made available as a module
 var Site = {};
 
-
-Site.Page = React.createClass({
-    propTypes: {
-        className: React.PropTypes.string,
-        hideFooter: React.PropTypes.bool
-    },
-    render: function() {
+class Page extends React.Component {
+    render() {
         var classes = 'pagecontents';
         if (this.props.className) {
             classes += ' ' + this.props.className;
@@ -34,19 +30,28 @@ Site.Page = React.createClass({
             </div>
         );
     }
-});
+};
+Page.propTypes = {
+	className: PropTypes.string,
+	hideFooter: PropTypes.bool
+};
+Site.Page = Page;
 
-Site.HeaderTitle = React.createClass({
-    propTypes: {
-        title: React.PropTypes.string,
-        shortTitle: React.PropTypes.string, // alternate title to use when screen is very narrow
-        href: React.PropTypes.string,
-        editMode: React.PropTypes.bool,
-        noTitleLink: React.PropTypes.bool,
-        hideSiteTitle: React.PropTypes.bool,
-        hideSearch: React.PropTypes.bool
-    },
-	render: function() {
+class HeaderTitle extends React.Component {
+
+    /**
+     * Constructor is invoked once, before the component is mounted
+     */
+    constructor(props) {
+        super(props);
+
+        // Initial state of the component
+        this.state = {
+            title: this.props.title
+        };
+    }
+
+	render() {
         var title;
         if (this.props.editMode) {
             title = <span className='titleInput navbar-brand' onChange={this.titleChange} contentEditable='true'>{this.state.title}</span>;
@@ -77,27 +82,37 @@ Site.HeaderTitle = React.createClass({
 				<Site.HeaderButtons>{this.props.children}</Site.HeaderButtons>
 			</div>
 		);
-	},
-    getInitialState: function() {
-        return {title: this.props.title};
-    },
-    titleChange: function(event) {
+	}
+	
+    titleChange(event) {
         this.setState({title: event.target.value});
-    },
-    componentDidMount: function() {
+	}
+	
+    componentDidMount() {
         if (this.props.editMode) {
            $('.titleInput').focus();
         }
-    },
-    componentDidUpdate: function(/*prevProps, prevState*/) {
+	}
+	
+    componentDidUpdate(/*prevProps, prevState*/) {
         if (this.props.editMode) {
            $('.titleInput').focus();
         }
     }
-});
+};
+HeaderTitle.propTypes = {
+	title: PropTypes.string,
+	shortTitle: PropTypes.string, // alternate title to use when screen is very narrow
+	href: PropTypes.string,
+	editMode: PropTypes.bool,
+	noTitleLink: PropTypes.bool,
+	hideSiteTitle: PropTypes.bool,
+	hideSearch: PropTypes.bool
+};
+Site.HeaderTitle = HeaderTitle;
 
-Site.HeaderButtons = React.createClass({
-	render: function() {
+class HeaderButtons extends React.Component {
+	render() {
 		if (!this.props.children) {
 			return false;
 		}
@@ -108,40 +123,44 @@ Site.HeaderButtons = React.createClass({
 			</div>
 		);
 	}
-});
+};
+Site.HeaderButtons = HeaderButtons;
 
-Site.PrevButton = React.createClass({
-	render: function() {
+class PrevButton extends React.Component {
+	render() {
 		return(
 			<Site.HeaderButton href={this.props.href}>
 				<Site.GlyphIcon glyph='chevron-left'/> <span className='nav-button-label'>{this.props.title}</span>
 			</Site.HeaderButton>
 		);
 	}
-});
+};
+Site.PrevButton = PrevButton;
 
-Site.NextButton = React.createClass({
-	render: function() {
+class NextButton extends React.Component {
+	render() {
 		return(
 			<Site.HeaderButton href={this.props.href}>
 				<span className='nav-button-label'>{this.props.title}</span> <Site.GlyphIcon glyph='chevron-right'/>
 			</Site.HeaderButton>
 		);
 	}
-});
+};
+Site.NextButton = NextButton;
 
-Site.UpButton = React.createClass({
-	render: function() {
+class UpButton extends React.Component {
+	render() {
 		return(
 			<Site.HeaderButton href={this.props.href}>
 			<Site.GlyphIcon glyph='home'/> <span className='nav-button-label'>{this.props.title}</span>
 			</Site.HeaderButton>
 		);
 	}
-});
+};
+Site.UpButton = UpButton;
 
-Site.HeaderButton = React.createClass({
-	render: function() {
+class HeaderButton extends React.Component {
+	render() {
 		if (this.props.href) {
 			return(
 				<a className='btn btn-default' href={this.props.href}>{this.props.children}</a>
@@ -154,19 +173,14 @@ Site.HeaderButton = React.createClass({
 			);
 		}
 	}
-});
+};
+Site.HeaderButton = HeaderButton;
 
 /**
  * Component that renders a search icon for navigating to search screen.
  */
-Site.SearchButton = React.createClass({
-	propTypes: {
-		// search terms like 'cat dog puppy'
-	    searchTerms: React.PropTypes.string,
-		// URL to return to, like when clicking back button
-		returnPath: React.PropTypes.string
-	},
-	render: function() {
+class SearchButton extends React.Component {
+	render() {
 		var searchUrl = '#search:';
 		searchUrl += (this.props.searchTerms) ? encodeURIComponent(this.props.searchTerms) : '';
 		searchUrl += '&return:';
@@ -175,19 +189,28 @@ Site.SearchButton = React.createClass({
 			<a href={searchUrl}><Site.GlyphIcon glyph='search'/></a>
 		);
 	}
-});
+};
+HeaderTitle.propTypes = {
+	// search terms like 'cat dog puppy'
+	searchTerms: PropTypes.string,
+	// URL to return to, like when clicking back button
+	returnPath: PropTypes.string
+}
+Site.SearchButton = SearchButton;
 
-Site.GlyphIcon = React.createClass({
-	render: function() {
+class GlyphIcon extends React.Component {
+	render() {
 		return(
 			<span className={'glyphicon glyphicon-' + this.props.glyph} onClick={this.click}/>
 		);
-	},
-    click: function(x) {
-        if (this.props.onClick) {
+	}
+
+    click(x) {
+        if (this && this.props.onClick) {
             this.props.onClick(x);
         }
     }
-});
+};
+Site.GlyphIcon = GlyphIcon;
 
 module.exports = Site;

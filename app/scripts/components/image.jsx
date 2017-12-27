@@ -13,6 +13,7 @@ var User = require('../models/user.js');
 var RichTextEditor = require('./richText.jsx');
 var Site = require('./site.jsx'); // other React.js components these components depend on
 var React = require('react');
+var PropTypes = require('prop-types');
 
 /**
  * The React.js component that renders the photo detail screen.
@@ -20,17 +21,36 @@ var React = require('react');
  * This is the only component in this module that is exported:
  * it's called by the router to render an album.
  */
-var ImagePage = React.createClass({
+class ImagePage extends React.Component {
 
-	/**
-	 * Declare the properties that this component takes.
-	 */
-	propTypes: {
-		// path to image, like '2014/12-31/felix.jpg'
-	    imagePath: React.PropTypes.string.isRequired
-	},
+    /**
+     * Constructor is invoked once, before the component is mounted
+     */
+    constructor(props) {
+        super(props);
 
-    render: function() {
+		//
+		// Set up initial state of the component
+		//
+
+		// get the album's path from the photo's path
+		var pathParts = this.props.imagePath.split('/');
+		pathParts.pop(); // remove photo filename
+		var albumPath = pathParts.join('/');
+
+        this.state = {
+			// Get the album if it already exists client-side.
+			// Does NOT fetch it from server.
+			// No album: component will show a waiting... indicator.
+			// This is Ampersand Collection.get().
+			album: AlbumStore.get(albumPath),
+			albumPath: albumPath,
+            editMode: User.currentUser().editMode,
+            editAllowed: User.currentUser().isAdmin
+        };
+	}
+	
+    render() {
         var album = this.state.album;
         if (album) {
             var image = album.images.get(this.props.imagePath);
@@ -45,62 +65,35 @@ var ImagePage = React.createClass({
                 <ImagePageWaiting />
             );
         }
-    },
-
-	/**
-	 * Initial state of the component.
-	 * Invoked once before the component is mounted.
-	 * The return value will be used as the initial value of this.state.
-	 */
-	getInitialState: function() {
-		// get the album's path from the photo's path
-		var pathParts = this.props.imagePath.split('/');
-		pathParts.pop(); // remove photo filename
-		var albumPath = pathParts.join('/');
-
-		return {
-			// Get the album if it already exists client-side.
-			// Does NOT fetch it from server.
-			// No album: component will show a waiting... indicator.
-			// This is Ampersand Collection.get().
-			album: AlbumStore.get(albumPath),
-			albumPath: albumPath,
-            editMode: User.currentUser().editMode,
-            editAllowed: User.currentUser().isAdmin
-		};
-	},
+    }
 
     /**
      * Invoked once, before component is mounted into the DOM, before initial rendering.
      */
-    componentWillMount: function() {
+    componentWillMount() {
         // Start listening for changes to the user model.
 
         // When the user gets logged in, this triggers rerendering
         // so the edit button gets drawn.
         User.currentUser().on('change:isAdmin', function() {
-            if (this.isMounted()) {
-                this.setState({editAllowed: User.currentUser().isAdmin});
-            }
+            this.setState({editAllowed: User.currentUser().isAdmin});
         }, this);
 
         // When the user clicks edit, edit mode on the user is set.
         // Listen for that so we know to draw the edit controls.
         User.currentUser().on('change:editMode', function() {
-            if (this.isMounted()) {
-                this.setState({editMode: User.currentUser().editMode});
-            }
+            this.setState({editMode: User.currentUser().editMode});
         }, this);
-    },
+    }
 
     /**
      * Invoked immediately before a component is unmounted from the DOM.
      */
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         // Stop listening for changes to the User model
         User.currentUser().off('change:isAdmin');
         User.currentUser().off('change:editMode');
-    },
+    }
 
 	/**
 	 * Invoked after the component is mounted into the DOM.
@@ -111,8 +104,8 @@ var ImagePage = React.createClass({
 	 *
 	 * This is the place to send AJAX requests.
 	 */
-	componentDidMount: function() {
-		// If getInitialState() didn't get the album Model from the
+	componentDidMount() {
+		// If constructor didn't get the album Model from the
 		// client side cache, now's the time to fetch it from the server.
 		// This is Ampersand Collection.fetchById().
 		if (!this.state.album) {
@@ -123,26 +116,29 @@ var ImagePage = React.createClass({
 					console.log('error getting album', err);
 				}
 				else {
-					//console.log('success getting album ' + album.path);
-					if (this.isMounted()) {
-						this.setState({
-							album: album
-						});
-					}
+					this.setState({
+						album: album
+					});
 				}
 			}.bind(this));
 		}
 	}
-});
-
+};
+/**
+ * Declare the properties that this component takes.
+ */
+ImagePage.propTypes = {
+   // path to image, like '2014/12-31/felix.jpg'
+   imagePath: PropTypes.string.isRequired
+};
 module.exports = ImagePage;
 
 /**
  * Component that displays an empty image, for use while the album is
  * being loaded from the server.
  */
-var ImagePageWaiting = React.createClass({
-    render: function() {
+class ImagePageWaiting extends React.Component {
+    render() {
         return (
             <Site.Page className='imagepage waiting' hideFooter={true}>
                 <Site.HeaderTitle title='' hideSiteTitle={true} hideSearch={true}/>
@@ -163,19 +159,13 @@ var ImagePageWaiting = React.createClass({
             </Site.Page>
         );
     }
-});
+};
 
 /**
  * Component that displays the real image.
  */
-var ImagePageNotWaiting = React.createClass({
-
-	propTypes: {
-		album: React.PropTypes.object.isRequired,
-	    image: React.PropTypes.object.isRequired
-	},
-
-	render: function() {
+class ImagePageNotWaiting extends React.Component {
+	render() {
 		var album = this.props.album;
 		var image = this.props.image;
 
@@ -187,19 +177,17 @@ var ImagePageNotWaiting = React.createClass({
 			</Site.Page>
 		);
 	}
-});
+};
+ImagePageNotWaiting.propTypes = {
+	album: PropTypes.object.isRequired,
+	image: PropTypes.object.isRequired
+};
 
 /**
  * Component that displays the body of the image page.
  */
-var ImagePageBody = React.createClass({
-	propTypes: {
-	    image: React.PropTypes.object.isRequired,
-		album: React.PropTypes.object.isRequired,
-        editMode: React.PropTypes.bool
-	},
-
-	render: function() {
+class ImagePageBody extends React.Component {
+	render() {
 		var image = this.props.image;
 		var album = this.props.album;
         var fullSizeUrl = Config.zenphotoImageFullSizeUrl(image.path);
@@ -236,11 +224,11 @@ var ImagePageBody = React.createClass({
 				</section>
 			</div>
 		);
-	},
+	}
 
-    onImgLoad: function(e) {
+    onImgLoad(e) {
         $(e.target).css('min-height', '');
-    },
+    }
 
 	/**
 	 * Invoked after the component is mounted into the DOM.
@@ -249,7 +237,7 @@ var ImagePageBody = React.createClass({
 	 * At this point in the lifecycle, the component has a DOM
 	 * representation which you can access via this.getDOMNode().
 	 */
-	componentDidMount: function() {
+	componentDidMount() {
 		// Hook up the image resizing
         this.resizeImage(
 			// image
@@ -257,7 +245,7 @@ var ImagePageBody = React.createClass({
 			// container to fit image into
 			'.photo-body .col-md-9'
 		);
-	},
+	}
 
 	/**
 	 * Continuously resize an image to best fit the HTML element that it
@@ -266,7 +254,7 @@ var ImagePageBody = React.createClass({
      * @param imageExpression css/jQuery expression targeting the image
      * @param containerExpression css/jQuery expression targeting the container in which the image lives
 	 */
-	resizeImage : function(imageExpression, containerExpression) {
+	resizeImage(imageExpression, containerExpression) {
 		var image = $(imageExpression);
 		var container = $(containerExpression);
 		var _this = this;
@@ -277,12 +265,12 @@ var ImagePageBody = React.createClass({
 		});  // on initial image load (won't be called if it's already loaded)
 		//$(function(){ _this.resizeImageOnce(image, container); });  // on initial page load
 		$(window).resize(function() { _this.resizeImageOnce(image, container); });  // on window resize
-	},
+	}
 
 	/**
 	 * Resize an image to best fit the HTML element in which it lives.
 	 */
-	resizeImageOnce : function(image, container) {
+	resizeImageOnce(image, container) {
 
 		// get image width and height
 		var imgWidth = image.width();
@@ -323,20 +311,31 @@ var ImagePageBody = React.createClass({
 		//$('.header-container header').width(image.width());
 	}
 
-});
+};
+ImagePageBody.propTypes = {
+	image: PropTypes.object.isRequired,
+	album: PropTypes.object.isRequired,
+	editMode: PropTypes.bool
+};
 
 /**
  * Component that renders the admin's image edit controls.
  */
-var EditMenu = React.createClass({
-    propTypes: {
-        album: React.PropTypes.object.isRequired,
-        image: React.PropTypes.object.isRequired,
-        allowEdit: React.PropTypes.bool.isRequired,
-        editMode: React.PropTypes.bool.isRequired
-    },
+class EditMenu extends React.Component {
 
-	render: function() {
+	/**
+     * Constructor is invoked once, before the component is mounted
+     */
+    constructor(props) {
+        super(props);
+
+		// Set up initial state of the component
+        this.state = {
+			step: ''
+        };
+	}
+
+	render() {
 
         // if user isn't allowed to edit, render nothing
         if (!this.props.allowEdit) {
@@ -385,41 +384,35 @@ var EditMenu = React.createClass({
                 </div>
             );
 		}
-	},
-
-    getInitialState: function() {
-        return {
-            step: ''
-        };
-    },
+	}
 
     /**
      * Enter edit mode
      */
-	edit: function() {
+	edit() {
         // will trigger the event listener in a parent component
         User.currentUser().editMode = true;
-	},
+	}
 
     /**
      * Cancel edit mode
      */
-	cancel: function() {
+	cancel() {
         // will trigger the event listener in a parent component
         User.currentUser().editMode = false;
-	},
+	}
 
     /**
      * Save to server and then go to the next image
      */
-    saveNext: function() {
+    saveNext() {
         this.save(true);
-    },
+    }
 
     /**
 	 * Save to server
 	 */
-	save: function(next) {
+	save(next) {
         var titleInputElement = $('.titleInput');
         if (!titleInputElement.length) {
             window.alert('image save: could not find title input element');
@@ -482,4 +475,10 @@ var EditMenu = React.createClass({
             this.setState({step: ''});
 		}.bind(this));
 	}
-});
+};
+EditMenu.propTypes = {
+	album: PropTypes.object.isRequired,
+	image: PropTypes.object.isRequired,
+	allowEdit: PropTypes.bool.isRequired,
+	editMode: PropTypes.bool.isRequired
+};

@@ -13,6 +13,7 @@ var Thumb = require('./thumb.jsx');
 var RichTextEditor = require('./richText.jsx');
 var $ = require('jquery');
 var React = require('react');
+var PropTypes = require('prop-types');
 
 /**
  * The React.js component that renders an album.
@@ -20,67 +21,56 @@ var React = require('react');
  * This is the only component in this module that is exported:
  * it's called by the router to render an album.
  */
-var AlbumPage = React.createClass({
+class AlbumPage extends React.Component {
 
-	/**
-	 * Declare the properties that this component takes.
-	 */
-	propTypes: {
-		// path to album, like '2014/12-31'
-	    albumPath: React.PropTypes.string.isRequired
-	},
+    /**
+     * Constructor is invoked once, before the component is mounted
+     */
+    constructor(props) {
+        super(props);
 
-	/**
-	 * Initial state of the component.
-	 * Invoked once before the component is mounted.
-	 * The return value will be used as the initial value of this.state.
-	 */
-	getInitialState: function() {
-		return {
-			// Get the album if it already exists client-side.
-			// Does NOT fetch it from server.
-			// No album: component will show a waiting... indicator.
-			// This is Ampersand Collection.get().
-			album: AlbumStore.getAlbum(this.props.albumPath),
+        // Initial state of the component
+        this.state = {
+            // Get the album if it already exists client-side.
+            // Does NOT fetch it from server.
+            // No album: component will show a waiting... indicator.
+            // This is Ampersand Collection.get().
+            album: AlbumStore.getAlbum(this.props.albumPath),
             editMode: User.currentUser().editMode,
             editAllowed: User.currentUser().isAdmin
-		};
-	},
+        };
+    }
 
     /**
      * Invoked once, before component is mounted into the DOM, before initial rendering.
      */
-    componentWillMount: function() {
+    componentWillMount() {
         // Start listening for user changes that would require rerending
 
         // When the user gets logged in, this triggers rerendering
         // so the edit button gets drawn.
         User.currentUser().on('change:isAdmin', function() {
-            if (this.isMounted()) {
-                this.setState({editAllowed: User.currentUser().isAdmin});
-            }
+            this.setState({editAllowed: User.currentUser().isAdmin});
         }, this);
 
         // When the user clicks edit, edit mode on the user is set.
         // Listen for that so we know to draw the edit controls.
         User.currentUser().on('change:editMode', function() {
-            if (this.isMounted()) {
-                this.setState({editMode: User.currentUser().editMode});
-            }
+            this.setState({editMode: User.currentUser().editMode});
         }, this);
-    },
+    }
 
     /**
      * Invoked immediately before a component is unmounted from the DOM.
      */
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         // Stop listening for changes to the User model
         User.currentUser().off('change:isAdmin');
         User.currentUser().off('change:editMode');
         if (this.state.album) {
             this.state.album.off('change');
         }
-    },
+    }
 
 	/**
 	 * Invoked after the component is mounted into the DOM.
@@ -91,10 +81,10 @@ var AlbumPage = React.createClass({
 	 *
 	 * This is the place to send AJAX requests.
 	 */
-	componentDidMount: function() {
+	componentDidMount() {
 		// console.log('componentDidMount ' + this.props.albumPath);
 
-		// If getInitialState() didn't get the album Model from the
+		// If the constructor didn't get the album Model from the
 		// client side cache, now's the time to fetch it from the server.
 		// This is Ampersand Collection.fetchById().
 		if (!this.state.album) {
@@ -104,29 +94,25 @@ var AlbumPage = React.createClass({
 				}
 				else {
 					//console.log('success getting album ' + album.path);
-					if (this.isMounted()) {
-						this.setState({
-							album: album
-						});
+                    this.setState({
+                        album: album
+                    });
 
-                        // If the admin updates the cache for this album, this triggers 
-                        // rerendering so that the new album info gets drawn.
-                        album.on('change', function (model, val) {
-                            console.log('Album has changed.');
-                            if (this.isMounted()) {
-                                this.setState({album: model});
-                            }
-                        }, this);
-					}
+                    // If the admin updates the cache for this album, this triggers 
+                    // rerendering so that the new album info gets drawn.
+                    album.on('change', function (model, val) {
+                        console.log('Album has changed.');
+                        this.setState({album: model});
+                    }, this);
 				}
 			}.bind(this));
 		}
-	},
+	}
 
 	/**
 	 * Render the component
 	 */
-	render: function() {
+	render() {
 		var album = this.state.album;
 		document.title = album ? album.pageTitle : 'Loading album...';
 
@@ -154,7 +140,15 @@ var AlbumPage = React.createClass({
 				throw 'no such type: ' + album.type;
 		 }
 	}
-});
+};
+
+/**
+ * Declare the properties that this component takes.
+ */
+AlbumPage.propTypes = {
+    // path to album, like '2014/12-31'
+    albumPath: PropTypes.string.isRequired
+};
 
 module.exports = AlbumPage;
 
@@ -162,8 +156,8 @@ module.exports = AlbumPage;
  * Component that displays an empty album, for use while the real album is
  * being loaded from the server.
  */
-var LoadingAlbumPage = React.createClass({
-	render: function() {
+class LoadingAlbumPage extends React.Component {
+	render() {
 		var emptyThumbArray = [];
 		return (
 			<Site.Page className='albumpage loading' hideFooter={true}>
@@ -176,18 +170,13 @@ var LoadingAlbumPage = React.createClass({
 			</Site.Page>
 		);
 	}
-});
+};
 
 /**
  * Component that displays the root album (i.e., displays each year as a thumbnail)
  */
-var RootAlbumPage = React.createClass({
-    propTypes: {
-        album: React.PropTypes.object.isRequired,
-        user: React.PropTypes.object.isRequired
-    },
-
-	render: function() {
+class RootAlbumPage extends React.Component {
+	render() {
 		var a = this.props.album;
 		return (
 			<Site.Page className='albumpage rootalbumtype'>
@@ -204,18 +193,17 @@ var RootAlbumPage = React.createClass({
             </Site.Page>
 		);
 	}
-});
+};
+RootAlbumPage.propTypes = {
+    album: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired
+};
 
 /**
  * Component that displays a year album (like 2014)
  */
-var YearAlbumPage = React.createClass({
-    propTypes: {
-        album: React.PropTypes.object.isRequired,
-        user: React.PropTypes.object.isRequired
-    },
-
-	render: function() {
+class YearAlbumPage extends React.Component {
+	render() {
 		var a = this.props.album;
         var user = this.props.user;
 		return (
@@ -229,18 +217,17 @@ var YearAlbumPage = React.createClass({
 			</Site.Page>
 		);
 	}
-});
+};
+YearAlbumPage.propTypes = {
+    album: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired
+};
 
 /**
  * Component that displays a week album (like 2014/12-31/)
  */
-var WeekAlbumPage = React.createClass({
-    propTypes: {
-        album: React.PropTypes.object.isRequired,
-        user: React.PropTypes.object.isRequired
-    },
-
-	render: function() {
+class WeekAlbumPage extends React.Component {
+	render() {
 		var a = this.props.album;
         var user = this.props.user;
         var desc = (user.editMode)
@@ -262,31 +249,29 @@ var WeekAlbumPage = React.createClass({
                 <EditMenu album={a} allowEdit={user.isAdmin} editMode={user.editMode} />
 			</Site.Page>
 		);
-	},
+	}
 
     /**
      * Invoked once, before component is mounted into the DOM, before initial rendering.
      */
-    componentWillMount: function() {
+    componentWillMount() {
         this.props.album.on('change:thumb', function() {
-            if (this.isMounted()) {
-                this.setState({}); // just to trigger a rerender
-            }
+            this.setState({}); // just to trigger a rerender
         }, this);
-    },
+    }
 
     /**
      * Invoked immediately before a component is unmounted from the DOM.
      */
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         this.props.album.off('change:thumb');
-    },
+    }
 
     /**
      * Set thumbnail for the album
      * @param fullpath full path to image like 2001/12-23/felix.jpg
      */
-    onThumbSelect: function(fullpath) {
+    onThumbSelect(fullpath) {
         var path = fullpath.split('/').pop(); // we just want 'felix.jpg'
         if (!path) {
             window.alert('set thumbnail: no image path');
@@ -352,19 +337,18 @@ var WeekAlbumPage = React.createClass({
             this.setState({step: ''});
         }.bind(this));
     }
-});
+};
+WeekAlbumPage.propTypes = {
+    album: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired
+};
 
 /**
  * Component for year pages.
  * Displays the year's firsts and the child albums' thumbnails
  */
-var FirstsAndThumbs = React.createClass({
-    propTypes: {
-        album: React.PropTypes.object.isRequired,
-        user: React.PropTypes.object.isRequired
-    },
-
-	render: function() {
+class FirstsAndThumbs extends React.Component {
+	render() {
 		var a = this.props.album;
         var user = this.props.user;
         var desc = (user.editMode)
@@ -385,15 +369,18 @@ var FirstsAndThumbs = React.createClass({
 			</div>
 		);
 	}
-});
+};
+FirstsAndThumbs.propTypes = {
+    album: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired
+};
 
 /**
  * Component for year pages.
  * Displays the thumbnail of each individual week album in the year.
  */
-var MonthThumbs = React.createClass({
-    render: function () {
-
+class MonthThumbs extends React.Component {
+    render() {
         var months = this.props.album.childAlbumsByMonth.map(function (child) {
             return <MonthThumb month={child} key={child.monthName}/>;
         });
@@ -404,14 +391,14 @@ var MonthThumbs = React.createClass({
 			</div>
         );
     }
-});
+};
 
 /**
  * Component for year pages.
  * Displays the thumbnails of each individual week album in a given month.
  */
-var MonthThumb = React.createClass({
-    render: function () {
+class MonthThumb extends React.Component {
+    render() {
     	var month = this.props.month;
         var thumbs = month.albums.map(function (child) {
             return <Thumb.Nail item={child} isAlbum={true} key={child.path}/>;
@@ -424,19 +411,26 @@ var MonthThumb = React.createClass({
 			</section>
         );
     }
-});
+};
 
 /**
  * Component that renders the admin's album edit controls.
  */
-var EditMenu = React.createClass({
-    propTypes: {
-        album: React.PropTypes.object.isRequired,
-        allowEdit: React.PropTypes.bool.isRequired,
-        editMode: React.PropTypes.bool.isRequired
-    },
+class EditMenu extends React.Component {
 
-    render: function() {
+    /**
+     * Constructor is invoked once, before the component is mounted
+     */
+    constructor(props) {
+        super(props);
+
+        // Initial state of the component
+        this.state = {
+            step: ''
+        };
+    }
+
+    render() {
         var a = this.props.album;
 
         // if user isn't allowed to edit, render nothing
@@ -490,25 +484,19 @@ var EditMenu = React.createClass({
                 </div>
             );
         }
-    },
+    }
 
-    getInitialState: function() {
-        return {
-            step: ''
-        };
-    },
-
-    edit: function() {
+    edit() {
         // will trigger the event listener in a parent component
         User.currentUser().editMode = true;
-    },
+    }
 
-    cancel: function() {
+    cancel() {
         // will trigger the event listener in a parent component
         User.currentUser().editMode = false;
-    },
+    }
 
-    refresh: function() {
+    refresh() {
         // hit the PHP endpoint that refreshes the cache
         $.ajax({
             type: 'GET',
@@ -525,11 +513,11 @@ var EditMenu = React.createClass({
             }
             // fetch album from server.  Gets it from the cache we just updated.
             this.props.album.fetch({
-                success: function(model, response, options) {
+                success(model, response, options) {
                     console.log('Successfully fetched album');
                     //window.alert('Successfully refreshed album cache.  Do you see your changes now?');
                 },
-                error: function(model, response, options) {
+                error(model, response, options) {
                     console.log('Error fetching album: ', response);
                     window.alert('Error fetching album: ' + response);
                 }
@@ -539,12 +527,12 @@ var EditMenu = React.createClass({
             console.log('error refreshing cache of album: %s\n\tstatus: %s\n\txhr: %s', errorThrown, textStatus, jqXHR);
             window.alert('Error refreshing cache of album: ' + errorThrown);
         }.bind(this));
-    },
+    }
 
     /**
      * Save to server
      */
-    save: function() {
+    save() {
         var a = this.props.album;
         var isYearAlbum = (a.type === 'year');
 
@@ -669,4 +657,9 @@ var EditMenu = React.createClass({
             this.setState({step: ''});
         }.bind(this));
     }
-});
+};
+EditMenu.propTypes = {
+    album: PropTypes.object.isRequired,
+    allowEdit: PropTypes.bool.isRequired,
+    editMode: PropTypes.bool.isRequired
+};

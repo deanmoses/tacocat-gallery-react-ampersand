@@ -4,21 +4,19 @@
 
 var $ = require('jquery');
 var React = require('react');
+var PropTypes = require('prop-types');
 
 /**
  * React.js component that displays a CKEDITOR-powered rich text editor.
  */
-var RichTextEditor;
-module.exports = RichTextEditor = React.createClass({
-    propTypes: {
-        valueToEdit: React.PropTypes.string
-    },
-	render: function() {
+class RichTextEditor extends React.Component {
+	render() {
 		return(
             <div id='ckedtr' contentEditable='true' className='caption' dangerouslySetInnerHTML={{__html: this.props.valueToEdit}}/>
 		);
-	},
-    componentWillMount: function() {
+    }
+    
+    componentWillMount() {
         // if the CKEDITOR script exists...
         if (window.CKEDITOR) {
             // ... tell it to not automatically make contentEditable elements rich text;
@@ -48,8 +46,9 @@ module.exports = RichTextEditor = React.createClass({
                 }
             });
         }
-    },
-    componentDidMount: function() {
+    }
+
+    componentDidMount() {
         if (window.CKEDITOR) {
             CKEDITOR.inline('ckedtr', {
                 toolbar: [
@@ -63,4 +62,8 @@ module.exports = RichTextEditor = React.createClass({
             });
         }
     }
-});
+};
+RichTextEditor.propTypes = {
+    valueToEdit: PropTypes.string
+};
+module.exports = RichTextEditor;

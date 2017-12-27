@@ -4,6 +4,9 @@
 var Site = require('./site.jsx');
 var Thumb = require('./thumb.jsx');
 var React = require('react');
+var PropTypes = require('prop-types');
+var ReactDOM = require('react-dom');
+
 var $ = require('jquery');
 
 /**
@@ -12,19 +15,19 @@ var $ = require('jquery');
  * This is the only component in this module that is exported:
  * it's called by the router to render an album.
  */
-var SearchPage;
-module.exports = SearchPage = React.createClass({
+class SearchPage extends React.Component {
 
 	/**
-	 * Declare the properties that this component takes
-	 */
-	propTypes: {
-		// search terms like 'cat dog puppy'
-	    searchTerms: React.PropTypes.string,
-		// URL to return to, like when clicking back button
-		returnPath: React.PropTypes.string
-	},
+     * Constructor is invoked once, before the component is mounted
+     */
+    constructor(props) {
+        super(props);
 
+		// The following line is needed so the 'this' is scoped to this 
+		// class when the user clicks and handleSearch() is invoked.
+		this.handleSearch = this.handleSearch.bind(this);
+    }
+	
 	/**
 	 * Invoked after the component is mounted into the DOM.
 	 *
@@ -34,26 +37,23 @@ module.exports = SearchPage = React.createClass({
 	 *
 	 * This is the place to send AJAX requests.
 	 */
-	componentDidMount: function() {
+	componentDidMount() {
 		// if the component was created with search terms, ask server to search
 		if (this.props.searchTerms) {
 			var url = 'https://tacocat.com/zenphoto/page/search?words=' + encodeURIComponent(this.props.searchTerms) +'&api';
 			$.getJSON(url)
 			.done(function(results) {
-				//console.log('results: ', results);
-				if (this.isMounted()) {
-					this.setState({
-						results: results
-					});
-				}
+				this.setState({
+					results: results
+				});
 			}.bind(this))
 			.fail(function(x) {
 				console.log('error retrieving search: ', x);
 			});
 		}
-	},
+	}
 
-	render: function() {
+	render() {
 		var images = '';
 		var albums = '';
 		var noResults = '';
@@ -92,7 +92,7 @@ module.exports = SearchPage = React.createClass({
                 {waiting}
             </Site.Page>
 		);
-	},
+	}
 
     /**
      * Handle the user submitting the search form
@@ -101,10 +101,21 @@ module.exports = SearchPage = React.createClass({
      * The actual searching will be done when the
      * component is re-rendered because of the URL change.
      */
-    handleSearch: function(e) {
-        e.preventDefault();
-        var search = 'search:' + encodeURIComponent(this.refs.searchBox.getDOMNode().value.trim());
+    handleSearch(e) {
+		e.preventDefault();
+        var search = 'search:' + encodeURIComponent(ReactDOM.findDOMNode(this.refs.searchBox).value.trim());
         var returnPath = (this.props.returnPath) ? '&return:' + encodeURIComponent(this.props.returnPath) : '';
         window.location.hash = search + returnPath;
     }
-});
+};
+/**
+ * Declare the properties that this component takes
+ */
+SearchPage.propTypes = {
+   // search terms like 'cat dog puppy'
+   searchTerms: PropTypes.string,
+   // URL to return to, like when clicking back button
+   returnPath: PropTypes.string
+};
+
+module.exports = SearchPage;
