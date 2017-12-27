@@ -1,1 +1,1 @@
-rsync -r -a -v -p --delete dist/* tacocat.com:~/themosii.com/p
+rsync -r -a -v --delete --exclude '.DS_Store' dist/ deanmoses@tacocat.com:~/tacocat.com/p

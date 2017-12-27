@@ -1,0 +1,1 @@
+rsync -r -a -v --delete --exclude '.DS_Store' dist/ deanmoses@tacocat.com:~/tacocat.com/p2
