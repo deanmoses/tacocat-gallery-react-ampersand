@@ -30,7 +30,7 @@ class Page extends React.Component {
             </div>
         );
     }
-};
+}
 Page.propTypes = {
 	className: PropTypes.string,
 	hideFooter: PropTypes.bool
@@ -99,7 +99,7 @@ class HeaderTitle extends React.Component {
            $('.titleInput').focus();
         }
     }
-};
+}
 HeaderTitle.propTypes = {
 	title: PropTypes.string,
 	shortTitle: PropTypes.string, // alternate title to use when screen is very narrow
@@ -123,7 +123,7 @@ class HeaderButtons extends React.Component {
 			</div>
 		);
 	}
-};
+}
 Site.HeaderButtons = HeaderButtons;
 
 class PrevButton extends React.Component {
@@ -134,7 +134,7 @@ class PrevButton extends React.Component {
 			</Site.HeaderButton>
 		);
 	}
-};
+}
 Site.PrevButton = PrevButton;
 
 class NextButton extends React.Component {
@@ -145,7 +145,7 @@ class NextButton extends React.Component {
 			</Site.HeaderButton>
 		);
 	}
-};
+}
 Site.NextButton = NextButton;
 
 class UpButton extends React.Component {
@@ -156,7 +156,7 @@ class UpButton extends React.Component {
 			</Site.HeaderButton>
 		);
 	}
-};
+}
 Site.UpButton = UpButton;
 
 class HeaderButton extends React.Component {
@@ -173,7 +173,7 @@ class HeaderButton extends React.Component {
 			);
 		}
 	}
-};
+}
 Site.HeaderButton = HeaderButton;
 
 /**
@@ -189,13 +189,13 @@ class SearchButton extends React.Component {
 			<a href={searchUrl}><Site.GlyphIcon glyph='search'/></a>
 		);
 	}
-};
+}
 HeaderTitle.propTypes = {
 	// search terms like 'cat dog puppy'
 	searchTerms: PropTypes.string,
 	// URL to return to, like when clicking back button
 	returnPath: PropTypes.string
-}
+};
 Site.SearchButton = SearchButton;
 
 class GlyphIcon extends React.Component {
@@ -210,7 +210,7 @@ class GlyphIcon extends React.Component {
             this.props.onClick(x);
         }
     }
-};
+}
 Site.GlyphIcon = GlyphIcon;
 
 module.exports = Site;

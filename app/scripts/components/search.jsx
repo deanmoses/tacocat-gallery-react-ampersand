@@ -107,7 +107,7 @@ class SearchPage extends React.Component {
         var returnPath = (this.props.returnPath) ? '&return:' + encodeURIComponent(this.props.returnPath) : '';
         window.location.hash = search + returnPath;
     }
-};
+}
 /**
  * Declare the properties that this component takes
  */

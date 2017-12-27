@@ -125,7 +125,6 @@ class ImagePage extends React.Component {
 		if (!this.state.album) {
 			AlbumStore.fetchById(this.state.albumPath, function (err, album) {
 				if (err) {
-					console.log('error getting album', err);
 					this.setState({
 						err: err
 					});
@@ -138,7 +137,7 @@ class ImagePage extends React.Component {
 			}.bind(this));
 		}
 	}
-};
+}
 /**
  * Declare the properties that this component takes.
  */
@@ -174,7 +173,7 @@ class ImagePageWaiting extends React.Component {
             </Site.Page>
         );
     }
-};
+}
 
 /**
  * Component that displays an error saying the image not found.
@@ -187,7 +186,7 @@ class ErrorImagePage extends React.Component {
         };
         var pStyle = {
             paddingTop : '2em'
-        }
+        };
         return (
 			<Site.Page className='imagepage'>
 				<Site.HeaderTitle href={album.href} title={'Image Not Found'} editMode={false} hideSiteTitle={true} hideSearch={true}/>
@@ -199,7 +198,7 @@ class ErrorImagePage extends React.Component {
 			</Site.Page>
         );
     }
-};
+}
 ErrorImagePage.propTypes = {
 	album: PropTypes.object.isRequired
 };
@@ -214,7 +213,7 @@ class ErrorAlbumImagePage extends React.Component {
         };
         var pStyle = {
             paddingTop : '2em'
-        }
+        };
         return (
 			<Site.Page className='imagepage'>
 				<Site.HeaderTitle title={'Album Not Found'} editMode={false} hideSiteTitle={true} hideSearch={true}/>
@@ -226,7 +225,7 @@ class ErrorAlbumImagePage extends React.Component {
 			</Site.Page>
         );
     }
-};
+}
 
 /**
  * Component that displays the real image.
@@ -244,7 +243,7 @@ class ImagePageNotWaiting extends React.Component {
 			</Site.Page>
 		);
 	}
-};
+}
 ImagePageNotWaiting.propTypes = {
 	album: PropTypes.object.isRequired,
 	image: PropTypes.object.isRequired
@@ -327,7 +326,6 @@ class ImagePageBody extends React.Component {
 		var _this = this;
 
 		image.on('load', function() {
-			//console.log('imageUtil.resizeImage(): img loaded');
 			_this.resizeImageOnce(image, container);
 		});  // on initial image load (won't be called if it's already loaded)
 		//$(function(){ _this.resizeImageOnce(image, container); });  // on initial page load
@@ -360,14 +358,12 @@ class ImagePageBody extends React.Component {
 
 		// if new image height fits within container, we've got our dimensions
 		if (newImgHeight <= containerHeight) {
-			//console.log('width based.  container w: ' + containerWidth + ' > ' + container.parent().width() + ' > ' + container.parent().width());
 			image.width(containerWidth);
 			image.height(newImgHeight);
 		}
 		// else if new image height is too tall for container,
 		// make image height 100% of container
 		else {
-			//console.log('height based');
 			image.height(containerHeight);
 			image.width(Math.round(containerHeight * (imgWidth / imgHeight)));
 		}
@@ -378,7 +374,7 @@ class ImagePageBody extends React.Component {
 		//$('.header-container header').width(image.width());
 	}
 
-};
+}
 ImagePageBody.propTypes = {
 	image: PropTypes.object.isRequired,
 	album: PropTypes.object.isRequired,
@@ -506,9 +502,6 @@ class EditMenu extends React.Component {
             description = '';
         }
 
-		console.log('title', title);
-		console.log('desc', description);
-
         this.setState({step: 'saving'});
 
 		var ajaxData = {
@@ -537,12 +530,11 @@ class EditMenu extends React.Component {
             }
 		}.bind(this))
 		.fail(function(jqXHR, textStatus, errorThrown) {
-			console.log('error saving image: %s\n\tstatus: %s\n\txhr: %s', errorThrown, textStatus, jqXHR);
             window.alert('Error saving: ' + errorThrown);
             this.setState({step: ''});
 		}.bind(this));
 	}
-};
+}
 EditMenu.propTypes = {
 	album: PropTypes.object.isRequired,
 	image: PropTypes.object.isRequired,

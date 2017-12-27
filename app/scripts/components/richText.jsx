@@ -62,7 +62,7 @@ class RichTextEditor extends React.Component {
             });
         }
     }
-};
+}
 RichTextEditor.propTypes = {
     valueToEdit: PropTypes.string
 };

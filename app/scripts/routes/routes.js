@@ -60,7 +60,7 @@ module.exports = Router.extend({
 	},
 
 	root: function() {
-		let path = '';
+		var path = '';
 		$('body').attr('class', 'root');
 		// The key is so that React knows that this is a new component.
 		// Otherwise, it'll treat it as an existing component and won't

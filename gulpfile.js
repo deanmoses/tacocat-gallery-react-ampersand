@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require('gulp');
+var gulputil = require('gulp-util');
 var sass = require('gulp-ruby-sass');
 var del = require('del');
 var path = require('path');
@@ -190,7 +191,10 @@ gulp.task('build', ['html', 'bundle', 'images']);
 // Minify Javascript
 gulp.task('minifyjs', function () {
   return gulp.src('dist/scripts/**/*.js')
-    .pipe(uglify())
+    .pipe(uglify().on('error', function(err) {
+        gulputil.log(gulputil.colors.red('[Error]'), err.toString());
+        this.emit('end');
+        }))
     .pipe(gulp.dest('dist/scripts'));
 });
 

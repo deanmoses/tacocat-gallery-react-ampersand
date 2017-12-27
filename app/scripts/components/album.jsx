@@ -88,12 +88,7 @@ class AlbumPage extends React.Component {
 		if (!this.state.album) {
 			AlbumStore.fetchAlbum(this.props.albumPath, function (err, album) {
 				if (err) {
-                    if (err.status === 404) {
-                        console.log('Album ' + this.props.albumPath + ' not found')
-                    }
-                    else {
-                        console.log('error getting album', err);
-                    }
+                    console.log('error getting album', err);
                     this.setState({err: err});
 				}
 				else {
@@ -148,8 +143,7 @@ class AlbumPage extends React.Component {
 				throw 'no such type: ' + album.type;
 		 }
 	}
-};
-
+}
 /**
  * Declare the properties that this component takes.
  */
@@ -157,7 +151,6 @@ AlbumPage.propTypes = {
     // path to album, like '2014/12-31'
     albumPath: PropTypes.string.isRequired
 };
-
 module.exports = AlbumPage;
 
 /**
@@ -178,7 +171,7 @@ class LoadingAlbumPage extends React.Component {
 			</Site.Page>
 		);
 	}
-};
+}
 
 /**
  * Component shown for 404 (Album Not Found) or other error retrieving album
@@ -190,7 +183,7 @@ class ErrorAlbumPage extends React.Component {
         };
         var pStyle = {
             paddingTop : '2em'
-        }
+        };
         return (
             <Site.Page className='albumpage rootalbumtype'>
                 <Site.HeaderTitle title={Config.site_title} shortTitle={Config.site_title_short} noTitleLink={true} hideSiteTitle={true} path=''/>
@@ -203,7 +196,7 @@ class ErrorAlbumPage extends React.Component {
             </Site.Page>
         );
     }
-};
+}
 
 /**
  * Component that displays the root album (i.e., displays each year as a thumbnail)
@@ -226,7 +219,7 @@ class RootAlbumPage extends React.Component {
             </Site.Page>
 		);
 	}
-};
+}
 RootAlbumPage.propTypes = {
     album: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired
@@ -250,7 +243,7 @@ class YearAlbumPage extends React.Component {
 			</Site.Page>
 		);
 	}
-};
+}
 YearAlbumPage.propTypes = {
     album: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired
@@ -370,7 +363,7 @@ class WeekAlbumPage extends React.Component {
             this.setState({step: ''});
         }.bind(this));
     }
-};
+}
 WeekAlbumPage.propTypes = {
     album: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired
@@ -402,7 +395,7 @@ class FirstsAndThumbs extends React.Component {
 			</div>
 		);
 	}
-};
+}
 FirstsAndThumbs.propTypes = {
     album: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired
@@ -424,7 +417,7 @@ class MonthThumbs extends React.Component {
 			</div>
         );
     }
-};
+}
 
 /**
  * Component for year pages.
@@ -444,7 +437,7 @@ class MonthThumb extends React.Component {
 			</section>
         );
     }
-};
+}
 
 /**
  * Component that renders the admin's album edit controls.
@@ -548,7 +541,6 @@ class EditMenu extends React.Component {
             this.props.album.fetch({
                 success(model, response, options) {
                     console.log('Successfully fetched album');
-                    //window.alert('Successfully refreshed album cache.  Do you see your changes now?');
                 },
                 error(model, response, options) {
                     console.log('Error fetching album: ', response);
@@ -690,7 +682,7 @@ class EditMenu extends React.Component {
             this.setState({step: ''});
         }.bind(this));
     }
-};
+}
 EditMenu.propTypes = {
     album: PropTypes.object.isRequired,
     allowEdit: PropTypes.bool.isRequired,

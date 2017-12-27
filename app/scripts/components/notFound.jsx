@@ -19,7 +19,7 @@ class NotFoundPage extends React.Component {
         };
         var pStyle = {
             paddingTop : '2em'
-        }
+        };
 
 		return (
             <Site.Page hideFooter={true}>
