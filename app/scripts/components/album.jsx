@@ -82,15 +82,19 @@ class AlbumPage extends React.Component {
 	 * This is the place to send AJAX requests.
 	 */
 	componentDidMount() {
-		// console.log('componentDidMount ' + this.props.albumPath);
-
 		// If the constructor didn't get the album Model from the
 		// client side cache, now's the time to fetch it from the server.
 		// This is Ampersand Collection.fetchById().
 		if (!this.state.album) {
 			AlbumStore.fetchAlbum(this.props.albumPath, function (err, album) {
 				if (err) {
-					console.log('error getting album', err);
+                    if (err.status === 404) {
+                        console.log('Album ' + this.props.albumPath + ' not found')
+                    }
+                    else {
+                        console.log('error getting album', err);
+                    }
+                    this.setState({err: err});
 				}
 				else {
 					//console.log('success getting album ' + album.path);
@@ -113,10 +117,14 @@ class AlbumPage extends React.Component {
 	 * Render the component
 	 */
 	render() {
+        if (this.state.err) {
+            return (
+                <ErrorAlbumPage/>
+            );
+        }
+
 		var album = this.state.album;
 		document.title = album ? album.pageTitle : 'Loading album...';
-
-		// console.log('render(): ' + document.title);
 
 		var type = album ? album.type : 'loading';
 		switch (type) {
@@ -170,6 +178,31 @@ class LoadingAlbumPage extends React.Component {
 			</Site.Page>
 		);
 	}
+};
+
+/**
+ * Component shown for 404 (Album Not Found) or other error retrieving album
+ */
+class ErrorAlbumPage extends React.Component {
+    render() {
+        var divStyle = {
+            textAlign: 'center'
+        };
+        var pStyle = {
+            paddingTop : '2em'
+        }
+        return (
+            <Site.Page className='albumpage rootalbumtype'>
+                <Site.HeaderTitle title={Config.site_title} shortTitle={Config.site_title_short} noTitleLink={true} hideSiteTitle={true} path=''/>
+                <div className='noresults' style={divStyle}>
+                    Album not found.
+                    <p style={pStyle}>
+                        <a href='#'>Go back <Site.GlyphIcon glyph='home'/>?</a>
+                    </p>
+                </div>
+            </Site.Page>
+        );
+    }
 };
 
 /**

@@ -51,9 +51,23 @@ class ImagePage extends React.Component {
 	}
 	
     render() {
+		// Error fetching album
+		if (this.state.err) {
+			return (
+				<ErrorAlbumImagePage />
+			);
+		}
         var album = this.state.album;
         if (album) {
-            var image = album.images.get(this.props.imagePath);
+			var image = album.images.get(this.props.imagePath);
+
+			// Nonexistent image on existing album
+			if (!image) {
+				return (
+					<ErrorImagePage album={album}/>
+				);
+			}
+
             document.title = image.title;
             return (
                 <ImagePageNotWaiting album={album} image={image} user={User.currentUser()}/>
@@ -111,9 +125,10 @@ class ImagePage extends React.Component {
 		if (!this.state.album) {
 			AlbumStore.fetchById(this.state.albumPath, function (err, album) {
 				if (err) {
-                    // TODO: handle error better than an alert()
-                    window.alert('error getting album: ' + err);
 					console.log('error getting album', err);
+					this.setState({
+						err: err
+					});
 				}
 				else {
 					this.setState({
@@ -157,6 +172,58 @@ class ImagePageWaiting extends React.Component {
                     </section>
                 </div>
             </Site.Page>
+        );
+    }
+};
+
+/**
+ * Component that displays an error saying the image not found.
+ */
+class ErrorImagePage extends React.Component {
+    render() {
+		var album = this.props.album;
+        var divStyle = {
+            textAlign: 'center'
+        };
+        var pStyle = {
+            paddingTop : '2em'
+        }
+        return (
+			<Site.Page className='imagepage'>
+				<Site.HeaderTitle href={album.href} title={'Image Not Found'} editMode={false} hideSiteTitle={true} hideSearch={true}/>
+				<div className='noresults' style={divStyle}>
+					<p style={pStyle}>
+                        <a href='#'>Go back <Site.GlyphIcon glyph='home'/>?</a>
+                    </p>
+				</div>
+			</Site.Page>
+        );
+    }
+};
+ErrorImagePage.propTypes = {
+	album: PropTypes.object.isRequired
+};
+
+/**
+ * Component that displays an error saying the album not found.
+ */
+class ErrorAlbumImagePage extends React.Component {
+    render() {
+		var divStyle = {
+            textAlign: 'center'
+        };
+        var pStyle = {
+            paddingTop : '2em'
+        }
+        return (
+			<Site.Page className='imagepage'>
+				<Site.HeaderTitle title={'Album Not Found'} editMode={false} hideSiteTitle={true} hideSearch={true}/>
+				<div className='noresults' style={divStyle}>
+					<p style={pStyle}>
+                        <a href='#'>Go back <Site.GlyphIcon glyph='home'/>?</a>
+                    </p>
+				</div>
+			</Site.Page>
         );
     }
 };
