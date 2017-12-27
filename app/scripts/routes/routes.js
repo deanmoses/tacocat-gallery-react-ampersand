@@ -128,9 +128,7 @@ module.exports = Router.extend({
 	 * Send path to Google Analytics
 	 */
     track(path) {
-		gtag('event', 'screen_view', { 
-			'screen_name': path
-		});
+		gtag('config', 'UA-634317-1', {'page_path': '/p/' + path});
     }
 
 });
