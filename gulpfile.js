@@ -125,10 +125,10 @@ gulp.task('copymockdata', function() {
 
 
 // Create an application cache manifest
-gulp.task('manifest', function(){
-    gulp.src(['dist/*','dist/scripts/**/*.js', 'dist/styles/**/*.css', 'dist/fonts/**/*.{ttf,woff,woff2,eof,svg}'], {base: 'dist'})
+gulp.task('manifest', function() {
+    gulp.src(['dist/index.html','dist/scripts/**/*.js', 'dist/styles/**/*.css', 'dist/fonts/**/*.{ttf,woff,woff2,eof,svg}'], {base: 'dist'})
         .pipe(manifest({
-            hash: true,
+            timestamp: true,
             network: ['*'],
             filename: 'a.appcache',
             exclude: 'a.appcache'
@@ -138,7 +138,7 @@ gulp.task('manifest', function(){
 
 
 // Jest tests
-gulp.task('jest', function () {
+gulp.task('jest', function() {
     var nodeModules = path.resolve('./node_modules');
     return gulp.src('app/scripts/**/__tests__')
         .pipe($.jest({
@@ -149,7 +149,7 @@ gulp.task('jest', function () {
 
 
 // Clean
-gulp.task('clean', function (cb) {
+gulp.task('clean', function(cb) {
     del(['dist/styles', 'dist/fonts', 'dist/scripts', 'dist/images', 'dist/mockdata'], cb);
 });
 
@@ -163,7 +163,7 @@ gulp.task('bundle', ['styles', 'copyfonts', 'copyrootfiles', 'copymockdata', /*'
 
 
 // Watch
-gulp.task('watch', ['html', 'bundle', 'serve'], function () {
+gulp.task('watch', ['html', 'bundle', 'serve'], function() {
 
     // Watch .html files
     gulp.watch('app/*.html', ['html']);
