@@ -212,7 +212,7 @@ gulp.task('deploy', function() {
 });
 
 // Release
-gulp.task('release', ['setprod', 'build', 'minifyjs']);
+gulp.task('release', ['setprod', 'build', 'manifest', 'minifyjs']);
 
 // Default task
 gulp.task('default', ['clean', 'build', 'jest' ]);
