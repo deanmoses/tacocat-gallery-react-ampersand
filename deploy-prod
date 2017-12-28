@@ -1,1 +1,1 @@
-rsync -r -a -v --delete --exclude '.DS_Store' dist/ deanmoses@tacocat.com:~/tacocat.com/p
+rsync -r -a -v --delete --exclude '.DS_Store' --exclude 'manifest.json' --exclude 'mockdata' dist/ deanmoses@tacocat.com:~/tacocat.com/p
