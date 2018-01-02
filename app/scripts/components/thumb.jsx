@@ -52,6 +52,10 @@ Thumb.List = List;
  * Component that displays a thumbnail of either an album or an image.
  */
 class Nail extends React.Component {
+	constructor() {
+		this.onSelect = this.onSelect.bind(this);
+	}
+	
 	render() {
         var item = this.props.item;
         if (!item) {

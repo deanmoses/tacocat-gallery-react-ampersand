@@ -202,6 +202,9 @@ Site.SearchButton = SearchButton;
  * Wrapper around Bootstrap CSS icons
  */
 class GlyphIcon extends React.Component {
+	constructor() {
+		this.click = this.click.bind(this);
+	}
 	render() {
 		return(
 			<span className={'glyphicon glyphicon-' + this.props.glyph} onClick={this.click}/>

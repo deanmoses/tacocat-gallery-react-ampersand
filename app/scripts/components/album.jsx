@@ -95,7 +95,6 @@ class AlbumPage extends React.Component {
                     // If the admin updates the cache for this album, this triggers 
                     // rerendering so that the new album info gets drawn.
                     album.on('change', function (model, val) {
-                        console.log('Album has changed.');
                         this.setState({album: model});
                     }, this);
 				}
@@ -242,6 +241,10 @@ YearAlbumPage.propTypes = {
  * Component that displays a week album (like 2014/12-31/)
  */
 class WeekAlbumPage extends React.Component {
+    constructor() {
+        this.onThumbSelect = this.onThumbSelect.bind(this);
+    }
+
 	render() {
 		var a = this.props.album;
         var user = this.props.user;
