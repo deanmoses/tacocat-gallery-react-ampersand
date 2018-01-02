@@ -82,31 +82,15 @@ class ImagePage extends React.Component {
     }
 
     /**
-     * Invoked once, before component is mounted into the DOM, before initial rendering.
-     */
-    componentWillMount() {
-        // Start listening for changes to the user model.
-
-        // When the user gets logged in, this triggers rerendering
-        // so the edit button gets drawn.
-        User.currentUser().on('change:isAdmin', function() {
-            this.setState({editAllowed: User.currentUser().isAdmin});
-        }, this);
-
-        // When the user clicks edit, edit mode on the user is set.
-        // Listen for that so we know to draw the edit controls.
-        User.currentUser().on('change:editMode', function() {
-            this.setState({editMode: User.currentUser().editMode});
-        }, this);
-    }
-
-    /**
      * Invoked immediately before a component is unmounted from the DOM.
      */
     componentWillUnmount() {
         // Stop listening for changes to the User model
         User.currentUser().off('change:isAdmin');
         User.currentUser().off('change:editMode');
+        if (this.state.album) {
+            this.state.album.off('change');
+        }
     }
 
 	/**
@@ -119,6 +103,22 @@ class ImagePage extends React.Component {
 	 * This is the place to send AJAX requests.
 	 */
 	componentDidMount() {
+		// Start listening for changes to the user model.
+
+        // When the user gets logged in, this triggers rerendering
+        // so the edit button gets drawn.
+        User.currentUser().on('change:isAdmin', function() {
+            this.setState({editAllowed: User.currentUser().isAdmin});
+        }, this);
+
+        // When the user clicks edit, edit mode on the user is set.
+        // Listen for that so we know to draw the edit controls.
+        User.currentUser().on('change:editMode', function() {
+        	console.log('ImagePage.change:editMode');
+            this.setState({editMode: User.currentUser().editMode});
+        }, this);
+
+
 		// If constructor didn't get the album Model from the
 		// client side cache, now's the time to fetch it from the server.
 		// This is Ampersand Collection.fetchById().
@@ -380,6 +380,10 @@ class EditMenu extends React.Component {
         this.state = {
 			step: ''
         };
+
+        this.edit = this.edit.bind(this);
+        this.save = this.save.bind(this);
+        this.saveNext = this.saveNext.bind(this);
 	}
 
 	render() {

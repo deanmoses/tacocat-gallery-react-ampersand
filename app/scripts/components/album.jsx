@@ -42,25 +42,6 @@ class AlbumPage extends React.Component {
     }
 
     /**
-     * Invoked once, before component is mounted into the DOM, before initial rendering.
-     */
-    componentWillMount() {
-        // Start listening for user changes that would require rerending
-
-        // When the user gets logged in, this triggers rerendering
-        // so the edit button gets drawn.
-        User.currentUser().on('change:isAdmin', function() {
-            this.setState({editAllowed: User.currentUser().isAdmin});
-        }, this);
-
-        // When the user clicks edit, edit mode on the user is set.
-        // Listen for that so we know to draw the edit controls.
-        User.currentUser().on('change:editMode', function() {
-            this.setState({editMode: User.currentUser().editMode});
-        }, this);
-    }
-
-    /**
      * Invoked immediately before a component is unmounted from the DOM.
      */
     componentWillUnmount() {
@@ -82,6 +63,20 @@ class AlbumPage extends React.Component {
 	 * This is the place to send AJAX requests.
 	 */
 	componentDidMount() {
+        // Start listening for user changes that would require rerending
+
+        // When the user gets logged in, this triggers rerendering
+        // so the edit button gets drawn.
+        User.currentUser().on('change:isAdmin', function() {
+            this.setState({editAllowed: User.currentUser().isAdmin});
+        }, this);
+
+        // When the user clicks edit, edit mode on the user is set.
+        // Listen for that so we know to draw the edit controls.
+        User.currentUser().on('change:editMode', function() {
+            this.setState({editMode: User.currentUser().editMode});
+        }, this);
+
 		// If the constructor didn't get the album Model from the
 		// client side cache, now's the time to fetch it from the server.
 		// This is Ampersand Collection.fetchById().
@@ -448,6 +443,11 @@ class EditMenu extends React.Component {
         this.state = {
             step: ''
         };
+
+        this.edit = this.edit.bind(this);
+        this.save = this.save.bind(this);
+        this.refresh = this.refresh.bind(this);
+        this.cancel = this.cancel.bind(this);
     }
 
     render() {
